@@ -727,37 +727,11 @@ function handleSubmit(e) {
 
   // Đọc chính xác giá trị theo từng ô ID trên trang
   const payload = {
-        need: document.getElementById('need') ? document.getElementById('need').value : ''
-  };
-
-  fetch(GOOGLE_SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      'Content-Type': 'text/plain;charset=utf-8'
-    },
-    body: JSON.stringify(payload)
-  })
-  .then(() => {
-    if (alertBox) {
-      alertBox.style.display = 'block';
-    }
-    form.reset();
-  })
-  .catch((err) => {
-    console.error('Lỗi gửi form:', err);
-    if (alertBox) {
-      alertBox.style.display = 'block';
-    }
-    form.reset();
-  })
-  .finally(() => {
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.innerText = 'Gửi Thông Tin Đăng Ký';
-    }
-  });
-}
+        name: document.getElementById('name') ? document.getElementById('name').value : '',
+    phone: document.getElementById('phone') ? document.getElementById('phone').value : '',
+    email: document.getElementById('email') ? document.getElementById('email').value : '',
+    company: document.getElementById('company') ? document.getElementById('company').value : '',
+    need: document.getElementById('need') ? document.getElementById('need').value : ''
   </script>
 </body>
 </html>
