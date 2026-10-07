@@ -708,17 +708,53 @@
       }
     }
 
-    function handleSubmit(e) {
-      e.preventDefault();
-      const alertBox = document.getElementById('success-alert');
-      if (alertBox) {
-        alertBox.style.display = 'block';
-      }
-      const form = document.getElementById('lead-form');
-      if (form) {
-        form.reset();
-      }
+   // Thay LINK_APPS_SCRIPT_CUA_ANH bằng link Web App sau khi Deploy ở Google Sheet
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwpfe9h29bzSs7JxLhUJo3RGzcDW3feaYuk3bqRH8DeNDtyOjFevQFVitXNZl31BaLn/exec';
+
+function handleSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('lead-form');
+  const alertBox = document.getElementById('success-alert');
+  const submitBtn = form.querySelector('button[type="submit"]') || e.target.querySelector('button');
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Đang gửi thông tin...';
+  }
+
+  // Thu thập dữ liệu từ Form
+  const formData = new FormData(form);
+  const data = {};
+  formData.forEach((value, key) => {
+    data[key] = value;
+  });
+
+  // Bắn dữ liệu về Google Apps Script
+  fetch(GOOGLE_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(() => {
+    if (alertBox) {
+      alertBox.style.display = 'block';
     }
+    form.reset();
+  })
+  .catch((err) => {
+    console.error('Lỗi gửi form:', err);
+    alert('Hệ thống đang bận. Anh vui lòng liên hệ hotline: 0918.717.952');
+  })
+  .finally(() => {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Đăng Ký Tư Vấn Ngay';
+    }
+  });
+}
   </script>
 </body>
 </html>
