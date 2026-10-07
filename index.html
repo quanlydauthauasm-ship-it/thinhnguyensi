@@ -711,10 +711,7 @@
       }
     }
 
-   // Thay LINK_APPS_SCRIPT_CUA_ANH bằng link Web App sau khi Deploy ở Google Sheet
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyTS_RfiOtQaR9fNKVN2Gxvn1_JAVKF6uooL24KqX764ZQHFkbvLLowE5TfSIVaU1Ve/exec';
-
-function handleSubmit(e) {
+   function handleSubmit(e) {
   e.preventDefault();
   const form = document.getElementById('lead-form');
   const alertBox = document.getElementById('success-alert');
@@ -725,7 +722,7 @@ function handleSubmit(e) {
     submitBtn.innerText = 'Đang gửi thông tin...';
   }
 
-  // Đọc chính xác giá trị theo từng ô ID trên trang
+  // Đọc đủ 5 ô: Họ tên, Số điện thoại, Email, Đơn vị, Bài toán
   const payload = {
     name: document.getElementById('name') ? document.getElementById('name').value : '',
     phone: document.getElementById('phone') ? document.getElementById('phone').value : '',
@@ -733,6 +730,34 @@ function handleSubmit(e) {
     company: document.getElementById('company') ? document.getElementById('company').value : '',
     need: document.getElementById('need') ? document.getElementById('need').value : ''
   };
+     fetch(GOOGLE_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'text/plain;charset=utf-8'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    if (alertBox) {
+      alertBox.style.display = 'block';
+    }
+    form.reset();
+  })
+  .catch((err) => {
+    console.error('Lỗi gửi form:', err);
+    if (alertBox) {
+      alertBox.style.display = 'block';
+    }
+    form.reset();
+  })
+  .finally(() => {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Gửi Thông Tin Đăng Ký';
+    }
+  });
+}
   </script>
 </body>
 </html>
