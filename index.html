@@ -48,7 +48,7 @@
     header {
       position: sticky;
       top: 0;
-      background: rgba(10, 15, 29, 0.85);
+      background: rgba(10, 15, 29, 0.9);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--card-border);
       z-index: 100;
@@ -95,7 +95,7 @@
       color: white;
       font-size: 14px;
       font-weight: 700;
-      padding: 10px 20px;
+      padding: 10px 22px;
       border-radius: 9999px;
       display: inline-flex;
       align-items: center;
@@ -107,6 +107,7 @@
     .btn-zalo-top:hover {
       background: #0052cc;
       transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 104, 255, 0.5);
     }
 
     /* HERO SECTION */
@@ -612,7 +613,7 @@
     </div>
   </section>
 
-  <!-- CURRICULUM -->
+  <!-- CURRICULUM MODULES -->
   <section class="curriculum">
     <div class="container">
       <div class="section-head">
@@ -649,37 +650,37 @@
   </section>
 
   <!-- REGISTRATION FORM -->
-  <section class="form-section" id="dang-ky">
+  <section id="dang-ky" class="form-section">
     <div class="container">
       <div class="form-box">
         <h3>Đăng Ký Tư Vấn Khóa Học</h3>
         <p>Điền thông tin bên dưới để chuyên gia Thịnh Nguyễn trực tiếp liên hệ và tư vấn bài toán của bạn.</p>
 
-        <form id="consultForm" onsubmit="handleFormSubmit(event)">
+        <form id="lead-form" onsubmit="handleSubmit(event)">
           <div class="form-group">
-            <label for="fullName">Họ và Tên *</label>
-            <input type="text" id="fullName" class="form-control" placeholder="Ví dụ: Nguyễn Văn An" required>
+            <label for="name">Họ và Tên *</label>
+            <input type="text" id="name" required class="form-control" placeholder="Họ và tên của bạn">
           </div>
 
           <div class="form-group">
             <label for="phone">Số Điện Thoại / Zalo *</label>
-            <input type="tel" id="phone" class="form-control" placeholder="Ví dụ: 0918.xxx.xxx" required>
+            <input type="tel" id="phone" required class="form-control" placeholder="0918.xxx.xxx">
           </div>
 
           <div class="form-group">
             <label for="company">Đơn Vị & Vị Trí Công Tác</label>
-            <input type="text" id="company" class="form-control" placeholder="Công ty / Phòng ban đang công tác">
+            <input type="text" id="company" class="form-control" placeholder="Công ty / Phòng ban">
           </div>
 
           <div class="form-group">
-            <label for="needs">Bài Toán AI Doanh Nghiệp Cần Giải Quyết</label>
-            <textarea id="needs" class="form-control" placeholder="Ví dụ: Bóc tách hóa đơn tự động, tự động báo cáo doanh thu, đào tạo nhân sự..."></textarea>
+            <label for="need">Bài Toán AI Cần Giải Quyết</label>
+            <textarea id="need" class="form-control" placeholder="Tự động hóa báo cáo, đọc hóa đơn, trợ lý đào tạo..."></textarea>
           </div>
 
           <button type="submit" class="btn-submit">Gửi Thông Tin Đăng Ký</button>
 
-          <div id="successAlert" class="success-alert">
-            ✓ Đã tiếp nhận thông tin! Chuyên gia Thịnh Nguyễn sẽ liên hệ hỗ trợ bạn trong giây lát.
+          <div id="success-alert" class="success-alert">
+            ✓ Đã tiếp nhận thông tin! Chuyên gia Thịnh Nguyễn sẽ liên hệ với bạn trong giây lát.
           </div>
         </form>
       </div>
@@ -690,18 +691,16 @@
   <footer>
     <div class="container">
       <div class="footer-links">
-        <a href="tel:0918717952">Hotline: 0918.717.952</a>
-        <a href="<https://zalo.me/0918717952>" target="_blank" rel="noopener noreferrer">Zalo Cá Nhân</a>
         <a href="<https://zalo.me/g/fha5au5tsqt5qucmqnre>" target="_blank" rel="noopener noreferrer">Nhóm Zalo Học Viên</a>
         <a href="<https://www.tiktok.com/@nguyenthinh8686>" target="_blank" rel="noopener noreferrer">Kênh TikTok</a>
-        <a href="<https://www.linkedin.com/in/th%E1%BB%8Bnh-nguy%E1%BB%85n-385b9118b>" target="_blank" rel="noopener noreferrer">Trang LinkedIn</a>
+        <a href="<https://www.linkedin.com/in/th%E1%BB%8Bnh-nguy%E1%BB%85n-385b9118b>" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="<https://zalo.me/0918717952>" target="_blank" rel="noopener noreferrer">Zalo Riêng: 0918.717.952</a>
       </div>
-      <p>© 2026 THỊNH NGUYỄN SI. Giữ toàn quyền bản quyền.</p>
+      <p>© 2026 Thịnh Nguyễn SI. All rights reserved. Đồng hành Chuyển đổi số & AI thực chiến.</p>
     </div>
   </footer>
 
   <script>
-    // Cuộn mượt xuống phần Đăng ký
     function scrollToForm() {
       const el = document.getElementById('dang-ky');
       if (el) {
@@ -709,20 +708,16 @@
       }
     }
 
-    // Xử lý gửi biểu mẫu
-    function handleFormSubmit(e) {
+    function handleSubmit(e) {
       e.preventDefault();
-      const alertBox = document.getElementById('successAlert');
-      alertBox.style.display = 'block';
-
-      // Cuộn nhẹ tới thông báo
-      alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-      // Làm sạch ô nhập liệu
-      document.getElementById('fullName').value = '';
-      document.getElementById('phone').value = '';
-      document.getElementById('company').value = '';
-      document.getElementById('needs').value = '';
+      const alertBox = document.getElementById('success-alert');
+      if (alertBox) {
+        alertBox.style.display = 'block';
+      }
+      const form = document.getElementById('lead-form');
+      if (form) {
+        form.reset();
+      }
     }
   </script>
 </body>
