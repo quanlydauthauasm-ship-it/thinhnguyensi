@@ -666,7 +666,10 @@
             <label for="phone">Số Điện Thoại / Zalo *</label>
             <input type="tel" id="phone" required class="form-control" placeholder="0918.xxx.xxx">
           </div>
-
+           <div class="form-group">
+            <label for="email">Email / Gmail *</label>
+            <input type="email" id="email" required class="form-control" placeholder="vidu@gmail.com">
+          </div>
           <div class="form-group">
             <label for="company">Đơn Vị & Vị Trí Công Tác</label>
             <input type="text" id="company" class="form-control" placeholder="Công ty / Phòng ban">
@@ -724,10 +727,7 @@ function handleSubmit(e) {
 
   // Đọc chính xác giá trị theo từng ô ID trên trang
   const payload = {
-    name: document.getElementById('name') ? document.getElementById('name').value : '',
-    phone: document.getElementById('phone') ? document.getElementById('phone').value : '',
-    company: document.getElementById('company') ? document.getElementById('company').value : '',
-    need: document.getElementById('need') ? document.getElementById('need').value : ''
+        need: document.getElementById('need') ? document.getElementById('need').value : ''
   };
 
   fetch(GOOGLE_SCRIPT_URL, {
