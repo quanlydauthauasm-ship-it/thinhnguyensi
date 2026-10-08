@@ -299,19 +299,17 @@
       });
     }
   </script>
-<!-- ======================================================= -->
-<!-- BẮT ĐẦU: WIDGET CHATBOT AI GÓC PHẢI - THỊNH NGUYỄN SI -->
-<!-- HƯỚNG DẪN: Dán toàn bộ khối này vào ngay trước thẻ </body> -->
-<!-- ======================================================= -->
-
+<!-- ======================================================== -->
+<!-- BẮT ĐẦU: CHATBOT AI THỊNH NGUYỄN SI V2 (BỘ NÃO TRI THỨC TOÀN DIỆN) -->
+<!-- ======================================================== -->
 <style>
-  /* 1. NÚT TRÒN GÓC PHẢI (FAB) */
-  .tnsi-chatbot-fab {
+  /* Nút tròn góc phải */
+  .chatbot-fab {
     position: fixed;
     bottom: 24px;
     right: 24px;
-    width: 62px;
-    height: 62px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background: linear-gradient(135deg, #2563eb, #06b6d4);
     box-shadow: 0 8px 24px rgba(6, 182, 212, 0.45);
@@ -319,65 +317,64 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 9999;
+    z-index: 999;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.25);
   }
-  .tnsi-chatbot-fab:hover {
+  .chatbot-fab:hover {
     transform: scale(1.08);
-    box-shadow: 0 12px 32px rgba(6, 182, 212, 0.65);
+    box-shadow: 0 12px 30px rgba(6, 182, 212, 0.65);
   }
-  .tnsi-chatbot-fab svg {
-    width: 32px;
-    height: 32px;
+  .chatbot-fab svg {
+    width: 30px;
+    height: 30px;
     fill: #ffffff;
-    transition: transform 0.3s ease;
   }
-  .tnsi-chatbot-fab.active svg {
-    transform: rotate(90deg);
-  }
-  .tnsi-fab-badge {
+  .chatbot-fab .fab-badge {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -2px;
+    right: -2px;
     width: 14px;
     height: 14px;
     background: #10b981;
     border-radius: 50%;
     border: 2px solid #0a0f1d;
   }
+  /* Khi cửa sổ chat mở ra thì ẩn nút tròn để không bị chèn lên nhau */
+  body.chat-open .chatbot-fab {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.6);
+  }
 
-  /* 2. CỬA SỔ KHUNG CHAT DARK-MODE */
-  .tnsi-chat-window {
+  /* Cửa sổ chat */
+  .chatbot-window {
     position: fixed;
-    bottom: 98px;
+    bottom: 24px;
     right: 24px;
-    width: 380px;
+    width: 390px;
     max-width: calc(100vw - 32px);
-    height: 530px;
-    max-height: calc(100vh - 120px);
-    background: #0f172a;
+    height: 560px;
+    max-height: calc(100vh - 48px);
+    background: #111827;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 20px;
     box-shadow: 0 24px 50px rgba(0, 0, 0, 0.75);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    z-index: 9999;
+    z-index: 1000;
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px) scale(0.95);
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    font-family: inherit;
   }
-  .tnsi-chat-window.open {
+  .chatbot-window.open {
     opacity: 1;
     visibility: visible;
     transform: translateY(0) scale(1);
   }
-
-  /* 3. HEADER CỬA SỔ CHAT */
-  .tnsi-chat-header {
+  .chat-header {
     background: linear-gradient(135deg, #1e293b, #0f172a);
     padding: 14px 18px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -385,15 +382,15 @@
     align-items: center;
     justify-content: space-between;
   }
-  .tnsi-chat-header-info {
+  .chat-header-info {
     display: flex;
     align-items: center;
     gap: 12px;
   }
-  .tnsi-chat-avatar {
+  .chat-avatar {
     width: 40px;
     height: 40px;
-    border-radius: 12px;
+    border-radius: 10px;
     background: linear-gradient(135deg, #2563eb, #06b6d4);
     display: flex;
     align-items: center;
@@ -401,15 +398,15 @@
     font-weight: 800;
     font-size: 15px;
     color: #fff;
-    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
   }
-  .tnsi-chat-title h4 {
+  .chat-header-text h4 {
     font-size: 15px;
     font-weight: 700;
-    color: #ffffff;
+    color: #fff;
     margin: 0;
   }
-  .tnsi-chat-title p {
+  .chat-header-text p {
     font-size: 12px;
     color: #34d399;
     display: flex;
@@ -417,7 +414,7 @@
     gap: 6px;
     margin: 2px 0 0 0;
   }
-  .tnsi-chat-title p::before {
+  .chat-header-text p::before {
     content: '';
     width: 7px;
     height: 7px;
@@ -425,7 +422,7 @@
     background: #34d399;
     box-shadow: 0 0 8px #34d399;
   }
-  .tnsi-chat-close-btn {
+  .chat-close-btn {
     background: transparent;
     border: none;
     color: #94a3b8;
@@ -439,13 +436,13 @@
     justify-content: center;
     transition: all 0.2s;
   }
-  .tnsi-chat-close-btn:hover {
+  .chat-close-btn:hover {
     background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
+    color: #fff;
   }
 
-  /* 4. VÙNG TIN NHẮN */
-  .tnsi-chat-messages {
+  /* Khung tin nhắn */
+  .chat-messages {
     flex: 1;
     padding: 16px;
     overflow-y: auto;
@@ -453,47 +450,46 @@
     flex-direction: column;
     gap: 12px;
     scroll-behavior: smooth;
-    background: #0b1120;
   }
-  .tnsi-chat-messages::-webkit-scrollbar {
+  .chat-messages::-webkit-scrollbar {
     width: 5px;
   }
-  .tnsi-chat-messages::-webkit-scrollbar-thumb {
+  .chat-messages::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.15);
     border-radius: 4px;
   }
-
-  .tnsi-msg {
-    max-width: 85%;
-    padding: 11px 15px;
+  .msg {
+    max-width: 88%;
+    padding: 12px 16px;
     border-radius: 14px;
     font-size: 13.5px;
-    line-height: 1.55;
+    line-height: 1.6;
     word-wrap: break-word;
   }
-  .tnsi-msg-bot {
+  .msg-bot {
     align-self: flex-start;
     background: #1e293b;
     color: #e2e8f0;
     border-bottom-left-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
-  .tnsi-msg-user {
+  .msg-bot strong {
+    color: #38bdf8;
+  }
+  .msg-user {
     align-self: flex-end;
     background: #2563eb;
     color: #ffffff;
     border-bottom-right-radius: 4px;
     font-weight: 500;
   }
-
-  /* GỢI Ý CÂU HỎI NHANH */
-  .tnsi-chips-wrap {
+  .chat-chips {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
     margin-top: 10px;
   }
-  .tnsi-chip-btn {
+  .chip {
     background: rgba(6, 182, 212, 0.12);
     border: 1px solid rgba(6, 182, 212, 0.35);
     color: #38bdf8;
@@ -502,17 +498,15 @@
     border-radius: 9999px;
     cursor: pointer;
     transition: all 0.2s;
-    text-align: left;
   }
-  .tnsi-chip-btn:hover {
+  .chip:hover {
     background: #06b6d4;
-    color: #0b1120;
+    color: #0a0f1d;
     font-weight: 700;
-    transform: translateY(-1px);
   }
 
-  /* 5. VÙNG NHẬP TIN NHẮN */
-  .tnsi-chat-input-area {
+  /* Khung nhập liệu */
+  .chat-input-area {
     padding: 12px 14px;
     background: #0f172a;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -520,22 +514,21 @@
     gap: 8px;
     align-items: center;
   }
-  .tnsi-chat-input-area input {
+  .chat-input-area input {
     flex: 1;
     background: #1e293b;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-    padding: 10px 14px;
-    color: #ffffff;
+    padding: 11px 14px;
+    color: #fff;
     font-size: 13.5px;
     outline: none;
-    transition: border-color 0.2s;
   }
-  .tnsi-chat-input-area input:focus {
+  .chat-input-area input:focus {
     border-color: #06b6d4;
   }
-  .tnsi-chat-send-btn {
-    background: linear-gradient(135deg, #2563eb, #06b6d4);
+  .chat-send-btn {
+    background: #2563eb;
     border: none;
     width: 40px;
     height: 40px;
@@ -544,46 +537,45 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: opacity 0.2s, transform 0.2s;
+    transition: background 0.2s;
   }
-  .tnsi-chat-send-btn:hover {
-    opacity: 0.9;
-    transform: scale(1.05);
+  .chat-send-btn:hover {
+    background: #1d4ed8;
   }
-  .tnsi-chat-send-btn svg {
+  .chat-send-btn svg {
     width: 18px;
     height: 18px;
-    fill: #ffffff;
+    fill: #fff;
   }
 
-  /* HIỆU ỨNG ĐANG TRẢ LỜI */
-  .tnsi-typing {
+  /* Typing animation */
+  .typing-indicator {
     display: inline-flex;
     gap: 4px;
     padding: 6px 10px;
   }
-  .tnsi-typing span {
+  .typing-indicator span {
     width: 6px;
     height: 6px;
     background: #94a3b8;
     border-radius: 50%;
-    animation: tnsiBlink 1.2s infinite both;
+    animation: blink 1.2s infinite both;
   }
-  .tnsi-typing span:nth-child(2) { animation-delay: 0.2s; }
-  .tnsi-typing span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes tnsiBlink {
+  .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink {
     0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
     40% { opacity: 1; transform: scale(1.2); }
   }
 
   @media (max-width: 600px) {
-    .tnsi-chat-window {
+    .chatbot-window {
       width: calc(100vw - 32px);
       right: 16px;
-      bottom: 84px;
-      height: 480px;
+      bottom: 16px;
+      height: 520px;
     }
-    .tnsi-chatbot-fab {
+    .chatbot-fab {
       right: 16px;
       bottom: 16px;
       width: 54px;
@@ -592,43 +584,45 @@
   }
 </style>
 
-<!-- NÚT MỞ CHATBOT GÓC PHẢI -->
-<div id="tnsi-chatbot-fab" class="tnsi-chatbot-fab" onclick="tnsiToggleChat()" title="Trợ lý AI Thịnh Nguyễn SI">
-  <div class="tnsi-fab-badge"></div>
+<!-- Nút tròn góc phải -->
+<div id="chatbot-fab" class="chatbot-fab" onclick="toggleChatbot()" title="Trợ lý AI Thịnh Nguyễn SI">
+  <div class="fab-badge"></div>
   <svg viewBox="0 0 24 24">
     <path d="M12 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5L2.1 21.9a1 1 0 0 0 1.237 1.237L7 21.862C8.47 22.513 10.179 23 12 23c5.523 0 10-4.477 10-10S17.523 2 12 2zm-1 6a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm-8 7c.6-1.5 2.2-2.5 4-2.5s3.4 1 4 2.5a1 1 0 0 1-1.8.8c-.3-.8-1.2-1.3-2.2-1.3s-1.9.5-2.2 1.3a1 1 0 0 1-1.8-.8z"/>
   </svg>
 </div>
 
-<!-- KHUNG CỬA SỔ CHATBOT -->
-<div id="tnsi-chat-window" class="tnsi-chat-window">
-  <div class="tnsi-chat-header">
-    <div class="tnsi-chat-header-info">
-      <div class="tnsi-chat-avatar">TN</div>
-      <div class="tnsi-chat-title">
+<!-- Khung cửa sổ Chatbot -->
+<div id="chatbot-window" class="chatbot-window">
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <div class="chat-avatar">TN</div>
+      <div class="chat-header-text">
         <h4>Thịnh Nguyễn SI AI</h4>
         <p>Trực tuyến 24/7</p>
       </div>
     </div>
-    <button class="tnsi-chat-close-btn" onclick="tnsiToggleChat()" title="Đóng chat">✕</button>
+    <button class="chat-close-btn" onclick="toggleChatbot()" title="Đóng">✕</button>
   </div>
 
-  <div id="tnsi-chat-messages" class="tnsi-chat-messages">
-    <div class="tnsi-msg tnsi-msg-bot">
+  <div id="chat-messages" class="chat-messages">
+    <div class="msg msg-bot">
       Chào bạn! 👋 Mình là Trợ lý AI của chuyên gia <strong>Thịnh Nguyễn SI</strong>.<br><br>
       Bạn đang quan tâm đến lộ trình đào tạo hay cần giải bài toán tự động hóa nào cho doanh nghiệp ạ?
-      <div class="tnsi-chips-wrap">
-        <button class="tnsi-chip-btn" onclick="tnsiAskQuick('Lộ trình 4 Module đào tạo')">📚 Lộ trình 4 Module</button>
-        <button class="tnsi-chip-btn" onclick="tnsiAskQuick('Tự động hóa 0 đồng là gì?')">⚡ Tự động hóa 0 đồng</button>
-        <button class="tnsi-chip-btn" onclick="tnsiAskQuick('Học phí & Đăng ký')">💰 Học phí & Đăng ký</button>
-        <button class="tnsi-chip-btn" onclick="tnsiAskQuick('Kết nối trực tiếp chuyên gia')">📞 Kết nối chuyên gia</button>
+      <div class="chat-chips">
+        <button class="chip" onclick="askQuick('Thịnh Nguyễn là ai?')">👤 Thịnh Nguyễn là ai?</button>
+        <button class="chip" onclick="askQuick('Lộ trình 4 Module đào tạo')">📚 Lộ trình 4 Module</button>
+        <button class="chip" onclick="askQuick('Tự động hóa 0 đồng là gì?')">⚡ Tự động hóa 0 đồng</button>
+        <button class="chip" onclick="askQuick('Học phí và ưu đãi')">💰 Học phí & Đăng ký</button>
+        <button class="chip" onclick="askQuick('Không biết code có học được không?')">💻 Không biết code</button>
+        <button class="chip" onclick="askQuick('Kết nối trực tiếp chuyên gia')">📞 Kết nối chuyên gia</button>
       </div>
     </div>
   </div>
 
-  <div class="tnsi-chat-input-area">
-    <input type="text" id="tnsi-chat-input" placeholder="Nhập câu hỏi của bạn..." onkeypress="tnsiHandleKey(event)">
-    <button class="tnsi-chat-send-btn" onclick="tnsiSendMsg()" title="Gửi câu hỏi">
+  <div class="chat-input-area">
+    <input type="text" id="chat-input" placeholder="Nhập câu hỏi của bạn..." onkeypress="handleChatEnter(event)">
+    <button class="chat-send-btn" onclick="sendChatMessage()" title="Gửi tin nhắn">
       <svg viewBox="0 0 24 24">
         <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
       </svg>
@@ -637,132 +631,214 @@
 </div>
 
 <script>
-  // 1. Đóng mở cửa sổ Chatbot
-  function tnsiToggleChat() {
-    const win = document.getElementById('tnsi-chat-window');
-    const fab = document.getElementById('tnsi-chatbot-fab');
+  function toggleChatbot() {
+    const win = document.getElementById('chatbot-window');
     if (win) {
-      win.classList.toggle('open');
-      fab.classList.toggle('active');
-      if (win.classList.contains('open')) {
+      const isOpen = win.classList.toggle('open');
+      if (isOpen) {
+        document.body.classList.add('chat-open');
         setTimeout(() => {
-          const inp = document.getElementById('tnsi-chat-input');
-          if (inp) inp.focus();
-        }, 250);
+          const input = document.getElementById('chat-input');
+          if (input) input.focus();
+        }, 300);
+      } else {
+        document.body.classList.remove('chat-open');
       }
     }
   }
 
-  // 2. Bấm nút câu hỏi gợi ý nhanh
-  function tnsiAskQuick(text) {
-    const inp = document.getElementById('tnsi-chat-input');
-    if (inp) {
-      inp.value = text;
-      tnsiSendMsg();
+  function askQuick(text) {
+    const input = document.getElementById('chat-input');
+    if (input) {
+      input.value = text;
+      sendChatMessage();
     }
   }
 
-  // 3. Xử lý gõ phím Enter
-  function tnsiHandleKey(e) {
-    if (e.key === 'Enter') {
-      tnsiSendMsg();
+  function handleChatEnter(e) {
+    if (e.key === 'Enter') sendChatMessage();
+  }
+
+  function scrollToForm() {
+    const formSection = document.querySelector('form') || document.getElementById('register') || document.querySelector('.form-container');
+    if (formSection) {
+      formSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
 
-  // 4. Xử lý gửi tin nhắn & Tri thức tự động của Thịnh Nguyễn SI
-  function tnsiSendMsg() {
-    const inp = document.getElementById('tnsi-chat-input');
-    const box = document.getElementById('tnsi-chat-messages');
-    if (!inp || !box) return;
+  function appendMsg(html, sender) {
+    const box = document.getElementById('chat-messages');
+    if (!box) return;
+    const div = document.createElement('div');
+    div.className = 'msg ' + (sender === 'user' ? 'msg-user' : 'msg-bot');
+    div.innerHTML = html;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+  }
 
-    const raw = inp.value.trim();
-    if (!raw) return;
+  function showTyping() {
+    const box = document.getElementById('chat-messages');
+    if (!box) return;
+    const div = document.createElement('div');
+    div.id = 'chat-typing';
+    div.className = 'msg msg-bot';
+    div.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+  }
 
-    // Hiển thị tin nhắn người dùng
-    tnsiAppendMsg(raw, 'user');
-    inp.value = '';
+  function hideTyping() {
+    const t = document.getElementById('chat-typing');
+    if (t) t.remove();
+  }
 
-    // Hiển thị trạng thái đang soạn
-    const typingId = tnsiShowTyping();
+  // ==========================================
+  // BỘ NÃO TRI THỨC TOÀN DIỆN (KNOWLEDGE BASE)
+  // ==========================================
+  function getSmartReply(userText) {
+    const t = userText.toLowerCase().trim();
+
+    // 1. Chuyên gia Thịnh Nguyễn là ai?
+    if (t.includes('thịnh nguyễn là ai') || t.includes('thinh nguyen la ai') || t.includes('ai là thịnh nguyễn') || 
+        t.includes('thịnh nguyễn') || t.includes('chuyên gia là ai') || t.includes('profile') || 
+        t.includes('kinh nghiệm') || t.includes('tiểu sử') || t.includes('giới thiệu')) {
+      return {
+        text: `Chuyên gia <strong>Thịnh Nguyễn</strong> (Thịnh Nguyễn SI) là chuyên gia thực chiến về <strong>Ứng dụng AI & Chuyển đổi số Doanh nghiệp</strong>.<br><br>` +
+              `🌟 <strong>Dấu ấn & Kinh nghiệm thực chiến:</strong><br>` +
+              `• Trực tiếp kiến tạo và cố vấn giải pháp chuyển đổi số, tối ưu đấu thầu & hệ thống vận hành thực chiến (Cụm Vàm Cống).<br>` +
+              `• Tiên phong phương pháp <strong>"Tự động hóa 0 đồng"</strong>: khai thác triệt để hệ sinh thái Google Workspace, Apps Script, Make, AI Agent giúp doanh nghiệp cắt giảm 80% thời gian xử lý thủ công.<br>` +
+              `• Nhà sáng tạo nội dung công nghệ thực chiến trên TikTok: <strong>@nguyenthinh8686</strong>.<br><br>` +
+              `Triết lý của anh Thịnh: <em>"Công nghệ phải sinh ra tiền và giải quyết ngay bài toán thật, không lý thuyết suông!"</em>`,
+        chips: ['Lộ trình 4 Module đào tạo', 'Tự động hóa 0 đồng là gì?', 'Học phí và ưu đãi', 'Kết nối trực tiếp chuyên gia']
+      };
+    }
+
+    // 2. Lộ trình 4 Module đào tạo
+    if (t.includes('module') || t.includes('lộ trình') || t.includes('lo trinh') || 
+        t.includes('nội dung') || t.includes('học gì') || t.includes('khóa học') || t.includes('khoa hoc')) {
+      return {
+        text: `Lộ trình đào tạo <strong>AI & Chuyển Đổi Số Thực Chiến</strong> gồm 4 Module may đo cho cá nhân & doanh nghiệp:<br><br>` +
+              `🔹 <strong>Module 1: Tư duy AI & Chuyển đổi số thực chiến</strong> – Làm chủ các mô hình AI hàng đầu, chuẩn hóa Prompt kỹ thuật cao.<br>` +
+              `🔹 <strong>Module 2: Tự động hóa quy trình 0 đồng</strong> – Tự dựng hệ thống Webhook, thu thập dữ liệu Google Sheet, thông báo tự động không tốn phí.<br>` +
+              `🔹 <strong>Module 3: AI Marketing & Sáng tạo đa kênh</strong> – Tự động hóa sản xuất nội dung video, caption, bài viết chuyển đổi cao.<br>` +
+              `🔹 <strong>Module 4: Quản trị & Ra quyết định theo thời gian thực</strong> – Xây dựng Dashboard số liệu, AI đọc hóa đơn/chứng từ tự động.<br><br>` +
+              `👉 Thực hành trực tiếp trên bài toán thật của chính bạn!`,
+        chips: ['Học phí và ưu đãi', 'Không biết code có học được không?', 'Tự động hóa 0 đồng là gì?']
+      };
+    }
+
+    // 3. Tự động hóa 0 đồng là gì?
+    if (t.includes('0 đồng') || t.includes('0 dong') || t.includes('tự động hóa 0 đồng') || 
+        t.includes('tự động hoá') || t.includes('tu dong hoa')) {
+      return {
+        text: `⚡ <strong>Tự động hóa 0 đồng</strong> là phương pháp tối ưu độc quyền từ anh Thịnh Nguyễn:<br><br>` +
+              `• <strong>Không cần mua phần mềm đắt đỏ:</strong> Tận dụng 100% công cụ miễn phí mạnh mẽ (Google Sheets, Apps Script, Vercel, Telegram/Zalo Bot, AI Free tier).<br>` +
+              `• <strong>Tự động 80% tác vụ:</strong> Báo cáo số liệu, gửi email duyệt đơn, đồng bộ form đăng ký, phản hồi tin nhắn tự động.<br>` +
+              `• <strong>Tiết kiệm hàng chục triệu/năm:</strong> Phù hợp tuyệt đối cho chủ doanh nghiệp SME, quản lý và người làm việc độc lập.`,
+        chips: ['Lộ trình 4 Module đào tạo', 'Học phí và ưu đãi', 'Thịnh Nguyễn là ai?']
+      };
+    }
+
+    // 4. Học phí, chi phí, đăng ký
+    if (t.includes('học phí') || t.includes('hoc phi') || t.includes('giá') || t.includes('gia') || 
+        t.includes('bao nhiêu tiền') || t.includes('chi phí') || t.includes('đăng ký') || t.includes('dang ky')) {
+      setTimeout(scrollToForm, 600);
+      return {
+        text: `💰 Khóa đào tạo thực chiến đang áp dụng <strong>Chính sách trợ giá đặc biệt</strong> cho học viên đăng ký sớm trong tháng này!<br><br>` +
+              `🎯 Chương trình bao gồm: Đào tạo thực hành cầm tay chỉ việc + Tặng trọn bộ mã nguồn mẫu tự động hóa + Cố vấn bài toán riêng 1:1 cùng chuyên gia Thịnh Nguyễn.<br><br>` +
+              `👉 Màn hình đã tự động cuộn xuống Form đăng ký. Bạn hãy điền thông tin để nhận bảng học phí ưu đãi và lộ trình chi tiết nhất nhé!`,
+        chips: ['Thịnh Nguyễn là ai?', 'Lộ trình 4 Module đào tạo', 'Kết nối trực tiếp chuyên gia']
+      };
+    }
+
+    // 5. Không biết code / IT có học được không?
+    if (t.includes('không biết code') || t.includes('chưa biết lập trình') || t.includes('khong biet code') || 
+        t.includes('có khó không') || t.includes('ai học được') || t.includes('lập trình')) {
+      return {
+        text: `💻 <strong>Hoàn toàn học và làm chủ được 100%!</strong><br><br>` +
+              `Phương pháp của anh Thịnh hướng dẫn tập trung vào <strong>Tư duy giải pháp & Kéo thả thực chiến</strong>:<br>` +
+              `• Bạn không cần viết từng dòng mã phức tạp – AI sẽ sinh mã theo yêu cầu của bạn.<br>` +
+              `• Toàn bộ thư viện code mẫu, kịch bản tự động hóa đã được đóng gói sẵn để bạn chỉ việc copy - dán và kích hoạt.<br>` +
+              `• Dành riêng cho chủ doanh nghiệp, nhân sự vận hành, marketing muốn nhân bản hiệu suất làm việc!`,
+        chips: ['Lộ trình 4 Module đào tạo', 'Học phí và ưu đãi', 'Kết nối trực tiếp chuyên gia']
+      };
+    }
+
+    // 6. Hình thức học & thời gian
+    if (t.includes('hình thức') || t.includes('hinh thuc') || t.includes('học ở đâu') || 
+        t.includes('online') || t.includes('offline') || t.includes('thời gian') || t.includes('lịch học')) {
+      return {
+        text: `📅 <strong>Hình thức đào tạo linh hoạt:</strong><br><br>` +
+              `1. <strong>Online qua Zoom tương tác trực tiếp:</strong> Thực hành trực tiếp, giải đáp bài tập theo thời gian thực và có video xem lại trọn đời.<br>` +
+              `2. <strong>Đào tạo In-house Doanh nghiệp:</strong> Chuyên gia Thịnh Nguyễn đào tạo trực tiếp tại trụ sở doanh nghiệp, "may đo" giải pháp cho toàn bộ đội ngũ.<br>` +
+              `3. <strong>Cố vấn 1 kèm 1:</strong> Đồng hành giải quyết bài toán cụ thể theo yêu cầu.`,
+        chips: ['Học phí và ưu đãi', 'Lộ trình 4 Module đào tạo', 'Kết nối trực tiếp chuyên gia']
+      };
+    }
+
+    // 7. Kết nối chuyên gia / Liên hệ
+    if (t.includes('liên hệ') || t.includes('lien he') || t.includes('chuyên gia') || 
+        t.includes('kết nối') || t.includes('hotline') || t.includes('zalo') || t.includes('số điện thoại') || t.includes('sdt')) {
+      return {
+        text: `Bạn có thể kết nối trực tiếp với chuyên gia qua các kênh sau:<br><br>` +
+              `• 📞 <strong>Zalo / Hotline:</strong> 0918.717.952<br>` +
+              `• 🎵 <strong>TikTok:</strong> @nguyenthinh8686<br>` +
+              `• 🌐 <strong>Email:</strong> quanlydauthauasm@gmail.com<br><br>` +
+              `Anh Thịnh sẽ trực tiếp giải đáp các bài toán cụ thể cho đơn vị của bạn!`,
+        chips: ['Thịnh Nguyễn là ai?', 'Lộ trình 4 Module đào tạo', 'Học phí và ưu đãi']
+      };
+    }
+
+    // 8. Chào hỏi xã giao
+    if (t === 'chào' || t === 'chào bạn' || t === 'hi' || t === 'hello' || t === 'alo' || t === 'hey') {
+      return {
+        text: `Chào bạn! Rất vui được hỗ trợ bạn. 👋<br><br>` +
+              `Mình có thể giúp bạn giải đáp điều gì về <strong>chuyên gia Thịnh Nguyễn</strong> hay các giải pháp <strong>AI & Tự động hóa thực chiến</strong> hôm nay ạ?`,
+        chips: ['Thịnh Nguyễn là ai?', 'Lộ trình 4 Module đào tạo', 'Tự động hóa 0 đồng là gì?', 'Học phí và ưu đãi']
+      };
+    }
+
+    // 9. Phản hồi thông minh mặc định (Fallback thông minh)
+    return {
+      text: `Dạ mình đã ghi nhận câu hỏi của bạn! Chuyên gia <strong>Thịnh Nguyễn</strong> chuyên giải quyết các bài toán:<br><br>` +
+            `• Tự động hóa báo cáo, đọc tài liệu/hóa đơn bằng AI.<br>` +
+            `• Đồng bộ dữ liệu bán hàng, quản lý đơn hàng & chăm sóc khách hàng 0 đồng.<br>` +
+            `• Đào tạo chuyển giao công nghệ AI thực chiến cho doanh nghiệp.<br><br>` +
+            `👉 Bạn có thể để lại thông tin tại Form bên cạnh hoặc bấm nút bên dưới để trao đổi trực tiếp cùng anh Thịnh nhé!`,
+      chips: ['Thịnh Nguyễn là ai?', 'Lộ trình 4 Module đào tạo', 'Học phí và ưu đãi', 'Kết nối trực tiếp chuyên gia']
+    };
+  }
+
+  function sendChatMessage() {
+    const input = document.getElementById('chat-input');
+    if (!input) return;
+    const text = input.value.trim();
+    if (!text) return;
+
+    appendMsg(text, 'user');
+    input.value = '';
+
+    showTyping();
 
     setTimeout(() => {
-      tnsiRemoveTyping(typingId);
-      const reply = tnsiGenerateReply(raw);
-      tnsiAppendMsg(reply, 'bot');
-    }, 700);
-  }
+      hideTyping();
+      const reply = getSmartReply(text);
+      let content = reply.text;
 
-  function tnsiAppendMsg(htmlText, sender) {
-    const box = document.getElementById('tnsi-chat-messages');
-    const div = document.createElement('div');
-    div.className = 'tnsi-msg ' + (sender === 'user' ? 'tnsi-msg-user' : 'tnsi-msg-bot');
-    div.innerHTML = htmlText;
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
-  }
+      if (reply.chips && reply.chips.length > 0) {
+        content += '<div class="chat-chips">';
+        reply.chips.forEach(chipText => {
+          content += `<button class="chip" onclick="askQuick('${chipText}')">${chipText}</button>`;
+        });
+        content += '</div>';
+      }
 
-  function tnsiShowTyping() {
-    const box = document.getElementById('tnsi-chat-messages');
-    const div = document.createElement('div');
-    const id = 'tnsi-typing-' + Date.now();
-    div.id = id;
-    div.className = 'tnsi-msg tnsi-msg-bot tnsi-typing';
-    div.innerHTML = '<span></span><span></span><span></span>';
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
-    return id;
-  }
-
-  function tnsiRemoveTyping(id) {
-    const el = document.getElementById(id);
-    if (el) el.remove();
-  }
-
-  // 5. BỘ NÃO TRÍ TUỆ NHÂN TẠO CỦA BOT THỊNH NGUYỄN SI
-  function tnsiGenerateReply(input) {
-    const q = input.toLowerCase();
-
-    // Hỏi về Lộ trình / Module
-    if (q.includes('lộ trình') || q.includes('module') || q.includes('nội dung') || q.includes('khóa học')) {
-      return `Lộ trình đào tạo <strong>AI & Tự Động Hóa Thực Chiến</strong> gồm 4 Module cô đọng:<br><br>
-      • <strong>Module 1:</strong> Tư duy kiến trúc AI & Kỹ thuật Prompt chuyên sâu.<br>
-      • <strong>Module 2:</strong> Xây dựng Trợ lý ảo & Bot Zalo thông minh.<br>
-      • <strong>Module 3:</strong> Tự động hóa quy trình nghiệp vụ với Webhook & Google Sheets 0 đồng.<br>
-      • <strong>Module 4:</strong> Tích hợp hệ thống tổng thể & May đo theo bài toán doanh nghiệp.<br><br>
-      👉 Bạn có thể kéo xuống form đăng ký để tham gia đợt này nhé!`;
-    }
-
-    // Hỏi về Tự động hóa 0 đồng
-    if (q.includes('0 đồng') || q.includes('tự động hóa') || q.includes('chi phí')) {
-      return `<strong>Tự động hóa 0 đồng</strong> là giải pháp tối ưu dòng vốn cho doanh nghiệp:<br><br>
-      Tận dụng 100% hạ tầng miễn phí sẵn có từ Google Workspace (Sheets, Apps Script, Gmail), GitHub, Vercel và Zalo Webhook để xây dựng đường ống dữ liệu tự động mà <strong>không tốn phí duy trì phần mềm hàng tháng</strong>!`;
-    }
-
-    // Hỏi về Học phí & Đăng ký
-    if (q.includes('học phí') || q.includes('đăng ký') || q.includes('giá') || q.includes('bao nhiêu')) {
-      setTimeout(() => {
-        const formEl = document.querySelector('form') || document.getElementById('register');
-        if (formEl) formEl.scrollIntoView({ behavior: 'smooth' });
-      }, 500);
-      return `Chuyên gia <strong>Thịnh Nguyễn SI</strong> đang có chương trình hỗ trợ ưu đãi đặc biệt cho các học viên đăng ký sớm trong tuần này.<br><br>
-      👉 Mình đã cuộn màn hình xuống Form đăng ký phía dưới, bạn hãy điền họ tên và số điện thoại để nhận thông tin chi tiết ngay nhé!`;
-    }
-
-    // Hỏi về Chuyên gia / Liên hệ
-    if (q.includes('liên hệ') || q.includes('chuyên gia') || q.includes('sđt') || q.includes('zalo') || q.includes('thịnh')) {
-      return `Bạn có thể kết nối trực tiếp với chuyên gia qua các kênh sau:<br><br>
-      • 📞 <strong>Zalo / Hotline:</strong> 0918.717.952<br>
-      • 🎵 <strong>TikTok:</strong> @nguyenthinh8686<br>
-      • 🌐 <strong>Email:</strong> quanlydauthauasm@gmail.com<br><br>
-      Anh Thịnh sẽ trực tiếp giải đáp các bài toán cụ thể cho đơn vị của bạn!`;
-    }
-
-    // Trả lời mặc định thông minh
-    return `Cảm ơn bạn đã quan tâm! Để được chuyên gia <strong>Thịnh Nguyễn SI</strong> tư vấn chính xác nhất cho bài toán của bạn, bạn hãy <strong>điền thông tin vào form đăng ký trên website</strong> hoặc nhắn tin trực tiếp qua Zalo <strong>0918.717.952</strong> nhé!`;
+      appendMsg(content, 'bot');
+    }, 600);
   }
 </script>
-<!-- ======================================================= -->
-<!-- KẾT THÚC: WIDGET CHATBOT AI GÓC PHẢI - THỊNH NGUYỄN SI -->
-<!-- ======================================================= -->
+<!-- ======================================================== -->
+<!-- KẾT THÚC: CHATBOT AI THỊNH NGUYỄN SI V2                  -->
+<!-- ======================================================== -->
 </body>
 </html>
