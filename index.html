@@ -924,134 +924,17 @@
       };
     }
 
-    ```html
-<script>
-// Đoạn script điều phối Chatbot Thịnh Nguyễn SI AI chuẩn xác
-document.addEventListener('DOMContentLoaded', function () {
-  const chatInput = document.querySelector('input[placeholder*="Nhập câu hỏi"]') || document.getElementById('chat-input');
-  const chatForm = chatInput ? chatInput.closest('form') : null;
-  const chatSendBtn = document.querySelector('button[type="submit"]') || document.getElementById('chat-send-btn');
-  const chatMessagesContainer = document.querySelector('.chat-messages') || document.querySelector('#chat-messages') || (chatInput ? chatInput.closest('div').parentElement.querySelector('div') : null);
-
-  if (!chatInput) return;
-
-  // Hàm thêm tin nhắn vào khung chat
-  function addMessage(sender, text) {
-    if (!chatMessagesContainer) return;
-    const msgDiv = document.createElement('div');
-    msgDiv.style.margin = '10px 0';
-    msgDiv.style.display = 'flex';
-    msgDiv.style.flexDirection = 'column';
-    msgDiv.style.alignItems = sender === 'user' ? 'flex-end' : 'flex-start';
-
-    const bubble = document.createElement('div');
-    bubble.style.padding = '10px 14px';
-    bubble.style.borderRadius = '14px';
-    bubble.style.maxWidth = '85%';
-    bubble.style.fontSize = '14px';
-    bubble.style.lineHeight = '1.5';
-    bubble.style.wordBreak = 'break-word';
-
-    if (sender === 'user') {
-      bubble.style.backgroundColor = '#2563eb';
-      bubble.style.color = '#ffffff';
-      bubble.innerText = text;
-    } else {
-      bubble.style.backgroundColor = '#1e293b';
-      bubble.style.color = '#f1f5f9';
-      bubble.style.border = '1px solid #334155';
-      bubble.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
-    }
-
-    msgDiv.appendChild(bubble);
-    chatMessagesContainer.appendChild(msgDiv);
-    chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-    return msgDiv;
+   // TH 4: Phản hồi mặc định thông minh & linh hoạt (Không lặp lại câu đòi SĐT máy móc)
+    return {
+      text: `Dạ mình là Trợ lý AI của chuyên gia <strong>Thịnh Nguyễn SI</strong>! Mình đã ghi nhận câu hỏi của bạn. 💡<br><br>` +
+        `Để hỗ trợ bạn nhanh và sát thực tế nhất, bạn đang muốn tìm hiểu sâu về mảng nào sau đây:<br>` +
+        `• <strong>Tự động hóa quy trình 0 đồng:</strong> Quản lý kho, đơn hàng, Mini CRM không tốn phí bản quyền hàng tháng.<br>` +
+        `• <strong>Đào tạo AI thực chiến (4 Module):</strong> Tự tay xây dựng hệ thống AI giải phóng sức lao động.<br>` +
+        `• <strong>Tư vấn giải pháp riêng:</strong> Chuyên gia Thịnh Nguyễn SI thiết kế kiến trúc số cho doanh nghiệp.<br><br>` +
+        `👉 Bạn có thể bấm chọn các gợi ý bên dưới hoặc nhắn trực tiếp Zalo <strong>0918.717.952</strong> nhé!`,
+      chips: ['Lộ trình 4 Module đào tạo', 'Tự động hóa 0 đồng là gì?', 'Học phí và ưu đãi', 'Kết nối trực tiếp chuyên gia']
+    };
   }
-
-  // Xử lý gửi tin nhắn
-  async function handleSend(userText) {
-    const text = userText || chatInput.value.trim();
-    if (!text) return;
-
-    // Hiển thị tin nhắn người dùng
-    addMessage('user', text);
-    if (!userText) chatInput.value = '';
-
-    // Hiển thị trạng thái đang trả lời
-    const loadingDiv = addMessage('bot', '<i>Thịnh Nguyễn SI AI đang soạn câu trả lời...</i>');
-
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text })
-      });
-
-      const data = await response.json();
-      loadingDiv.remove();
-
-      if (data && data.reply) {
-        addMessage('bot', data.reply);
-      } else {
-        addMessage('bot', 'Dạ em đã ghi nhận thông tin! Anh/chị có thể liên hệ trực tiếp Hotline/Zalo <b>0918.717.952</b> để được hỗ trợ nhanh nhất nhé!');
-      }
-    } catch (err) {
-      loadingDiv.remove();
-      // Xử lý dự phòng thông minh ngay tại trình duyệt nếu mạng lag
-      const phoneRegex = /(0[3|5|7|8|9][0-9]{8})\b/;
-      if (phoneRegex.test(text)) {
-        addMessage('bot', 'Dạ em đã ghi nhận số điện thoại của anh/chị! Chuyên gia Thịnh Nguyễn SI sẽ liên hệ lại qua Zalo/Điện thoại trong vòng 15 - 30 phút. Cảm ơn anh/chị!');
-      } else {
-        addMessage('bot', 'Dạ số Hotline và Zalo trực tiếp của chuyên gia Thịnh Nguyễn SI là: <b>0918.717.952</b>. Anh/chị kết nối ngay để được hỗ trợ trực tiếp nhé!');
-      }
-    }
-  }
-
-  // Bắt sự kiện Enter hoặc bấm nút gửi
-  if (chatForm) {
-    chatForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      handleSend();
-    });
-  } else if (chatInput) {
-    chatInput.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        handleSend();
-      }
-    });
-  }
-
-  if (chatSendBtn) {
-    chatSendBtn.addEventListener('click', function (e) {
-      e.preventDefault();
-      handleSend();
-    });
-  }
-
-  // Bắt sự kiện bấm vào các nút gợi ý nhanh (pills)
-  document.querySelectorAll('button, a, .pill, .chip').forEach(function (btn) {
-    const txt = btn.innerText.trim();
-    if (
-      txt.includes('Thịnh Nguyễn là ai') ||
-      txt.includes('Lộ trình 4 Module') ||
-      txt.includes('Tự động hóa 0 đồng') ||
-      txt.includes('Học phí') ||
-      txt.includes('Không biết code') ||
-      txt.includes('Kết nối chuyên gia')
-    ) {
-      btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        handleSend(txt);
-      });
-    }
-  });
-});
-</script>
-```
-
----
 
   // ==========================================
   // GỌI GEMINI QUA SERVERLESS API
