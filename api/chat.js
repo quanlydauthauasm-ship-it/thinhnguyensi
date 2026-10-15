@@ -1,27 +1,7 @@
 ```javascript
-// api/chat.js - Bộ não AI Chuyên gia Thịnh Nguyễn SI (Bảo vệ 2 lớp chống sập 100%)
-
-const SYSTEM_PROMPT = `Bạn là Trợ lý AI chính thức của chuyên gia Thịnh Nguyễn SI (thinhnguyensi.com).
-Số Hotline / Zalo chuyên gia: 0918.717.952 (https://zalo.me/0918717952).
-Nhóm Zalo học viên: https://zalo.me/g/fha5au5tsqt5qucmqnre.
-
-TRIẾT LÝ & ĐỊNH VỊ:
-- Chuyên gia Thịnh Nguyễn SI: Kiến trúc sư giải pháp AI doanh nghiệp, thực chiến dữ liệu & quy trình.
-- Triết lý đào tạo: "Nói được - Làm được - Chạy thực tế được", loại bỏ lý thuyết hàn lâm, tối ưu hạ tầng 0 đồng.
-
-LỘ TRÌNH 4 MODULE ĐÀO TẠO 2026:
-- Module 01: Tư duy AI & Master Prompt Quản lý (Claude, Gemini, điều phối prompt quản trị).
-- Module 02: Bóc tách dữ liệu & Báo cáo thông minh (AI Vision xử lý hóa đơn, phiếu kho đổ về Google Sheets/Excel).
-- Module 03: Tự động hóa quy trình 0 đồng (Webhook, Zalo Bot, cảnh báo tự động).
-- Module 04: Đóng gói Dashboard & Trợ lý riêng (Triển khai Vercel, bảo mật dữ liệu doanh nghiệp).
-
-QUY TẮC PHẢN HỒI:
-1. Xưng "mình" hoặc "Minh Trợ Lý Số", gọi khách là "bạn" hoặc "anh/chị". Giọng điệu chuyên nghiệp, am hiểu thực tế, ấm áp.
-2. ĐẶC BIỆT KHI KHÁCH ĐỂ LẠI SỐ ĐIỆN THOẠI: Lập tức cảm ơn, xác nhận đã lưu số và thông báo anh Thịnh Nguyễn SI sẽ liên hệ trực tiếp qua Zalo/Điện thoại trong vòng 15 - 30 phút. TUYỆT ĐỐI KHÔNG HỎI LẠI SĐT.
-3. Câu trả lời ngắn gọn, xuống dòng rõ ràng, có gạch đầu dòng dễ đọc trên điện thoại.`;
-
+// api/chat.js - Bộ não AI Trợ lý Thịnh Nguyễn SI (Zero-Dependency & Multi-Fallback)
 export default async function handler(req, res) {
-  // Thiết lập Header CORS
+  // Cấu hình CORS mở rộng cho mọi domain
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -35,33 +15,90 @@ export default async function handler(req, res) {
   }
 
   if (req.method !== 'POST') {
-    return res.status(200).json({ reply: 'Hệ thống AI Thịnh Nguyễn SI đã sẵn sàng phục vụ bạn!' });
+    return res.status(200).json({ reply: 'Trợ lý AI Thịnh Nguyễn SI sẵn sàng hỗ trợ bạn 24/7!' });
   }
 
   try {
     const { message } = req.body || {};
-    const cleanMsg = (message || '').trim();
+    const text = (message || '').trim();
 
-    if (!cleanMsg) {
-      return res.status(200).json({ reply: 'Chào bạn! Mình có thể hỗ trợ gì cho doanh nghiệp của bạn hôm nay?' });
+    if (!text) {
+      return res.status(200).json({ reply: 'Chào bạn! Mình có thể hỗ trợ gì cho bạn về giải pháp AI và tự động hóa hôm nay ạ?' });
     }
 
-    // CHỐT CHẶN 1: Bắt số điện thoại tự động (Chống lặp máy móc 100%)
-    const phoneRegex = /(0[3|5|7|8|9][0-9]{8})/g;
-    const isPhoneNumber = phoneRegex.test(cleanMsg.replace(/[\s.-]/g, ''));
+    const lower = text.toLowerCase();
 
-    if (isPhoneNumber) {
+    // 1. CHỐT CHẶN: KHÁCH NHẬP SỐ ĐIỆN THOẠI
+    const phoneRegex = /(0[3|5|7|8|9][0-9]{8})\b/g;
+    const phoneMatch = text.match(phoneRegex);
+    if (phoneMatch) {
+      const sdt = phoneMatch[0];
       return res.status(200).json({
-        reply: `Dạ tuyệt vời! Mình đã ghi nhận số điện thoại của bạn rồi nhé. 🎯\n\nChuyên gia **Thịnh Nguyễn SI** sẽ trực tiếp kết nối qua Zalo/Cuộc gọi trong vòng 15 - 30 phút tới để lắng nghe và tư vấn bài toán cho đơn vị bạn.\n\nNếu cần trao đổi gấp ngay lúc này, bạn có thể bấm kết nối nhanh qua Zalo riêng của anh Thịnh: https://zalo.me/0918717952 nhé!`
+        reply: `Dạ em đã ghi nhận số điện thoại **${sdt}** của anh/chị rồi ạ! Chuyên gia Thịnh Nguyễn SI sẽ trực tiếp liên hệ lại qua Zalo/Điện thoại trong vòng 15 - 30 phút để hỗ trợ tư vấn giải pháp thực chiến cho mình. Cảm ơn anh/chị rất nhiều ạ!`
       });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    // 2. CHỐT CHẶN: KHÁCH BÁO ĐÃ ĐIỀN FORM / ĐÃ ĐĂNG KÝ
+    if (
+      lower.includes('điền form') ||
+      lower.includes('dien form') ||
+      lower.includes('đã đăng ký') ||
+      lower.includes('da dang ky') ||
+      lower.includes('đăng ký rồi') ||
+      lower.includes('gửi thông tin rồi')
+    ) {
+      return res.status(200).json({
+        reply: `Dạ tuyệt vời quá ạ! Em đã đồng bộ thông tin của anh/chị từ Form đăng ký về hệ thống rồi. Chuyên gia Thịnh Nguyễn SI sẽ rà soát bài toán thực tế và kết nối lại ngay qua Zalo/Hotline **0918.717.952** trong hôm nay để trao đổi chi tiết nhé!`
+      });
+    }
 
-    // CHỐT CHẶN 2: Nếu có API Key -> Gọi Google Gemini 1.5 Flash
+    // 3. CHỐT CHẶN: KHÁCH XIN SĐT / ZALO CỦA CHUYÊN GIA THỊNH NGUYỄN
+    if (
+      lower.includes('sđt') ||
+      lower.includes('sdt') ||
+      lower.includes('số điện thoại') ||
+      lower.includes('so dien thoai') ||
+      lower.includes('hotline') ||
+      lower.includes('zalo') ||
+      lower.includes('liên hệ')
+    ) {
+      if (
+        lower.includes('thịnh') ||
+        lower.includes('chuyên gia') ||
+        lower.includes('cho') ||
+        lower.includes('xin') ||
+        lower.includes('đâu') ||
+        lower.includes('của')
+      ) {
+        return res.status(200).json({
+          reply: `Dạ số Hotline và Zalo trực tiếp của chuyên gia Thịnh Nguyễn SI là: **0918.717.952** ạ! Anh/chị có thể gọi điện hoặc nhắn tin Zalo trực tiếp cho anh Thịnh bất cứ lúc nào để được hỗ trợ nhanh nhất nhé!`
+        });
+      }
+    }
+
+    // 4. KẾT NỐI GOOGLE GEMINI NẾU CÓ KEY
+    const apiKey = process.env.GEMINI_API_KEY;
     if (apiKey) {
       try {
-        const response = await fetch(
+        const systemPrompt = `Bạn là Trợ lý AI của Chuyên gia Thịnh Nguyễn SI (website thinhnguyensi.com).
+Thông tin chuyên gia:
+- Thịnh Nguyễn SI: Kiến Trúc Sư Giải Pháp AI Doanh Nghiệp, chuyên gia thực chiến dữ liệu và quy trình.
+- Hotline/Zalo: 0918.717.952.
+- Triết lý: "Nói được – Làm được – Chạy thực tế được", tối ưu hạ tầng 0 đồng, bảo mật dữ liệu tuyệt đối.
+- 4 Module đào tạo:
+  + Module 1: Tư Duy AI & Master Prompt Quản Lý.
+  + Module 2: Bóc Tách Dữ Liệu & Báo Cáo Thông Minh (AI Vision xử lý hóa đơn, phiếu kho đổ về Sheet/Excel).
+  + Module 3: Tự Động Hóa Quy Trình 0 Đồng (Webhook, cảnh báo Zalo/Email tức thì).
+  + Module 4: Đóng Gói Dashboard & Trợ Lý Riêng trên Vercel.
+- Khách không biết lập trình: Hoàn toàn làm được vì cầm tay chỉ việc, dùng No-code và công cụ trực quan.
+
+Quy tắc trả lời:
+- Luôn thân thiện, trả lời tự nhiên, xưng "em", gọi khách là "anh/chị".
+- Trả lời đúng trọng tâm câu hỏi của khách, ngắn gọn 2 - 4 câu.
+- Khách đã cho SĐT hoặc đã điền form: Tuyệt đối KHÔNG đòi lại SĐT nữa.
+- Khách hỏi số điện thoại chuyên gia: Cung cấp Hotline/Zalo 0918.717.952.`;
+
+        const geminiRes = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
           {
             method: 'POST',
@@ -70,56 +107,46 @@ export default async function handler(req, res) {
               contents: [
                 {
                   role: 'user',
-                  parts: [{ text: `${SYSTEM_PROMPT}\n\nKhách hàng hỏi: "${cleanMsg}"\nHãy trả lời khách hàng:` }]
+                  parts: [{ text: `${systemPrompt}\n\nKhách hỏi: "${text}"\nTrả lời:` }]
                 }
               ],
               generationConfig: {
-                temperature: 0.7,
-                maxOutputTokens: 800
+                maxOutputTokens: 400,
+                temperature: 0.7
               }
             })
           }
         );
 
-        const data = await response.json();
-        if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-          return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
+        if (geminiRes.ok) {
+          const geminiData = await geminiRes.json();
+          const aiReply = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (aiReply) {
+            return res.status(200).json({ reply: aiReply.trim() });
+          }
         }
-      } catch (geminiError) {
-        console.warn('Lỗi gọi Gemini API, chuyển sang Smart Fallback:', geminiError.message);
+      } catch (err) {
+        console.error('Lỗi gọi Gemini:', err);
       }
     }
 
-    // CHỐT CHẶN 3: BỘ NÃO DỰ PHÒNG THÔNG MINH (Không bao giờ trả về lỗi 500)
-    const lower = cleanMsg.toLowerCase();
+    // 5. BỘ NÃO DỰ PHÒNG THÔNG MINH (KHI GEMINI NGHẼN HOẶC CHƯA CÓ KEY)
+    let smartReply = 'Dạ em chào anh/chị! Chuyên gia Thịnh Nguyễn SI chuyên chuyển giao các giải pháp ứng dụng AI & tự động hóa quy trình thực chiến cho doanh nghiệp với chi phí tối ưu 0 đồng. Anh/chị đang cần giải quyết bài toán nào tại đơn vị mình ạ?';
 
-    if (lower.includes('học phí') || lower.includes('chi phí') || lower.includes('giá') || lower.includes('bao nhiêu')) {
-      return res.status(200).json({
-        reply: `Khóa học **"Ứng Dụng AI & Chuyển Đổi Số Thực Chiến 2026"** của chuyên gia Thịnh Nguyễn SI hiện đang có chính sách trợ giá đặc biệt cho doanh nghiệp & nhà quản lý:\n\n- Đào tạo trọn gói 4 Module thực chiến (cầm tay chỉ việc).\n- Chuyển giao toàn bộ mã nguồn Dashboard & Template 0 đồng.\n- Hỗ trợ đồng hành 1:1 trực tiếp sau khóa học.\n\n👉 Bạn hãy nhắn tin qua Zalo **0918.717.952** (https://zalo.me/0918717952) để nhận bảng ưu đãi và lịch học gần nhất nhé!`
-      });
+    if (lower.includes('học phí') || lower.includes('giá') || lower.includes('chi phí') || lower.includes('bao nhiêu')) {
+      smartReply = 'Dạ lộ trình 4 Module được may đo sát với bài toán thực tế của từng đơn vị. Anh/chị vui lòng để lại SĐT hoặc nhắn trực tiếp Hotline/Zalo **0918.717.952** để nhận khung học phí ưu đãi tốt nhất nhé!';
+    } else if (lower.includes('module') || lower.includes('lộ trình') || lower.includes('nội dung') || lower.includes('học gì')) {
+      smartReply = 'Dạ chương trình gồm 4 Module thực chiến: 1. Tư Duy AI & Master Prompt Quản Lý; 2. Bóc Tách Dữ Liệu Hóa Đơn/Phiếu Kho (AI Vision); 3. Tự Động Hóa Quy Trình 0 Đồng; 4. Đóng Gói Dashboard & Trợ Lý Riêng trên Vercel. Anh/chị quan tâm học phần nào nhất ạ?';
+    } else if (lower.includes('code') || lower.includes('lập trình') || lower.includes('không biết')) {
+      smartReply = 'Dạ hoàn toàn yên tâm ạ! Chương trình được thiết kế "Cầm tay chỉ việc", ứng dụng hoàn toàn công cụ trực quan và hạ tầng 0 đồng, không cần biết lập trình vẫn tự tay làm chủ và đóng gói hệ thống được ngay!';
+    } else if (lower.includes('thịnh nguyễn là ai') || lower.includes('thịnh nguyễn si')) {
+      smartReply = 'Dạ chuyên gia Thịnh Nguyễn SI là Kiến Trúc Sư Giải Pháp AI Doanh Nghiệp, chuyên gia thực chiến dữ liệu và quy trình, đồng hành cùng các đơn vị tối ưu vận hành theo triết lý "Nói được - Làm được - Chạy thực tế được".';
     }
 
-    if (lower.includes('lộ trình') || lower.includes('module') || lower.includes('học gì') || lower.includes('nội dung')) {
-      return res.status(200).json({
-        reply: `Lộ trình đào tạo thực chiến 2026 của anh Thịnh Nguyễn gồm 4 Module dứt điểm:\n\n1. **Module 01:** Tư duy AI & Master Prompt Quản trị (Làm chủ Claude, Gemini).\n2. **Module 02:** AI Vision bóc tách hóa đơn, chứng từ tự động đổ về Sheets/Excel.\n3. **Module 03:** Tự động hóa quy trình 0 đồng với Webhook & Zalo Bot.\n4. **Module 04:** Đóng gói Dashboard quản trị và Trợ lý AI riêng cho doanh nghiệp.\n\nBạn đang quan tâm giải quyết khâu nào nhất trong doanh nghiệp mình ạ?`
-      });
-    }
-
-    if (lower.includes('thịnh nguyễn') || lower.includes('ai vậy') || lower.includes('chuyên gia')) {
-      return res.status(200).json({
-        reply: `Chuyên gia **Thịnh Nguyễn SI** là Kiến trúc sư Giải pháp AI & Chuyển đổi số doanh nghiệp.\n\nVới triết lý **"Nói được - Làm được - Chạy thực tế được"**, anh Thịnh chuyên tối ưu hạ tầng 0 đồng, loại bỏ lý thuyết hàn lâm và trực tiếp đóng gói giải pháp tự vận hành cho các nhà quản lý và chủ doanh nghiệp.`
-      });
-    }
-
-    // Câu trả lời chung linh hoạt
+    return res.status(200).json({ reply: smartReply });
+  } catch (error) {
     return res.status(200).json({
-      reply: `Dạ mình đã hiểu nhu cầu của bạn! Đối với bài toán này, chuyên gia **Thịnh Nguyễn SI** sẽ trực tiếp tư vấn giải pháp tối ưu chi phí hạ tầng 0 đồng cho đơn vị bạn.\n\nBạn có thể nhắn trực tiếp vào Zalo chuyên gia qua số **0918.717.952** (https://zalo.me/0918717952) hoặc để lại số điện thoại tại đây để anh Thịnh hỗ trợ bạn ngay nhé!`
-    });
-
-  } catch (err) {
-    // Luôn trả về 200 kèm câu trả lời lịch sự, KHÔNG BAO GIỜ TRẢ VỀ LỖI 500
-    return res.status(200).json({
-      reply: `Dạ chào bạn! Để được tư vấn giải pháp AI thực chiến và tối ưu nhất cho bài toán của doanh nghiệp mình, bạn vui lòng nhắn trực tiếp qua Zalo chuyên gia **Thịnh Nguyễn SI**: https://zalo.me/0918717952 (Hotline: 0918.717.952) nhé!`
+      reply: 'Dạ em đã ghi nhận câu hỏi của anh/chị! Anh/chị có thể để lại SĐT hoặc liên hệ trực tiếp Hotline/Zalo **0918.717.952** để chuyên gia Thịnh Nguyễn SI tư vấn bài toán cho mình nhé!'
     });
   }
 }
