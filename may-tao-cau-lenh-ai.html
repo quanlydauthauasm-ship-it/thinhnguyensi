@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máy Tạo Câu Lệnh AI | Thịnh Nguyễn SI</title>
+    <meta name="description" content="Công cụ tạo Prompt AI chuẩn kỹ thuật cho AppSheet, Kho TT200 và Mini CRM do Thịnh Nguyễn SI phát triển.">
+    <link rel="canonical" href="https://thinhnguyensi.com/may-tao-cau-lenh-ai.html">
+    <link rel="icon" type="image/png" sizes="48x48" href="https://thinhnguyensi.com/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #0a0f1d; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass-card { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-950/80 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+            <a href="https://thinhnguyensi.com" class="flex items-center space-x-2.5">
+                <img src="https://thinhnguyensi.com/favicon.png" alt="Thịnh Nguyễn SI" class="w-7 h-7 rounded-lg">
+                <span class="text-lg font-bold text-white">Thịnh Nguyễn <span class="text-cyan-400">SI</span></span>
+            </a>
+            <div class="flex items-center space-x-3">
+                <a href="https://zalo.me/0918717952" target="_blank" class="hidden sm:inline-flex text-xs text-slate-300 hover:text-white">
+                    <i class="fa-solid fa-phone text-cyan-400 mr-1.5"></i>Zalo: 0918.717.952
+                </a>
+                <a href="https://thinhnguyensi.com" class="text-xs bg-cyan-600 hover:bg-cyan-500 text-white font-medium px-3 py-1.5 rounded-lg transition">
+                    Về Trang Chủ
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="max-w-4xl mx-auto px-4 pt-6 pb-3 text-center">
+        <div class="inline-flex items-center space-x-2 px-3 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-400 text-[11px] font-semibold mb-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            <span>CÔNG CỤ THỰC CHIẾN 0 ĐỒNG</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold mb-1.5">
+            Máy Tạo Câu Lệnh AI <span class="gradient-text">Doanh Nghiệp</span>
+        </h1>
+        <p class="text-slate-400 text-xs max-w-lg mx-auto">
+            Điền nhanh thông số, công cụ tự đóng gói Prompt kỹ thuật để copy dùng ngay với DeepSeek, ChatGPT, Gemini và Claude!
+        </p>
+    </section>
+
+    <!-- Main -->
+    <main class="max-w-6xl mx-auto px-4 pb-8 grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- Cột trái: Form nhập -->
+        <div class="lg:col-span-7 space-y-3">
+            <div class="glass-card rounded-2xl p-4 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                    <h2 class="text-sm font-bold text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders text-cyan-400"></i><span>Thiết Lập Yêu Cầu</span>
+                    </h2>
+                    <button id="btn-sample" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-cyan-300 px-2 py-0.5 rounded-lg border border-slate-700">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Ví dụ mẫu
+                    </button>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase text-slate-300 mb-1">1. Nghiệp vụ cần xử lý</label>
+                    <select id="task-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                        <option value="appsheet">🛠️ Thiết kế Ứng dụng Quản lý AppSheet không code</option>
+                        <option value="kho">📦 Quản lý Kho bãi & Xử lý số liệu Excel TT200</option>
+                        <option value="crm">👥 Xây dựng kịch bản Chăm sóc khách hàng Mini CRM</option>
+                        <option value="script">⚡ Viết Script tự động hóa Google Apps Script</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase text-slate-300 mb-1">2. Vai trò AI (Role)</label>
+                    <input type="text" id="ai-role" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase text-slate-300 mb-1">3. Bối cảnh & Dữ liệu (Context)</label>
+                    <textarea id="ai-context" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-semibold uppercase text-slate-300 mb-1">4. Kết quả mong muốn (Output)</label>
+                    <textarea id="ai-output" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"></textarea>
+                </div>
+
+                <div class="border-t border-slate-800 pt-2">
+                    <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1.5">5. Chốt chặn chất lượng</label>
+                    <div class="grid grid-cols-2 gap-2 text-[11px]">
+                        <label class="flex items-center space-x-1.5 bg-slate-900/60 p-1.5 rounded border border-slate-800 cursor-pointer">
+                            <input type="checkbox" id="opt-no-hallucination" checked class="rounded bg-slate-800 text-cyan-500">
+                            <span>Không bịa số liệu</span>
+                        </label>
+                        <label class="flex items-center space-x-1.5 bg-slate-900/60 p-1.5 rounded border border-slate-800 cursor-pointer">
+                            <input type="checkbox" id="opt-ask-questions" checked class="rounded bg-slate-800 text-cyan-500">
+                            <span>Hỏi lại nếu thiếu tin</span>
+                        </label>
+                        <label class="flex items-center space-x-1.5 bg-slate-900/60 p-1.5 rounded border border-slate-800 cursor-pointer">
+                            <input type="checkbox" id="opt-step-by-step" checked class="rounded bg-slate-800 text-cyan-500">
+                            <span>Tư duy từng bước</span>
+                        </label>
+                        <label class="flex items-center space-x-1.5 bg-slate-900/60 p-1.5 rounded border border-slate-800 cursor-pointer">
+                            <input type="checkbox" id="opt-table-format" class="rounded bg-slate-800 text-cyan-500">
+                            <span>Dạng bảng Markdown</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cột phải: Kết quả Prompt -->
+        <div class="lg:col-span-5 space-y-3 flex flex-col justify-between">
+            <div class="glass-card rounded-2xl p-4 shadow-xl flex-1 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+                        <h2 class="text-xs font-bold text-cyan-400"><i class="fa-solid fa-terminal mr-1"></i>CÂU LỆNH HOÀN CHỈNH</h2>
+                        <span id="char-count" class="text-[10px] text-slate-500">0 ký tự</span>
+                    </div>
+                    <textarea id="final-prompt" readonly rows="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono text-cyan-300 focus:outline-none resize-none leading-relaxed"></textarea>
+                </div>
+
+                <div class="pt-2 space-y-2">
+                    <button id="btn-copy" class="w-full py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs rounded-lg transition shadow flex items-center justify-center space-x-1.5">
+                        <i class="fa-regular fa-copy"></i>
+                        <span id="copy-text">Sao Chép Câu Lệnh (1-Chạm)</span>
+                    </button>
+
+                    <div>
+                        <div class="text-[10px] font-semibold text-slate-400 uppercase text-center mb-1">Mở nhanh trên AI</div>
+                        <div class="grid grid-cols-4 gap-1.5 text-[10px]">
+                            <button onclick="openAI('deepseek')" class="p-1 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded text-slate-300 text-center">DeepSeek</button>
+                            <button onclick="openAI('chatgpt')" class="p-1 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded text-slate-300 text-center">ChatGPT</button>
+                            <button onclick="openAI('gemini')" class="p-1 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded text-slate-300 text-center">Gemini</button>
+                            <button onclick="openAI('claude')" class="p-1 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded text-slate-300 text-center">Claude</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phễu chuyển đổi -->
+            <div class="glass-card rounded-2xl p-3.5 border border-cyan-500/30 bg-gradient-to-br from-cyan-950/40 to-slate-900 shadow-xl">
+                <div class="flex items-center space-x-2 mb-1.5">
+                    <div class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-bold text-[10px]">
+                        <i class="fa-solid fa-certificate"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold text-white">Chuyên Gia Thịnh Nguyễn SI</div>
+                        <div class="text-[9px] text-slate-400">Đào tạo & Cố vấn Siêu Trí Tuệ Doanh Nghiệp</div>
+                    </div>
+                </div>
+                <p class="text-[10px] text-slate-300 mb-2">Đóng gói giải pháp AI & Tự động hóa quy trình 0 đồng cho SME.</p>
+                <div class="flex items-center space-x-2">
+                    <a href="https://zalo.me/0918717952" target="_blank" class="flex-1 py-1 bg-cyan-600 hover:bg-cyan-500 text-white text-[11px] font-semibold rounded text-center transition">
+                        Zalo: 0918.717.952
+                    </a>
+                    <a href="https://thinhnguyensi.com" class="flex-1 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-semibold rounded text-center border border-slate-700">
+                        Khám phá 4 Module
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-900 bg-slate-950 py-3 text-center text-[10px] text-slate-500">
+        © 2026 Thịnh Nguyễn SI (Super Intelligence). Đồng hành cùng Doanh nghiệp Việt.
+    </footer>
+
+    <!-- Logic JS -->
+    <script>
+        const taskSelect = document.getElementById('task-select');
+        const aiRole = document.getElementById('ai-role');
+        const aiContext = document.getElementById('ai-context');
+        const aiOutput = document.getElementById('ai-output');
+        const finalPrompt = document.getElementById('final-prompt');
+        const charCount = document.getElementById('char-count');
+        const btnCopy = document.getElementById('btn-copy');
+        const copyText = document.getElementById('copy-text');
+        const btnSample = document.getElementById('btn-sample');
+
+        const optNoHallucination = document.getElementById('opt-no-hallucination');
+        const optAskQuestions = document.getElementById('opt-ask-questions');
+        const optStepByStep = document.getElementById('opt-step-by-step');
+        const optTableFormat = document.getElementById('opt-table-format');
+
+        const templates = {
+            appsheet: {
+                role: "Chuyên gia Kiến trúc giải pháp No-Code AppSheet và Tự động hóa dữ liệu",
+                context: "Doanh nghiệp SME theo dõi xuất nhập tồn và đơn hàng bằng file Excel rời rạc, thường xuyên bị lệch kho.",
+                output: "1. Sơ đồ bảng dữ liệu (Data Tables, Key, Label, Ref).\\n2. Công thức Virtual Column tính tồn kho.\\n3. Kịch bản Bot Automation gửi thông báo Telegram/Zalo."
+            },
+            kho: {
+                role: "Chuyên gia Kế toán quản trị kho và Tối ưu hóa biểu mẫu Thông tư 200",
+                context: "Kho chứa hơn 500 danh mục hàng hóa, cần chuẩn hóa lại toàn bộ quy trình nhập - xuất - kiểm kê định kỳ theo FIFO.",
+                output: "1. Cấu trúc chuẩn hóa thẻ kho và sổ chi tiết vật tư.\\n2. Công thức đối chiếu số liệu sổ sách với thực tế.\\n3. Checklist kiểm kê chống thất thoát."
+            },
+            crm: {
+                role: "Kiến trúc sư giải pháp Mini CRM và Tự động hóa hành trình khách hàng",
+                context: "Cần chăm sóc tệp 5.000 khách hàng tiềm năng thu thập từ Landing page và Zalo mà không tốn chi phí thuê phần mềm ngoại.",
+                output: "1. Ma trận phân loại thẻ khách hàng.\\n2. Kịch bản chuỗi 5 tin nhắn chăm sóc tự động (Drip Sequence).\\n3. Mẫu bảng theo dõi tỷ lệ chuyển đổi."
+            },
+            script: {
+                role: "Kỹ sư Tự động hóa Google Apps Script và Lập trình tích hợp hệ thống",
+                context: "Cần tự động hóa việc đọc dữ liệu từ Google Form, tự tạo file PDF hợp đồng mẫu và gửi email xác nhận cho khách hàng ngay lập tức.",
+                output: "1. Mã nguồn Google Apps Script hoàn chỉnh, có chú thích.\\n2. Hướng dẫn thiết lập Trigger onFormSubmit.\\n3. Khối bắt lỗi (try...catch)."
+            }
+        };
+
+        function buildPrompt() {
+            let role = aiRole.value.trim();
+            let context = aiContext.value.trim();
+            let output = aiOutput.value.trim();
+            let prompt = "";
+
+            if (role) prompt += `### 1. VAI TRÒ (ROLE)\\nBạn là ${role}. Hãy vận dụng tư duy chuyên sâu để giải quyết yêu cầu dưới đây.\\n\\n`;
+            if (context) prompt += `### 2. BỐI CẢNH & DỮ LIỆU ĐẦU VÀO\\n${context}\\n\\n`;
+            if (output) prompt += `### 3. KẾT QUẢ ĐẦU RA MONG MUỐN\\n${output}\\n\\n`;
+
+            let constraints = [];
+            if (optNoHallucination.checked) constraints.push("- Trung thực 100%: Chỉ dựa vào dữ liệu đã cho, không tự bịa đặt số liệu.");
+            if (optAskQuestions.checked) constraints.push("- Nếu bối cảnh trên còn thiếu yếu tố then chốt, hãy đặt câu hỏi làm rõ trước.");
+            if (optStepByStep.checked) constraints.push("- Hãy suy luận từng bước (Chain-of-Thought) trước khi đưa ra kết quả cuối cùng.");
+            if (optTableFormat.checked) constraints.push("- Định dạng kết quả dạng Bảng biểu Markdown trực quan.");
+
+            if (constraints.length > 0) prompt += `### 4. CHỐT CHẶN BẮT BUỘC\\n${constraints.join('\\n')}\\n\\n`;
+            prompt += `Hãy phản hồi bằng tiếng Việt chuyên nghiệp, súc tích và đi thẳng vào trọng tâm giải pháp!`;
+
+            finalPrompt.value = prompt;
+            charCount.textContent = `${prompt.length} ký tự`;
+        }
+
+        taskSelect.addEventListener('change', (e) => {
+            const data = templates[e.target.value];
+            if (data) {
+                aiRole.value = data.role;
+                aiContext.value = data.context;
+                aiOutput.value = data.output;
+                buildPrompt();
+            }
+        });
+
+        [aiRole, aiContext, aiOutput, optNoHallucination, optAskQuestions, optStepByStep, optTableFormat].forEach(el => {
+            el.addEventListener('input', buildPrompt);
+            el.addEventListener('change', buildPrompt);
+        });
+
+        btnSample.addEventListener('click', () => {
+            taskSelect.value = 'appsheet';
+            taskSelect.dispatchEvent(new Event('change'));
+        });
+
+        btnCopy.addEventListener('click', () => {
+            if (!finalPrompt.value) return;
+            navigator.clipboard.writeText(finalPrompt.value).then(() => {
+                copyText.textContent = "Đã Sao Chép!";
+                setTimeout(() => { copyText.textContent = "Sao Chép Câu Lệnh (1-Chạm)"; }, 2000);
+            });
+        });
+
+        function openAI(platform) {
+            const prompt = encodeURIComponent(finalPrompt.value);
+            let url = "";
+            switch(platform) {
+                case 'deepseek': url = 'https://chat.deepseek.com/'; break;
+                case 'chatgpt': url = `https://chatgpt.com/?q=${prompt}`; break;
+                case 'gemini': url = 'https://gemini.google.com/app'; break;
+                case 'claude': url = 'https://claude.ai/new'; break;
+            }
+            navigator.clipboard.writeText(finalPrompt.value).then(() => {
+                window.open(url, '_blank');
+            });
+        }
+
+        btnSample.click();
+    </script>
+</body>
