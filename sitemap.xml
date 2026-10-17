@@ -1,9 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <!-- 1. TRANG CHỦ: THỊNH NGUYỄN SI - KIẾN TRÚC SƯ GIẢI PHÁP AI DOANH NGHIỆP -->
   <url>
     <loc>https://thinhnguyensi.com/</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- 2. KHO TEMPLATE & SẢN PHẨM SỐ ĐÓNG GÓI -->
+  <url>
+    <loc>https://thinhnguyensi.com/kho-template.html</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 3. MÁY TẠO CÂU LỆNH AI SIÊU PROMPT 5 TẦNG RCESF -->
+  <url>
+    <loc>https://thinhnguyensi.com/may-tao-cau-lenh-ai.html</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 4. WEB APP: ĐÁNH GIÁ MỨC ĐỘ TỰ ĐỘNG HÓA DOANH NGHIỆP -->
+  <url>
+    <loc>https://thinhnguyensi.com/danh-gia-tu-dong-hoa.html</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 5. WEB APP: TẠO BÁO GIÁ & ĐỀ XUẤT HỢP ĐỒNG PDF 1-CHẠM -->
+  <url>
+    <loc>https://thinhnguyensi.com/bao-gia-hop-dong-tu-dong.html</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 6. WEB APP: QUẢN LÝ TIẾN ĐỘ DỰ ÁN & TASK TRACKER -->
+  <url>
+    <loc>https://thinhnguyensi.com/quan-ly-tien-do-du-an.html</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
