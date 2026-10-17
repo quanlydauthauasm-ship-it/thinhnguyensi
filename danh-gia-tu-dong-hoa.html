@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đánh Giá Mức Độ Tự Động Hóa Doanh Nghiệp | Thịnh Nguyễn SI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen antialiased">
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-500 flex items-center justify-center font-black text-white text-lg">SI</div>
+        <div>
+          <div class="text-sm font-black tracking-wider uppercase bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">THỊNH NGUYỄN SI</div>
+          <div class="text-[10px] text-slate-400">Automation Assessment</div>
+        </div>
+      </a>
+      <div class="flex items-center gap-3">
+        <a href="kho-template.html" class="text-xs text-slate-300 hover:text-white px-3 py-2 rounded-lg hover:bg-slate-800">Kho Template</a>
+        <a href="https://zalo.me/0918717952" target="_blank" class="text-xs font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-cyan-600 hover:opacity-90 flex items-center gap-1.5">
+          💬 0918.717.952
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-2xl mx-auto px-4 py-8">
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-medium mb-2">
+        ⚡ Chẩn Đoán Độc Quyền
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold mb-2">Đánh Giá <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">Mức Độ Tự Động Hóa</span></h1>
+      <p class="text-slate-400 text-xs sm:text-sm">Chẩn đoán điểm nghẽn quy trình và nhận lộ trình tối ưu từ Cố vấn Thịnh Nguyễn SI.</p>
+    </div>
+
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
+      <div class="flex justify-between text-xs font-bold mb-2">
+        <span class="text-slate-400 uppercase">Tiến trình</span>
+        <span id="stepDisplay" class="text-cyan-400">Câu hỏi 1 / 6</span>
+      </div>
+      <div class="w-full bg-slate-800 h-2 rounded-full mb-6 overflow-hidden">
+        <div id="progressBar" class="bg-gradient-to-r from-purple-500 to-cyan-400 h-full w-1/6 transition-all duration-300"></div>
+      </div>
+
+      <div id="quizContainer">
+        <div id="questionField" class="mb-4"></div>
+        <div id="optionsField" class="space-y-3 mb-6"></div>
+        <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+          <button id="prevBtn" onclick="prevQuestion()" class="px-4 py-2 rounded-xl border border-slate-700 text-slate-400 hover:text-white text-xs font-semibold hidden">
+            ← Quay lại
+          </button>
+          <button id="nextBtn" onclick="nextQuestion()" class="ml-auto px-6 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-600 hover:opacity-90 text-xs font-bold shadow-lg">
+            Tiếp theo →
+          </button>
+        </div>
+      </div>
+
+      <div id="resultContainer" class="hidden text-center py-4">
+        <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-purple-500 to-cyan-400 flex items-center justify-center text-3xl font-black text-black shadow-xl mb-3">
+          <span id="scoreVal">0</span>%
+        </div>
+        <div id="resBadge" class="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase mb-2"></div>
+        <h3 id="resTitle" class="text-xl font-extrabold mb-2"></h3>
+        <p id="resDesc" class="text-slate-300 text-xs sm:text-sm max-w-md mx-auto mb-4"></p>
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-left text-xs text-slate-300 space-y-2 mb-6" id="resAdvice"></div>
+        <div class="flex flex-col sm:flex-row gap-2 justify-center">
+          <a id="zaloLink" href="#" target="_blank" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-600 font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg">
+            🚀 Gửi Kết Quả Cho Cố Vấn Thịnh Nguyễn SI
+          </a>
+          <button onclick="location.reload()" class="px-4 py-2.5 rounded-xl border border-slate-700 text-xs text-slate-400 hover:text-white">Đánh giá lại</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-slate-900 py-4 text-center text-xs text-slate-500">
+    © 2026 Thịnh Nguyễn SI. Hotline/Zalo: 0918.717.952
+  </footer>
+
+  <script>
+    const questions = [
+      {
+        tag: "1. VĂN BẢN & GIAO VIỆC",
+        title: "Công ty theo dõi văn bản và hạn xử lý bằng cách nào?",
+        options: [
+          { text: "Ghi sổ tay hoặc chat qua Zalo nhóm", sub: "Dễ trôi tin, không thống kê được việc trễ hạn.", pts: 10 },
+          { text: "Nhập vào file Excel/Sheets thủ công", sub: "Có theo dõi nhưng phải gõ tay, chưa có cảnh báo tự động.", pts: 20 },
+          { text: "Dùng Web App có Dashboard & Cảnh báo hạn", sub: "Biết việc sắp đến hạn, phân loại phòng ban tự động.", pts: 30 }
+        ]
+      },
+      {
+        tag: "2. XUẤT HỢP ĐỒNG & CHỨNG TỪ",
+        title: "Khi làm hợp đồng hoặc báo giá, nhân viên xử lý ra sao?",
+        options: [
+          { text: "Mở file Word cũ, tìm kiếm và sửa tay", sub: "Mất 15-30 phút, dễ nhầm lẫn thông tin khách cũ.", pts: 10 },
+          { text: "Dùng Mail Merge hoặc copy mẫu có sẵn", sub: "Chưa đọc số thành chữ tự động, chưa xuất hàng loạt.", pts: 20 },
+          { text: "1-Click trộn dữ liệu, xuất PDF và tự gửi email", sub: "Xuất 50-100 hợp đồng trong 30s, đọc số tiền chuẩn.", pts: 30 }
+        ]
+      },
+      {
+        tag: "3. QUẢN TRỊ KHÁCH HÀNG (CRM)",
+        title: "Dữ liệu khách hàng đang được lưu trữ thế nào?",
+        options: [
+          { text: "Nằm rải rác trên Zalo/máy của từng nhân viên", sub: "Nguy cơ mất trắng data khi nhân sự nghỉ việc.", pts: 10 },
+          { text: "Ghi chung vào một file Google Sheet", sub: "Không phân quyền, dễ xem đè hoặc xóa nhầm dữ liệu.", pts: 20 },
+          { text: "Dùng App di động chuyên nghiệp có phân quyền", sub: "Sale chỉ thấy khách của mình, gọi/Zalo 1-chạm.", pts: 30 }
+        ]
+      },
+      {
+        tag: "4. QUẢN LÝ TIẾN ĐỘ DỰ ÁN",
+        title: "Các công việc và dự án nội bộ được giám sát ra sao?",
+        options: [
+          { text: "Họp nhắc việc hoặc sếp nhớ việc nào giục việc đó", sub: "Thường xuyên trễ hạn, không rõ ai đang bị nghẽn.", pts: 10 },
+          { text: "Dùng bảng Excel cơ bản nhưng nhân viên lười cập nhật", sub: "Không trực quan, không có cảnh báo deadline.", pts: 20 },
+          { text: "Hệ thống đếm lùi Deadline, tự đổi màu cảnh báo", sub: "Trực quan 100%, thấy ngay tỷ lệ hoàn thành dự án.", pts: 30 }
+        ]
+      },
+      {
+        tag: "5. ỨNG DỤNG AI & CHATBOT",
+        title: "Doanh nghiệp đã trang bị Trợ lý AI tư vấn tự động chưa?",
+        options: [
+          { text: "Hoàn toàn chưa, 100% trả lời thủ công", sub: "Chậm trễ đêm/cuối tuần, tỷ lệ rớt khách cao.", pts: 10 },
+          { text: "Có xài ChatGPT cá nhân để viết bài, tạo email", sub: "Mới ở mức cá nhân, chưa tích hợp vào hệ thống.", pts: 20 },
+          { text: "Đã có AI Agent tự động tư vấn và Siêu Prompt RCESF", sub: "Phản hồi 24/7 tức thì, nhân sự chỉ lo chốt đơn cuối.", pts: 30 }
+        ]
+      },
+      {
+        tag: "6. BÁO CÁO & RA QUYẾT ĐỊNH",
+        title: "Khi cần số liệu kinh doanh, lãnh đạo mất bao lâu để xem?",
+        options: [
+          { text: "Chờ kế toán/nhân viên tổng hợp vài ngày đến cuối tháng", sub: "Số liệu bị trễ, xử lý sự cố thụ động.", pts: 10 },
+          { text: "Có báo cáo tuần nhưng số liệu thường lệch nhau", sub: "Tốn thời gian đối soát dữ liệu giữa các phòng.", pts: 20 },
+          { text: "Xem Dashboard Realtime ngay trên điện thoại 24/7", sub: "Dữ liệu liên thông tức thì, quyết sách thần tốc.", pts: 30 }
+        ]
+      }
+    ];
+
+    let curStep = 0;
+    let answers = new Array(questions.length).fill(null);
+
+    function renderQuestion() {
+      const q = questions[curStep];
+      document.getElementById('stepDisplay').innerText = `Câu hỏi ${curStep + 1} / ${questions.length}`;
+      document.getElementById('progressBar').style.width = `${((curStep + 1) / questions.length) * 100}%`;
+      
+      document.getElementById('questionField').innerHTML = `
+        <div class="text-[10px] font-bold text-purple-400 uppercase tracking-wider mb-1">${q.tag}</div>
+        <h3 class="text-base font-bold">${q.title}</h3>
+      `;
+
+      let html = '';
+      q.options.forEach((opt) => {
+        const isSel = answers[curStep] === opt.pts;
+        html += `
+          <div onclick="selectOpt(${opt.pts})" class="p-3 rounded-xl border ${isSel ? 'border-cyan-400 bg-cyan-950/20' : 'border-slate-800 bg-slate-950/60'} hover:border-purple-500 cursor-pointer transition flex items-start gap-3">
+            <input type="radio" name="opt" ${isSel ? 'checked' : ''} class="mt-1 text-purple-600 pointer-events-none">
+            <div>
+              <div class="text-xs font-semibold">${opt.text}</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">${opt.sub}</div>
+            </div>
+          </div>
+        `;
+      });
+      document.getElementById('optionsField').innerHTML = html;
+      document.getElementById('prevBtn').classList.toggle('hidden', curStep === 0);
+      document.getElementById('nextBtn').innerText = curStep === questions.length - 1 ? 'Xem Kết Quả →' : 'Tiếp theo →';
+    }
+
+    function selectOpt(pts) { answers[curStep] = pts; renderQuestion(); }
+
+    function nextQuestion() {
+      if (answers[curStep] === null) return alert("Vui lòng chọn một phương án!");
+      if (curStep < questions.length - 1) { curStep++; renderQuestion(); }
+      else showResult();
+    }
+
+    function prevQuestion() { if (curStep > 0) { curStep--; renderQuestion(); } }
+
+    function showResult() {
+      const sum = answers.reduce((a, b) => a + b, 0);
+      const percent = Math.round((sum / (questions.length * 30)) * 100);
+
+      document.getElementById('quizContainer').classList.add('hidden');
+      document.getElementById('resultContainer').classList.remove('hidden');
+      document.getElementById('scoreVal').innerText = percent;
+
+      const badge = document.getElementById('resBadge');
+      const title = document.getElementById('resTitle');
+      const desc = document.getElementById('resDesc');
+      const advice = document.getElementById('resAdvice');
+
+      let lv = "";
+      if (percent < 45) {
+        lv = "Cấp 1: Vận Hành Thủ Công";
+        badge.className = "inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase mb-2 bg-rose-500/20 text-rose-400 border border-rose-500/30";
+        badge.innerText = "Cấp 1: Báo Động Đỏ";
+        title.innerText = "Doanh Nghiệp Phụ Thuộc Vào Gõ Tay";
+        desc.innerText = "Hơn 70% thời gian đang bị đốt vào việc lặp đi lặp lại. Nguy cơ trôi việc và mất dữ liệu khách hàng rất cao.";
+        advice.innerHTML = `
+          <div>• <strong>Khắc phục tức thì:</strong> Đóng gói ngay Template Sheets + Apps Script để xuất hợp đồng và theo dõi văn bản.</div>
+          <div>• <strong>Bảo vệ dữ liệu:</strong> Chuyển data khách hàng sang Mini CRM AppSheet có phân quyền.</div>
+        `;
+      } else if (percent < 75) {
+        lv = "Cấp 2: Bán Tự Động Hóa";
+        badge.className = "inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase mb-2 bg-amber-500/20 text-amber-400 border border-amber-500/30";
+        badge.innerText = "Cấp 2: Bán Tự Động";
+        title.innerText = "Đã Số Hóa Nhưng Thiếu Sự Liên Thông";
+        desc.innerText = "Có dùng công cụ nhưng các bộ phận vẫn là các ốc đảo dữ liệu, sếp vẫn phải hỏi miệng để nắm tiến độ.";
+        advice.innerHTML = `
+          <div>• <strong>Khắc phục tức thì:</strong> Tích hợp Dashboard tiến độ và hệ thống gửi Email/Hợp đồng PDF 1-click.</div>
+          <div>• <strong>Nâng cấp:</strong> Nhúng trợ lý AI Agent giải phóng 50% khối lượng tư vấn.</div>
+        `;
+      } else {
+        lv = "Cấp 3: Siêu Tự Động Hóa (SI Enterprise)";
+        badge.className = "inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase mb-2 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+        badge.innerText = "Cấp 3: Tự Động Xuất Sắc";
+        title.innerText = "Hạ Tầng Tối Ưu Sẵn Sàng Bứt Phá AI";
+        desc.innerText = "Nền tảng số hóa rất bài bản. Đây là lúc tích hợp các Agent AI sâu vào chuỗi tự hành 100%.";
+        advice.innerHTML = `
+          <div>• <strong>Đề xuất:</strong> Triển khai Local AI Agent và hệ thống Trí Tuệ Nhân Tạo cá nhân hóa độc quyền.</div>
+        `;
+      }
+
+      const msg = encodeURIComponent(`Chào Cố vấn Thịnh Nguyễn SI, tôi vừa test Tự Động Hóa trên web đạt: ${percent}% (${lv}). Tôi muốn nhận bản tư vấn lộ trình chi tiết cho doanh nghiệp.`);
+      document.getElementById('zaloLink').href = `https://zalo.me/0918717952?text=${msg}`;
+    }
+
+    renderQuestion();
+  </script>
+</body>
