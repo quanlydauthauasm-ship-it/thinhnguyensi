@@ -24,6 +24,44 @@ QUY TẮC TRẢ LỜI:
 
 const TIMEOUT_MS = 18000;
 
+// Danh sách model thử theo thứ tự — Google khai tử model cũ rất nhanh
+// (gemini-2.0-flash đã bị xóa 06/2026 → 404). Model đầu tiên còn sống sẽ được dùng.
+const GEMINI_MODELS = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash'];
+
+async function callGemini(geminiKey, geminiMessages, signal) {
+  let lastStatus = 0;
+  for (const model of GEMINI_MODELS) {
+    const r = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+          contents: geminiMessages,
+          generationConfig: { maxOutputTokens: 600, temperature: 0.7 },
+        }),
+        signal,
+      }
+    );
+    if (r.status === 404) {
+      console.error(`[chat] model ${model} not found, trying next`);
+      lastStatus = 404;
+      continue; // model bị khai tử → thử model tiếp theo
+    }
+    if (!r.ok) {
+      console.error('[chat] gemini upstream', r.status);
+      throw new Error('gemini error ' + r.status);
+    }
+    const data = await r.json();
+    const reply = data.candidates?.[0]?.content?.parts?.map(p => p.text).join('').trim();
+    if (!reply) throw new Error('empty gemini reply');
+    console.log(`[chat] ok via ${model}`);
+    return reply;
+  }
+  throw new Error('gemini error ' + (lastStatus || 404) + ' (all models unavailable)');
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -59,26 +97,7 @@ export default async function handler(req, res) {
         role: m.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: m.content }],
       }));
-      const r = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-            contents: geminiMessages,
-            generationConfig: { maxOutputTokens: 600, temperature: 0.7 },
-          }),
-          signal: ctrl.signal,
-        }
-      );
-      if (!r.ok) {
-        console.error('[chat] gemini upstream', r.status);
-        throw new Error('gemini error ' + r.status);
-      }
-      const data = await r.json();
-      const reply = data.candidates?.[0]?.content?.parts?.map(p => p.text).join('').trim();
-      if (!reply) throw new Error('empty gemini reply');
+      const reply = await callGemini(geminiKey, geminiMessages, ctrl.signal);
       return res.status(200).json({ reply });
     }
 
