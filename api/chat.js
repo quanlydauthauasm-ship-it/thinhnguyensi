@@ -39,7 +39,11 @@ async function callGemini(geminiKey, geminiMessages, signal) {
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
           contents: geminiMessages,
-          generationConfig: { maxOutputTokens: 600, temperature: 0.7 },
+          generationConfig: {
+            maxOutputTokens: 3000, // dòng 3.x dùng token cho "suy nghĩ" nội bộ — để thấp là câu trả lời bị cắt cụt
+            temperature: 0.7,
+            thinkingConfig: { thinkingLevel: 'low' }, // chatbot FAQ không cần suy luận sâu — giảm nghĩ để trả lời trọn vẹn, nhanh hơn
+          },
         }),
         signal,
       }
