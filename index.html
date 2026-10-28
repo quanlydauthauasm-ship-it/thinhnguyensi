@@ -747,7 +747,7 @@
   // CẤU HÌNH CHATBOT
   // ==========================================
   const CHAT_API_URL = '/api/chat';          // Vercel Serverless Function gọi Gemini (khóa API nằm ở server)
-  const SAVE_ANON_TRANSCRIPTS = true;        // Lưu cả hội thoại chưa để lại SĐT/email khi khách rời trang
+  const SAVE_ANON_TRANSCRIPTS = false;        // Lưu cả hội thoại chưa để lại SĐT/email khi khách rời trang
   const MAX_HISTORY = 12;                    // Số lượt hội thoại gửi kèm cho Gemini
 
   const chatHistory = [];                    // [{ role: 'user' | 'model', text }]
