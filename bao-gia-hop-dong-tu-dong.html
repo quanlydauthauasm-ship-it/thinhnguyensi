@@ -17,13 +17,13 @@
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen antialiased">
-  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50 no-print">
+<body class="bg-[#0a0f1d] text-slate-100 min-h-screen antialiased">
+  <header class="border-b border-slate-800 bg-[#0a0f1d]/80 backdrop-blur sticky top-0 z-50 no-print">
     <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-500 flex items-center justify-center font-black text-white text-lg">SI</div>
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center font-black text-white text-lg">SI</div>
         <div>
-          <div class="text-sm font-black tracking-wider uppercase bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">THỊNH NGUYỄN SI</div>
+          <div class="text-sm font-black tracking-wider uppercase bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">THỊNH NGUYỄN SI</div>
           <div class="text-[10px] text-slate-400">Quotation Generator</div>
         </div>
       </a>
@@ -40,7 +40,7 @@
     <div class="no-print mb-6 flex flex-wrap items-center justify-between gap-3 bg-slate-900 border border-slate-800 p-4 rounded-xl">
       <div class="text-xs text-slate-300">💡 <strong>Mẹo:</strong> Nhập thông tin, bảng tự tính toán và đọc số thành chữ. Bấm <strong>In / Xuất PDF</strong> để lưu gửi khách.</div>
       <div class="flex items-center gap-2">
-        <button onclick="addRow()" class="px-3 py-1.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-300 text-xs font-semibold">+ Thêm Dòng</button>
+        <button onclick="addRow()" class="px-3 py-1.5 rounded-lg bg-blue-600/30 border border-blue-500/40 text-blue-300 text-xs font-semibold">+ Thêm Dòng</button>
         <button onclick="sendZaloQuote()" class="px-3 py-1.5 rounded-lg bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 text-xs font-semibold">📲 Gửi Zalo</button>
       </div>
     </div>
@@ -59,7 +59,7 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 bg-slate-950 p-4 rounded-xl border border-slate-800 print-border">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 bg-[#0a0f1d] p-4 rounded-xl border border-slate-800 print-border">
         <div>
           <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Khách hàng / Doanh nghiệp:</label>
           <input type="text" id="custName" value="Công Ty Cổ Phần Mẫu" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-xs text-white print-text focus:outline-none">
@@ -108,7 +108,7 @@
       <div class="flex flex-col sm:flex-row justify-between items-start gap-4 border-t border-slate-800 pt-4 mb-6 print-border">
         <div class="w-full sm:w-1/2 text-xs text-slate-400 print-text">
           <div class="font-bold uppercase text-[10px] text-slate-300 print-text mb-1">Số tiền bằng chữ:</div>
-          <div id="wordsTotal" class="italic text-purple-300 print-text font-semibold">Tám triệu năm trăm nghìn đồng chẵn.</div>
+          <div id="wordsTotal" class="italic text-blue-300 print-text font-semibold">Tám triệu năm trăm nghìn đồng chẵn.</div>
           <div class="mt-3 text-[11px] leading-relaxed">
             * Bảo hành kỹ thuật 12 tháng. Hỗ trợ đào tạo sử dụng.<br>
             * MB Bank - STK: ..........
@@ -225,7 +225,7 @@
     calcTotals();
   </script>
 
-<footer style="text-align:center;padding:28px 16px 36px;border-top:1px solid rgba(255,255,255,.12);margin-top:32px">
+<footer class="no-print" style="text-align:center;padding:28px 16px 36px;border-top:1px solid rgba(255,255,255,.12);margin-top:32px">
   <a href="index.html" style="color:#67e8f9;font-weight:700;text-decoration:none;font-size:16px">&larr; V&#7873; trang ch&#7911;</a>
   <div style="color:#94a3b8;font-size:13px;margin-top:8px">Th&#7883;nh Nguy&#7877;n SI &bull; thinhnguyensi.com &bull; Hotline/Zalo 0918 717 952</div>
 </footer>
