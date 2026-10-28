@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Máy Tạo Câu Lệnh AI Chuẩn 5 Tầng RCESF | Thịnh Nguyễn SI</title>
+  <meta name="description" content="Công cụ tạo Prompt AI chuẩn 5 tầng RCESF thực chiến cho ChatGPT, DeepSeek, Claude, Midjourney bởi Thịnh Nguyễn SI.">
+  <link rel="canonical" href="may-tao-cau-lenh-ai.html">
+  <link rel="icon" type="image/png" sizes="48x48" href="images/favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #0B0F19; color: #F3F4F6; font-family: system-ui, -apple-system, sans-serif; }
+    .glow-cyan { box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.3); }
+    .glow-purple { box-shadow: 0 0 25px -5px rgba(168, 85, 247, 0.3); }
+    .c-scroll::-webkit-scrollbar { width: 6px; }
+    .c-scroll::-webkit-scrollbar-track { background: #111827; }
+    .c-scroll::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+    .c-input { width: 100%; background: #030712; border: 1px solid #1f2937; border-radius: 0.5rem; padding: 0.6rem 0.75rem; font-size: 0.875rem; color: #e5e7eb; outline: none; transition: border-color 0.2s; }
+    .c-input:focus { border-color: #06b6d4; }
+    /* BẢN THIẾT KẾ LẠI NÚT BÚNG TAY (28/10): nút phải "thấy được" là nó vừa chạy */
+    #btnMagic:disabled { opacity: .75; cursor: wait; }
+    #btnMagic .btn-spark { display: inline-block; transition: transform .25s; }
+    #btnMagic:active .btn-spark, #btnMagic.btn-bung .btn-spark { transform: scale(1.6) rotate(20deg); }
+    @keyframes flashResult { 0% { box-shadow: 0 0 0 0 rgba(6,182,212,.55), 0 0 25px -5px rgba(168,85,247,.3); } 100% { box-shadow: 0 0 0 6px rgba(6,182,212,0), 0 0 25px -5px rgba(168,85,247,.3); } }
+    .flash-result { animation: flashResult 1.2s ease-out 2; border-color: rgba(6,182,212,.7) !important; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between c-scroll">
+
+  <!-- HEADER -->
+  <header class="border-b border-gray-800 bg-gray-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-cyan-500/20">SI</div>
+        <div>
+          <div class="font-extrabold text-white text-base flex items-center gap-1.5">
+            Thịnh Nguyễn SI <span class="text-[10px] uppercase px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">Super Intelligence</span>
+          </div>
+          <div class="text-xs text-gray-400">Siêu Trí Tuệ & Tự Động Hóa Doanh Nghiệp</div>
+        </div>
+      </a>
+      <div class="flex items-center space-x-3">
+        <a href="/" class="hidden sm:inline-flex text-sm text-gray-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-gray-800 transition">Trang Chủ</a>
+        <a href="/kho-template.html" class="hidden sm:inline-flex text-sm text-cyan-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-gray-800 transition">Kho Template</a>
+        <a href="https://zalo.me/0918717952" target="_blank" class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg transition shadow-md shadow-cyan-500/20">Tư Vấn Zalo</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow">
+    
+    <!-- TIÊU ĐỀ -->
+    <div class="text-center max-w-3xl mx-auto mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-700/50 text-cyan-400 text-xs font-semibold mb-3">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> CÔNG CỤ TƯƠNG TÁC THỰC CHIẾN 0 ĐỒNG
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight mb-3">
+        Máy Tạo Câu Lệnh AI <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">Chuẩn 5 Tầng RCESF</span>
+      </h1>
+      <p class="text-sm sm:text-base text-gray-400">
+        Tự gõ câu nói đời thường – Hệ thống tự động phân tích và đóng gói thành Siêu Prompt 5 tầng chuẩn chuyên gia!
+      </p>
+    </div>
+
+    <!-- HỘP BÚNG TAY 1-CHẠM — BẢN V2 (28/10, theo anh chốt): TẮT TỰ SINH LIVE.
+         Gõ chỉ chuẩn bị câu, KHÔNG ra prompt. Chỉ Búng Tay / Enter / mẫu nhanh mới tạo. -->
+    <div class="bg-gray-900 border border-cyan-500/30 rounded-2xl p-4 sm:p-6 mb-8 glow-cyan">
+      <div class="flex flex-col md:flex-row items-stretch gap-3">
+        <div class="relative flex-grow">
+          <input type="text" id="naturalInput"
+                 oninput="onNaturalInput()"
+                 onkeydown="if(event.key==='Enter'){event.preventDefault();magicGenerate();}"
+                 placeholder="Tự gõ mong muốn (VD: tạo ảnh người đàn ông bên siêu xe, viết bài bán căn hộ, bảng excel kho...)"
+                 class="w-full bg-gray-950 border border-gray-700 focus:border-cyan-400 px-4 py-3.5 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none transition">
+          <button type="button" onclick="clearNaturalInput()" id="btnClear" class="hidden absolute right-3 top-3.5 text-gray-500 hover:text-gray-300 text-sm">✕</button>
+        </div>
+        <button type="button" onclick="magicGenerate()" id="btnMagic"
+                class="bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 text-white font-bold px-6 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 active:scale-95 transition cursor-pointer whitespace-nowrap">
+          <span class="btn-spark">⚡</span><span id="btnMagicLabel">Búng Tay Tạo Prompt</span>
+        </button>
+      </div>
+      <!-- DÒNG TRẠNG THÁI V2: nói rõ luật mới ngay dưới ô nhập -->
+      <p id="magicStatus" aria-live="polite" class="mt-3 text-xs text-gray-400">Gõ mong muốn rồi bấm <b class="text-cyan-300">Búng Tay</b> để tạo prompt — gõ không tự ra prompt nữa, kết quả chỉ hiện sau khi bấm.</p>
+
+      <!-- GỢI Ý MẪU -->
+      <div class="mt-4 flex flex-wrap items-center gap-2 pt-3 border-t border-gray-800">
+        <span class="text-xs text-gray-400 font-medium mr-1">Thử mẫu nhanh:</span>
+        <button type="button" onclick="setSample('tôi muốn tạo 1 ảnh về người đàn ông bên siêu xe')" class="text-xs bg-gray-800 hover:bg-gray-700 text-cyan-300 border border-cyan-900 px-2.5 py-1.5 rounded-lg transition">🚗 Người đàn ông bên siêu xe</button>
+        <button type="button" onclick="setSample('viết bài quảng cáo facebook bán căn hộ cao cấp')" class="text-xs bg-gray-800 hover:bg-gray-700 text-blue-300 border border-blue-900 px-2.5 py-1.5 rounded-lg transition">🏢 Bài viết bán căn hộ</button>
+        <button type="button" onclick="setSample('lập bảng excel quản lý xuất nhập tồn kho vật tư TT200')" class="text-xs bg-gray-800 hover:bg-gray-700 text-emerald-300 border border-emerald-900 px-2.5 py-1.5 rounded-lg transition">📦 Bảng kho Excel TT200</button>
+        <button type="button" onclick="setSample('thiết kế ứng dụng AppSheet không code quản lý đơn hàng')" class="text-xs bg-gray-800 hover:bg-gray-700 text-purple-300 border border-purple-900 px-2.5 py-1.5 rounded-lg transition">📱 AppSheet bán hàng</button>
+      </div>
+    </div>
+
+    <!-- KHU VỰC 5 TẦNG RCESF & KẾT QUẢ -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- CỘT TRÁI: 5 TẦNG TÙY BIẾN -->
+      <div class="lg:col-span-6 space-y-3">
+        <div class="flex items-center justify-between pb-2 border-b border-gray-800">
+          <div class="text-white font-bold text-sm sm:text-base flex items-center gap-2">
+            <span class="text-cyan-400">⚙️</span> CẤU TRÚC 5 TẦNG RCESF
+          </div>
+          <button type="button" onclick="resetFields()" class="text-xs text-gray-400 hover:text-cyan-400 transition">↺ Làm mới</button>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-3">
+          <label class="block text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1">[R] Role - Giao vai trò</label>
+          <input type="text" id="roleInput" oninput="compilePrompt()" class="c-input">
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-3">
+          <label class="block text-xs font-bold text-blue-400 uppercase tracking-wider mb-1">[C] Context - Bối cảnh & Mục đích</label>
+          <textarea id="contextInput" rows="2" oninput="compilePrompt()" class="c-input c-scroll"></textarea>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-3">
+          <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">[E] Example / Task - Đặc tả chi tiết</label>
+          <textarea id="exampleInput" rows="3" oninput="compilePrompt()" class="c-input c-scroll"></textarea>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-3">
+          <label class="block text-xs font-bold text-purple-400 uppercase tracking-wider mb-1">[S] Style - Văn phong / Thẩm mỹ</label>
+          <input type="text" id="styleInput" oninput="compilePrompt()" class="c-input">
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-3">
+          <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1">[F] Format - Định dạng đầu ra</label>
+          <input type="text" id="formatInput" oninput="compilePrompt()" class="c-input">
+        </div>
+      </div>
+
+      <!-- CỘT PHẢI: KẾT QUẢ SIÊU PROMPT TỔNG HỢP -->
+      <div class="lg:col-span-6" id="outputCard">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 sm:p-5 flex flex-col h-full sticky top-20 glow-purple">
+          
+          <div class="flex items-center justify-between pb-3 border-b border-gray-800 mb-3">
+            <div class="text-white font-bold text-sm sm:text-base flex items-center gap-2">
+              <span class="text-purple-400">✨</span> SIÊU PROMPT HOÀN CHỈNH
+            </div>
+            <div class="flex items-center gap-2">
+              <span id="wordCount" class="text-xs text-gray-400">0 từ</span>
+              <button type="button" onclick="copyPrompt()" id="btnCopy" 
+                      class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow-md shadow-cyan-500/20 active:scale-95 transition cursor-pointer">
+                <span>📋 Sao Chép</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="relative flex-grow flex flex-col">
+            <textarea id="compiledPrompt" readonly placeholder="Kết quả sẽ hiện ở đây sau khi anh bấm Búng Tay (hoặc Enter, hoặc 1 mẫu nhanh bên trên) — gõ không tự ra prompt nữa."
+                      class="w-full flex-grow bg-gray-950 border border-gray-800 rounded-xl p-3.5 text-gray-200 text-xs sm:text-sm leading-relaxed font-mono resize-none focus:outline-none c-scroll min-h-[340px]"></textarea>
+          </div>
+
+          <!-- NÚT GỌI HÀNH ĐỘNG HỖ TRỢ -->
+          <div class="mt-4 pt-3 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400">
+            <div>Cần tinh chỉnh prompt chuyên sâu hoặc cài Agent tự động?</div>
+            <a href="https://zalo.me/0918717952" target="_blank" 
+               class="text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 underline underline-offset-4">
+              Nhắn Zalo 0918.717.952 ➔
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-800 bg-gray-950 py-6 mt-12 text-center text-xs text-gray-500">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="mb-2"><a href="/" class="text-cyan-400 hover:text-cyan-300 font-semibold">← Về trang chủ</a></p>
+      © 2026 Thịnh Nguyễn SI • Kiến trúc sư Siêu Trí Tuệ & Tự Động Hóa Doanh Nghiệp • Hotline/Zalo: 0918.717.952
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT XỬ LÝ REALTIME THỰC CHIẾN -->
+  <script>
+    let debounceTimer = null;
+
+    // Bộ mẫu tri thức chuẩn RCESF 5 tầng
+    const T = {
+      car: {
+        r: "Nhiếp ảnh gia Thương mại Quốc tế & Đạo diễn Nghệ thuật Điện ảnh (Cinematic Visual Director)",
+        c: "Tạo hình ảnh chân thực chuẩn 8K phục vụ bộ nhận diện cá nhân và truyền thông, tôn vinh phong thái thành đạt, bản lĩnh và quyền lực của một doanh nhân tự thân.",
+        e: 'Chụp người đàn ông khoảng 35 tuổi, gương mặt nam tính phong độ, mặc bộ suit bespoke may đo màu xanh navy lịch lãm. Tư thế đứng tựa nhẹ một tay vào nắp ca-pô chiếc siêu xe thể thao màu đen bóng loáng. Phía sau là quảng trường kiến trúc kính hiện đại lúc hoàng hôn (golden hour), ánh đèn thành phố phản chiếu sắc nét trên thân xe.',
+        s: "Chụp bằng máy ảnh Hasselblad 100MP, ống kính chân dung 85mm f/1.4, ánh sáng Cinematic Dramatic Rim Lighting, độ sâu trường ảnh nông (bokeh mềm mại), chi tiết siêu thực 8K.",
+        f: 'Tỉ lệ khung hình 16:9, xuất kèm prompt tiếng Anh chuẩn Midjourney v6 / Kling AI:\n"A charismatic 35yo Asian businessman in tailored bespoke navy suit, leaning against a luxury black supercar, modern glass skyscraper plaza at golden hour, dramatic cinematic rim lighting, photorealistic 8k, shot on Hasselblad 100mm f/1.4 lens --ar 16:9 --style raw --v 6.0"'
+      },
+      img: {
+        r: "Nhiếp ảnh gia Chuyên nghiệp & Chuyên gia Sáng tạo Hình ảnh AI (Visual Prompt Artist)",
+        c: t => `Sáng tạo ấn phẩm hình ảnh cao cấp, chân thực phục vụ truyền thông quảng bá về: ${t}`,
+        e: t => `Đặc tả chi tiết chủ thể: ${t}. Bố cục theo tỷ lệ vàng (Rule of Thirds), chủ thể nổi bật, tiền cảnh và hậu cảnh hài hòa, màu sắc và biểu cảm sống động.`,
+        s: "Phong cách điện ảnh (Cinematic), ánh sáng tự nhiên rực rỡ, độ sâu trường ảnh cao cấp, chất lượng photorealistic 8K sắc nét.",
+        f: "Khung hình tỉ lệ 16:9, kèm câu lệnh prompt tiếng Anh chuẩn Midjourney v6 / DALL-E 3 / Flux."
+      },
+      post: {
+        r: "Chuyên gia Copywriting & Bậc thầy Thôi miên Ngôn từ (Direct-Response Copywriter)",
+        c: t => `Xây dựng nội dung truyền thông đỉnh cao nhắm đúng tâm lý khách hàng mục tiêu để gia tăng chuyển đổi về: ${t}`,
+        e: t => `Viết bài theo cấu trúc AIDA hoặc PAS: Hook mở đầu giật gân đánh trúng nỗi đau, thân bài chỉ rõ giải pháp và giá trị vượt trội của ${t}, chốt bài bằng lời kêu gọi hành động (CTA) thôi thúc người đọc tương tác hoặc liên hệ ngay.`,
+        s: "Văn phong thực chiến, hấp dẫn, gần gũi, sử dụng ngôn từ kích thích cảm xúc, xen kẽ emoji tinh tế và ngắt dòng thoáng mắt dễ đọc trên điện thoại.",
+        f: "Bài viết hoàn chỉnh kèm: 3 phương án tiêu đề (Hook), nội dung bài viết, gợi ý góc ảnh/video minh họa, bộ hashtag thịnh hành và lời kêu gọi hành động (CTA) rõ ràng."
+      },
+      xls: {
+        r: "Chuyên gia Xử lý Dữ liệu Doanh nghiệp & Kế toán Quản trị Excel Cấp cao",
+        c: t => `Xây dựng giải pháp bảng tính quản trị tự động, số hóa dữ liệu và kiểm soát chặt chẽ cho bài toán: ${t}`,
+        e: t => `Thiết kế cấu trúc bảng dữ liệu chuẩn: Tách biệt rõ ràng Data Master, Bảng phát sinh nhập/xuất và Bảng báo cáo Dashboard tổng hợp. Cung cấp đầy đủ công thức tự động (SUMIFS, XLOOKUP, INDEX/MATCH, QUERY) để tự động tính tồn và đối soát.`,
+        s: "Logic dữ liệu chuẩn mực, tự động hóa cao, giao diện trực quan, có cơ chế bẫy lỗi và kiểm soát trùng lặp số liệu.",
+        f: "Cấu trúc bảng biểu chi tiết (tên cột, định dạng dữ liệu), danh sách công thức Excel/Google Sheets nguyên bản chỉ việc copy, kèm hướng dẫn sử dụng từng bước."
+      },
+      app: {
+        r: "Kiến trúc sư Giải pháp No-Code AppSheet & Tự Động Hóa Quy Trình Doanh Nghiệp (Thịnh Nguyễn SI)",
+        c: t => `Xây dựng ứng dụng quản trị số hóa quy trình vận hành thực chiến trên nền tảng Google AppSheet cho: ${t}`,
+        e: t => `Thiết kế sơ đồ cơ sở dữ liệu quan hệ (Data Tables, Key, Label, Ref). Thiết lập các cột ảo (Virtual Columns), công thức AppSheet Formula, phân quyền người dùng và cài đặt quy trình tự động (Automation Bot) gửi thông báo về Zalo/Telegram.`,
+        s: "Thực chiến, tối ưu trải nghiệm người dùng di động (Mobile UX), cấu trúc dữ liệu nhẹ, bảo mật và mở rộng linh hoạt theo chuẩn doanh nghiệp.",
+        f: "Sơ đồ cấu trúc Data Tables chi tiết, danh sách cột và kiểu dữ liệu (Type), danh sách công thức AppSheet mẫu, và kịch bản cấu hình Automation Bot từng bước."
+      },
+      gen: {
+        r: t => `Chuyên gia Cố vấn Cấp cao & Chuyên gia Đầu ngành về ${t}`,
+        c: t => `Giải quyết triệt để, chuyên sâu và tối ưu hóa hiệu quả thực thi cho yêu cầu: "${t}"`,
+        e: t => `Phân tích toàn diện bài toán: Xác định rõ nguyên nhân cốt lõi, các thách thức tiềm ẩn và lộ trình triển khai chi tiết từng bước cho ${t}. Đưa ra các ví dụ thực tế và giải pháp hành động cụ thể có thể áp dụng được ngay.`,
+        s: "Sắc bén, tư duy logic phản biện, đi thẳng vào giải pháp hành động thực chiến, loại bỏ hoàn toàn lý thuyết sáo rỗng.",
+        f: "Bản kế hoạch hành động chi tiết có đánh số thứ tự (1, 2, 3), kèm bảng checklist rà soát chất lượng và các rủi ro cần phòng ngừa."
+      }
+    };
+
+    // TRẠNG THÁI MỚI (28/10): nhớ câu đã tạo lần cuối để nút luôn báo được,
+    // kể cả khi bấm lại cùng 1 câu mà nội dung không đổi.
+    let lastGeneratedText = '';
+
+    function setStatus(html) {
+      const el = document.getElementById('magicStatus');
+      if (el) el.innerHTML = html;
+    }
+
+    function flashResult() {
+      const card = document.querySelector('#outputCard > div') || document.getElementById('outputCard');
+      if (!card) return;
+      card.classList.remove('flash-result');
+      void card.offsetWidth; // chạy lại animation khi bấm liên tiếp
+      card.classList.add('flash-result');
+      setTimeout(() => card.classList.remove('flash-result'), 2600);
+    }
+
+    function scrollToResult() {
+      // Trước đây chỉ cuộn khi màn hình <1024px, desktop thì không thấy gì đổi.
+      // Nay cuộn kiểu 'nearest': đã thấy thì đứng yên, chưa thấy thì cuộn tới.
+      const el = document.getElementById('outputCard');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function clearOutputs() {
+      ['roleInput', 'contextInput', 'exampleInput', 'styleInput', 'formatInput'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      document.getElementById('compiledPrompt').value = '';
+      document.getElementById('wordCount').innerText = '0 từ';
+      lastGeneratedText = '';
+    }
+
+    // 1. V2 — GÕ CHỈ CHUẨN BỊ CÂU, KHÔNG TỰ SINH LIVE NỮA (anh chốt 28/10).
+    // Hàm này cố tình KHÔNG gọi parseAndFillRCESF. Prompt chỉ ra khi bấm
+    // Búng Tay, bấm Enter, hoặc bấm mẫu nhanh. Sửa 5 ô RCESF tay thì vẫn
+    // biên dịch live (hàm compilePrompt), vì đó là sửa kết quả, không phải gõ câu mới.
+    function onNaturalInput() {
+      const text = document.getElementById('naturalInput').value.trim();
+      const btnClear = document.getElementById('btnClear');
+      if (text.length > 0) {
+        btnClear.classList.remove('hidden');
+      } else {
+        btnClear.classList.add('hidden');
+      }
+
+      if (text.length === 0) {
+        clearOutputs();
+        setStatus('Đã xóa. Gõ mong muốn mới rồi bấm <b class="text-cyan-300">Búng Tay</b> để tạo prompt.');
+        return;
+      }
+      if (text === lastGeneratedText && document.getElementById('compiledPrompt').value.trim() !== '') {
+        setStatus('Prompt cho câu này đã tạo rồi — bấm <b class="text-cyan-300">Búng Tay</b> để nhảy tới kết quả.');
+        return;
+      }
+      // Đổi sang câu mới thì xóa prompt cũ đi, tránh copy nhầm prompt cũ
+      // tưởng là prompt mới. Prompt mới chỉ hiện sau khi bấm Búng Tay.
+      if (lastGeneratedText !== '') {
+        clearOutputs();
+      }
+      setStatus('Đã gõ xong — bấm <b class="text-cyan-300">Búng Tay</b> để tạo prompt. Gõ không tự ra prompt nữa.');
+    }
+
+    // 2. BẤM NÚT BÚNG TAY HOẶC GÕ ENTER — NAY LUÔN CÓ PHẢN HỒI NHÌN THẤY
+    function magicGenerate() {
+      const text = document.getElementById('naturalInput').value.trim();
+      if (!text) {
+        setStatus('⚠️ <b class="text-amber-300">Chưa có gì để tạo.</b> Anh gõ mong muốn vào ô trên, hoặc bấm 1 mẫu nhanh bên dưới.');
+        document.getElementById('naturalInput').focus();
+        return;
+      }
+      const btn = document.getElementById('btnMagic');
+      const label = document.getElementById('btnMagicLabel');
+      const wasSame = (text === lastGeneratedText && document.getElementById('compiledPrompt').value.trim() !== '');
+      if (btn) { btn.disabled = true; btn.classList.add('btn-bung'); }
+      if (label) label.textContent = 'Đang búng tay…';
+      setStatus('⏳ Đang búng tay…');
+      setTimeout(() => {
+        parseAndFillRCESF(text);
+        lastGeneratedText = text;
+        const words = document.getElementById('wordCount').innerText;
+        if (wasSame) {
+          setStatus('✓ Anh bấm lại mà câu không đổi — em vừa <b class="text-cyan-300">nhảy tới kết quả và nhấp nháy</b> để anh thấy ngay (' + words + ').');
+        } else {
+          setStatus('✓ <b class="text-emerald-300">Đã tạo prompt!</b> Cuộn xuống ô SIÊU PROMPT bên dưới để xem và bấm Sao Chép (' + words + ').');
+        }
+        if (btn) { btn.disabled = false; btn.classList.remove('btn-bung'); }
+        if (label) label.textContent = '✓ Đã Tạo Prompt!';
+        flashResult();
+        scrollToResult();
+        setTimeout(() => { if (label) label.textContent = 'Búng Tay Tạo Prompt'; }, 2200);
+      }, 350);
+    }
+
+    // 3. THỬ MẪU NHANH — mẫu là nút bấm nên tạo ngay, không tính là gõ live.
+    function setSample(sampleText) {
+      document.getElementById('naturalInput').value = sampleText;
+      document.getElementById('btnClear').classList.remove('hidden');
+      parseAndFillRCESF(sampleText);
+      lastGeneratedText = sampleText;
+      setStatus('✓ Đã tạo prompt cho mẫu: “' + sampleText + '” (' + document.getElementById('wordCount').innerText + ').');
+      flashResult();
+      scrollToResult();
+    }
+
+    // 4. XÓA Ô NHẬP TỰ NHIÊN — SỬA LỖI CŨ: trước đây nút ✕ gọi resetFields()
+    // nên vừa xóa xong lại tự điền lại mẫu siêu xe, tưởng là bấm không ăn.
+    function clearNaturalInput() {
+      document.getElementById('naturalInput').value = '';
+      document.getElementById('btnClear').classList.add('hidden');
+      clearOutputs();
+      setStatus('Đã xóa sạch. Gõ mong muốn mới hoặc bấm 1 mẫu nhanh bên dưới.');
+      document.getElementById('naturalInput').focus();
+    }
+
+    // 5. BỘ PHÂN TÍCH TỪ KHÓA MỞ (NLP KEYWORD PARSER)
+    function parseAndFillRCESF(rawText) {
+      if (!rawText) return;
+      const lower = rawText.toLowerCase();
+      let topic = rawText
+        .replace(/^(tôi muốn|mình muốn|anh muốn|em muốn|hãy|giúp tôi|cần|làm cho tôi|tạo cho tôi|viết cho tôi|xin|hãy giúp)\s+/gi, '')
+        .trim();
+      if (!topic) topic = rawText;
+
+      let d;
+      if (lower.includes('siêu xe') || (lower.includes('xe') && (lower.includes('đàn ông') || lower.includes('nam')))) {
+        d = T.car;
+        setFields(d.r, d.c, d.e, d.s, d.f);
+      } else if (lower.includes('ảnh') || lower.includes('hình') || lower.includes('vẽ') || lower.includes('chụp') || lower.includes('photo') || lower.includes('video') || lower.includes('midjourney') || lower.includes('flux')) {
+        d = T.img;
+        setFields(d.r, d.c(topic), d.e(topic), d.s, d.f);
+      } else if (lower.includes('viết') || lower.includes('bài') || lower.includes('content') || lower.includes('quảng cáo') || lower.includes('stt') || lower.includes('bán') || lower.includes('marketing') || lower.includes('facebook') || lower.includes('tiktok')) {
+        d = T.post;
+        setFields(d.r, d.c(topic), d.e(topic), d.s, d.f);
+      } else if (lower.includes('excel') || lower.includes('bảng') || lower.includes('kho') || lower.includes('kế toán') || lower.includes('tồn kho') || lower.includes('sheet') || lower.includes('công thức') || lower.includes('tt200')) {
+        d = T.xls;
+        setFields(d.r, d.c(topic), d.e(topic), d.s, d.f);
+      } else if (lower.includes('appsheet') || lower.includes('app') || lower.includes('ứng dụng') || lower.includes('tự động') || lower.includes('script') || lower.includes('crm') || lower.includes('no-code')) {
+        d = T.app;
+        setFields(d.r, d.c(topic), d.e(topic), d.s, d.f);
+      } else {
+        // TẤT CẢ CÂU GÕ TỰ DO KHÁC
+        d = T.gen;
+        setFields(d.r(topic), d.c(topic), d.e(topic), d.s, d.f);
+      }
+    }
+
+    // 6. GÁN DỮ LIỆU VÀO 5 TẦNG
+    function setFields(r, c, e, s, f) {
+      document.getElementById('roleInput').value = r || '';
+      document.getElementById('contextInput').value = c || '';
+      document.getElementById('exampleInput').value = e || '';
+      document.getElementById('styleInput').value = s || '';
+      document.getElementById('formatInput').value = f || '';
+      compilePrompt();
+    }
+
+    // 7. BIÊN DỊCH SIÊU PROMPT TỔNG HỢP (REALTIME)
+    function compilePrompt() {
+      const r = document.getElementById('roleInput').value.trim();
+      const c = document.getElementById('contextInput').value.trim();
+      const e = document.getElementById('exampleInput').value.trim();
+      const s = document.getElementById('styleInput').value.trim();
+      const f = document.getElementById('formatInput').value.trim();
+
+      let prompt = "";
+      if (r) prompt += `[ROLE - VAI TRÒ CHUYÊN GIA]:\n${r}\n\n`;
+      if (c) prompt += `[CONTEXT - BỐI CẢNH & MỤC ĐÍCH]:\n${c}\n\n`;
+      if (e) prompt += `[TASK & SPECIFICATION - ĐẶC TẢ YÊU CẦU]:\n${e}\n\n`;
+      if (s) prompt += `[STYLE - VĂN PHONG & NGUYÊN TẮC]:\n${s}\n\n`;
+      if (f) prompt += `[OUTPUT FORMAT - ĐỊNH DẠNG ĐẦU RA]:\n${f}\n\n`;
+      prompt += `[CHỈ DẪN THỰC THI]: Hãy áp dụng tư duy logic phản biện sắc bén, hành động thực chiến và tuân thủ tuyệt đối các ràng buộc ở trên.`;
+
+      document.getElementById('compiledPrompt').value = prompt.trim();
+      
+      // Đếm số từ
+      const words = prompt.trim() ? prompt.trim().split(/\s+/).length : 0;
+      document.getElementById('wordCount').innerText = `${words} từ`;
+    }
+
+    // 8. SAO CHÉP PROMPT 1-CHẠM
+    function copyPrompt() {
+      const promptEl = document.getElementById('compiledPrompt');
+      if (!promptEl.value.trim()) {
+        alert('Chưa có nội dung câu lệnh để sao chép!');
+        return;
+      }
+      navigator.clipboard.writeText(promptEl.value).then(() => {
+        const btn = document.getElementById('btnCopy');
+        const oldHtml = btn.innerHTML;
+        btn.innerHTML = '<span>✓ Đã Sao Chép!</span>';
+        btn.classList.remove('from-cyan-500', 'to-blue-600');
+        btn.classList.add('bg-emerald-600');
+        setTimeout(() => {
+          btn.innerHTML = oldHtml;
+          btn.classList.remove('bg-emerald-600');
+          btn.classList.add('from-cyan-500', 'to-blue-600');
+        }, 2000);
+      }).catch(err => {
+        promptEl.select();
+        document.execCommand('copy');
+        alert('Đã sao chép câu lệnh vào bộ nhớ tạm!');
+      });
+    }
+
+    // 9. LÀM MỚI — NAY LÀ XÓA SẠCH, KHÔNG TỰ ĐIỀN MẪU NỮA
+    // Trước đây mở trang là tự điền sẵn mẫu siêu xe + tự tạo prompt 270 từ,
+    // nên anh bấm Búng Tay thấy y hệt cũ và tưởng nút chết.
+    function resetFields() {
+      document.getElementById('naturalInput').value = '';
+      document.getElementById('btnClear').classList.add('hidden');
+      clearOutputs();
+      setStatus('Gõ mong muốn rồi bấm <b class="text-cyan-300">Búng Tay</b> để tạo prompt — gõ không tự ra prompt nữa, kết quả chỉ hiện sau khi bấm.');
+    }
+
+    // Khởi chạy: trang mở ra trống, chờ anh gõ hoặc bấm mẫu nhanh.
+    window.addEventListener('DOMContentLoaded', () => {
+      resetFields();
+    });
+  </script>
+</body>
