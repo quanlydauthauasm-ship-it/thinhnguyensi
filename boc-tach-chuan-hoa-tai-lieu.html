@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bóc tách & Chuẩn hóa Tài liệu Tiếng Việt | Thịnh Nguyễn SI</title>
+  <meta name="description" content="Dán văn bản OCR thô hoặc tải PDF có text để chuẩn hóa Unicode NFC, sửa lỗi OCR tiếng Việt, giữ nguyên số liệu và xuất Markdown kèm Bảng Đối soát Hậu kiểm. Chạy ngay trên trình duyệt, không cần tài khoản.">
+  <link rel="canonical" href="boc-tach-chuan-hoa-tai-lieu.html">
+  <link rel="icon" type="image/png" sizes="48x48" href="images/favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <style>
+    body { background-color: #0a0f1d; color: #F3F4F6; font-family: system-ui, -apple-system, sans-serif; }
+    .glow-cyan { box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.3); }
+    .c-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .c-scroll::-webkit-scrollbar-track { background: #111827; }
+    .c-scroll::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+    .c-input { width: 100%; background: #030712; border: 1px solid #1f2937; border-radius: 0.5rem; padding: 0.6rem 0.75rem; font-size: 0.875rem; color: #e5e7eb; outline: none; transition: border-color 0.2s; }
+    .c-input:focus { border-color: #06b6d4; }
+    textarea.c-input { line-height: 1.6; }
+    .audit-table th, .audit-table td { border: 1px solid #1f2937; padding: 0.5rem 0.75rem; text-align: left; vertical-align: top; }
+    .audit-table th { background: #111827; color: #67e8f9; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .audit-table td { font-size: 0.875rem; color: #d1d5db; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between c-scroll">
+
+  <!-- HEADER : giống các trang công cụ hiện có -->
+  <header class="border-b border-gray-800 bg-gray-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-cyan-500/20">SI</div>
+        <div>
+          <div class="font-extrabold text-white text-base flex items-center gap-1.5">
+            Thịnh Nguyễn SI <span class="text-[10px] uppercase px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">Super Intelligence</span>
+          </div>
+          <div class="text-xs text-gray-400">Siêu Trí Tuệ &amp; Tự Động Hóa Doanh Nghiệp</div>
+        </div>
+      </a>
+      <div class="flex items-center space-x-3">
+        <a href="/" class="hidden sm:inline-flex text-sm text-gray-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-gray-800 transition">Trang Chủ</a>
+        <a href="/kho-template.html" class="hidden sm:inline-flex text-sm text-cyan-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-gray-800 transition">Kho Template</a>
+        <a href="https://zalo.me/0918717952" target="_blank" class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg transition shadow-md shadow-cyan-500/20">Tư Vấn Zalo</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow">
+
+    <div class="text-center max-w-3xl mx-auto mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-700/50 text-cyan-400 text-xs font-semibold mb-3">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> CÔNG CỤ DÙNG NGAY • CHẠY TRÊN TRÌNH DUYỆT • KHÔNG CẦN TÀI KHOẢN
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight mb-3">
+        Bóc tách &amp; Chuẩn hóa <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-blue-500">Tài liệu Tiếng Việt</span>
+      </h1>
+      <p class="text-sm sm:text-base text-gray-400">
+        Dán văn bản OCR thô hoặc tải PDF có sẵn text — công cụ chuẩn hóa Unicode NFC, sửa lỗi OCR tiếng Việt,
+        giữ nguyên số liệu, và xuất Markdown kèm Bảng Đối soát Hậu kiểm để anh đối chiếu lại.
+      </p>
+    </div>
+
+    <!-- 6 BƯỚC, TÓM TẮT TỪ BẢN MASTER -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-4"><div class="text-cyan-400 font-bold text-sm mb-1">1. Khử nhiễu &amp; phân lớp</div><p class="text-xs text-gray-400 leading-relaxed">Nhận diện văn bản, bảng biểu, chú thích, con dấu / chữ ký — không tóm tắt, không cắt đoạn.</p></div>
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-4"><div class="text-cyan-400 font-bold text-sm mb-1">2. Đọc đa luồng</div><p class="text-xs text-gray-400 leading-relaxed">Văn bản 2 cột đọc hết cột trái rồi sang cột phải, không đọc quét ngang làm vỡ câu.</p></div>
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-4"><div class="text-cyan-400 font-bold text-sm mb-1">3. Sửa lỗi OCR</div><p class="text-xs text-gray-400 leading-relaxed">Sửa các lỗi kinh điển: cll → ch, nhiern → nhiệm, O → 0 trong số / ngày, chữ tách rời như “v ă n b ả n”.</p></div>
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-4"><div class="text-cyan-400 font-bold text-sm mb-1">4. Chuẩn hóa NFC &amp; dấu thanh</div><p class="text-xs text-gray-400 leading-relaxed">Ép Unicode về NFC, đặt dấu thanh theo chuẩn mới: hòa (không phải hoà), thủy (không phải thuỷ).</p></div>
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-4"><div class="text-cyan-400 font-bold text-sm mb-1">5. Bảng &amp; thực thể</div><p class="text-xs text-gray-400 leading-relaxed">Giữ bảng Markdown, ghi nhận con dấu / chữ ký dạng [Dấu mộc đỏ: …], [Chữ ký: …].</p></div>
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-4"><div class="text-cyan-400 font-bold text-sm mb-1">6. Bảng Đối soát Hậu kiểm</div><p class="text-xs text-gray-400 leading-relaxed">Mọi chỗ đã sửa đều ghi lại. Số mờ, không chắc chắn: giữ nguyên dạng [? …], tuyệt đối không tự đoán số.</p></div>
+    </div>
+
+    <!-- NHẬP LIỆU -->
+    <div class="bg-gray-900 border border-cyan-500/30 rounded-2xl p-4 sm:p-6 mb-6 glow-cyan">
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-gray-800 mb-4">
+        <div class="text-white font-bold text-sm sm:text-base">📄 Văn bản cần chuẩn hóa</div>
+        <div class="flex flex-wrap gap-2">
+          <label class="cursor-pointer text-xs bg-gray-800 hover:bg-gray-700 text-cyan-300 border border-cyan-900 px-3 py-2 rounded-lg transition">📕 Tải PDF có text<input type="file" id="pdfFile" accept=".pdf,application/pdf" class="hidden"></label>
+          <label class="cursor-pointer text-xs bg-gray-800 hover:bg-gray-700 text-blue-300 border border-blue-900 px-3 py-2 rounded-lg transition">📝 Tải .txt / .md<input type="file" id="txtFile" accept=".txt,.md,text/plain,text/markdown" class="hidden"></label>
+          <label class="cursor-pointer text-xs bg-gray-800 hover:bg-gray-700 text-amber-300 border border-amber-900 px-3 py-2 rounded-lg transition">🖼️ Tải ảnh / scan PDF<input type="file" id="scanFile" accept="image/*,.pdf,application/pdf" class="hidden"></label>
+          <button type="button" onclick="loadSample()" class="text-xs bg-gray-800 hover:bg-gray-700 text-emerald-300 border border-emerald-900 px-3 py-2 rounded-lg transition">✨ Thử mẫu lỗi OCR</button>
+          <button type="button" onclick="clearAll()" class="text-xs text-gray-400 hover:text-white px-2 py-2 transition">↺ Xóa</button>
+        </div>
+      </div>
+
+      <textarea id="inputText" rows="10" placeholder="Dán văn bản OCR thô vào đây…&#10;&#10;Ví dụ: văn bản hành chính, thông báo, hợp đồng, bảng số liệu đã bóc tách từ PDF." class="c-input c-scroll w-full"></textarea>
+      <p id="fileStatus" aria-live="polite" class="mt-2 text-xs text-gray-400">Chưa tải file nào. PDF chỉ trích được khi PDF có sẵn lớp text — PDF scan thuần ảnh thì xem mục Gemini Vision bên dưới.</p>
+
+      <div class="mt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        <button type="button" onclick="runLocalNormalize()" id="btnNormalize" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 text-white font-bold px-6 py-3.5 rounded-xl text-sm shadow-lg shadow-cyan-500/25 active:scale-95 transition cursor-pointer whitespace-nowrap">⚡ Chuẩn hóa ngay — không cần key</button>
+        <p id="localStatus" aria-live="polite" class="text-xs text-gray-400">Chạy hoàn toàn trên trình duyệt của anh. Văn bản không gửi lên server thinhnguyensi.com.</p>
+      </div>
+    </div>
+
+    <!-- GEMINI VISION : TÙY CHỌN, DÙNG KEY CỦA NGƯỜI DÙNG -->
+    <div class="bg-gray-900 border border-amber-500/30 rounded-2xl p-4 sm:p-6 mb-6">
+      <div class="text-white font-bold text-sm sm:text-base mb-1">🔍 Đọc file scan / ảnh bằng Gemini Vision <span class="text-amber-400 text-xs font-semibold">(tùy chọn)</span></div>
+      <p class="text-xs text-gray-400 leading-relaxed mb-3">
+        Chỉ dùng khi file là ảnh chụp hoặc PDF scan không có text. Anh tự nhập Gemini API key của mình — key gửi thẳng từ trình duyệt của anh tới Google,
+        không qua server thinhnguyensi.com. Không tick “Nhớ key” thì key mất khi đóng trang. File nên dưới 10MB, dưới 10 trang để khỏi bị cắt cụt.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="md:col-span-2">
+          <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-1" for="geminiKey">Gemini API key của bạn</label>
+          <input type="password" id="geminiKey" placeholder="Dán key vào đây — chỉ dùng trên máy này" class="c-input" autocomplete="off">
+          <label class="flex items-center gap-2 mt-2 text-xs text-gray-400"><input type="checkbox" id="rememberKey" class="accent-cyan-500"> Nhớ key trên trình duyệt này (lưu localStorage, chỉ nên tick trên máy riêng)</label>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-1" for="geminiModel">Model thử theo thứ tự</label>
+          <select id="geminiModel" class="c-input">
+            <option value="gemini-3.8-flash">gemini-3.8-flash → 3.7 → 3.5</option>
+            <option value="gemini-3.7-flash">gemini-3.7-flash → 3.5</option>
+            <option value="gemini-3.5-flash">gemini-3.5-flash</option>
+          </select>
+          <button type="button" onclick="runGeminiVision()" id="btnGemini" class="mt-3 w-full bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold px-4 py-2.5 rounded-xl text-sm active:scale-95 transition cursor-pointer">Đọc scan / ảnh bằng Gemini</button>
+        </div>
+      </div>
+      <p id="geminiStatus" aria-live="polite" class="mt-3 text-xs text-gray-400">Chưa chạy Gemini. Cần tải ảnh hoặc PDF scan ở trên trước, rồi nhập key.</p>
+    </div>
+
+    <!-- KẾT QUẢ -->
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 sm:p-6 mb-6">
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-gray-800 mb-3">
+        <div class="text-white font-bold text-sm sm:text-base">✨ Văn bản đã chuẩn hóa (Markdown)</div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span id="statsLine" class="text-xs text-gray-400">Chưa có kết quả.</span>
+          <button type="button" onclick="copyOutput()" id="btnCopy" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 text-white font-bold px-3 py-2 rounded-lg text-xs shadow-md shadow-cyan-500/20 active:scale-95 transition cursor-pointer">📋 Sao chép</button>
+          <button type="button" onclick="downloadOutput('md')" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 border border-cyan-900 px-3 py-2 rounded-lg text-xs transition">⬇ Tải .md</button>
+          <button type="button" onclick="downloadOutput('txt')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3 py-2 rounded-lg text-xs transition">⬇ Tải .txt</button>
+        </div>
+      </div>
+      <textarea id="outputText" readonly placeholder="Kết quả sẽ hiện ở đây sau khi anh bấm Chuẩn hóa ngay, hoặc sau khi đọc xong bằng Gemini Vision." class="c-input c-scroll w-full min-h-[320px] font-mono text-xs sm:text-sm leading-relaxed"></textarea>
+
+      <div class="mt-6">
+        <div class="text-white font-bold text-sm mb-2">🧾 Bảng Đối soát Hậu kiểm (Audit Log)</div>
+        <div id="auditBox" class="overflow-x-auto c-scroll"><p class="text-xs text-gray-400">Chưa có bảng đối soát. Bảng này chỉ liệt kê những chỗ công cụ đã tự sửa — không phải toàn bộ văn bản.</p></div>
+      </div>
+
+      <div class="mt-6">
+        <div class="text-white font-bold text-sm mb-2">⚠️ Điểm nghi vấn — cần đối chiếu bản gốc, không tự đoán</div>
+        <div id="doubtBox"><p class="text-xs text-gray-400">Chưa có điểm nghi vấn.</p></div>
+      </div>
+    </div>
+
+    <!-- GIỚI HẠN THẬT, NÓI RÕ -->
+    <div class="bg-gray-950 border border-gray-800 rounded-2xl p-4 sm:p-6 text-xs text-gray-400 leading-relaxed">
+      <div class="text-white font-bold text-sm mb-2">📌 Đọc kỹ trước khi dùng kết quả</div>
+      <ul class="list-disc pl-5 space-y-1">
+        <li><b class="text-gray-200">Chế độ không cần key</b> chỉ chuẩn hóa văn bản đã có chữ. Nó không đọc được chữ trong ảnh. Muốn đọc ảnh/scan, phải dùng Gemini Vision ở trên, hoặc dùng app AI Studio đã Publish.</li>
+        <li><b class="text-gray-200">Chữ “đ” mất gạch ngang, chữ mờ nặng</b> không tự sửa được nếu không có ngữ cảnh chắc chắn — công cụ sẽ để lại điểm nghi vấn thay vì đoán bừa.</li>
+        <li><b class="text-gray-200">Số tiền, ngày tháng, mã hợp đồng, tỷ lệ %</b> luôn phải đọc lại 1 lượt trước khi ký / gửi. Chỗ nào công cụ đã sửa số (ví dụ O → 0) đều ghi trong Bảng Đối soát.</li>
+        <li><b class="text-gray-200">Thuật ngữ chuyên ngành, tên riêng, từ viết tắt</b> (EBITDA, KPI, ISO, NĐ-CP…) được giữ nguyên, không tự dịch hay sửa.</li>
+        <li>Công cụ chạy trên trình duyệt, không lưu văn bản của anh lên server Thịnh Nguyễn SI. Riêng chế độ Gemini Vision thì file được gửi tới Google theo key của anh, theo điều khoản của Google.</li>
+      </ul>
+    </div>
+
+  </main>
+
+  <footer class="border-t border-gray-800 bg-gray-950 py-6 mt-12 text-center text-xs text-gray-500">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="mb-2"><a href="/" class="text-cyan-400 hover:text-cyan-300 font-semibold">← Về trang chủ</a></p>
+      © 2026 Thịnh Nguyễn SI • Kiến trúc sư Siêu Trí Tuệ &amp; Tự Động Hóa Doanh Nghiệp • Hotline/Zalo: 0918.717.952
+    </div>
+  </footer>
+
+  <!-- LOGIC THUẦN : không chạm DOM, để kiểm thử được bằng Node -->
+  <script id="core">
+    function makeAudit() {
+      var list = [];
+      function add(rule, orig, fixed, confidence) {
+        var key = rule + '|' + orig;
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].key === key) { list[i].count += 1; return; }
+        }
+        list.push({ key: key, rule: rule, orig: orig, fixed: fixed, confidence: confidence, count: 1 });
+      }
+      return { list: list, add: add };
+    }
+
+    function normalizeVietnameseText(rawInput) {
+      var audit = makeAudit();
+      var text = String(rawInput == null ? '' : rawInput);
+      var original = text;
+
+      // 1. Unicode NFC
+      var nfc = text.normalize('NFC');
+      if (nfc !== text) { audit.add('Chuẩn hóa Unicode', 'Ký tự phân rã (NFD)', 'Đã ép về NFC', '100%'); text = nfc; }
+
+      // Bảo vệ các đoạn [? ...] : không tự sửa số bên trong, giữ nguyên để hậu kiểm
+      var protectedSegs = [];
+      text = text.replace(/\[\s*\?\s*([^\]]+)\]/g, function (m, inner) {
+        var idx = protectedSegs.length;
+        protectedSegs.push(m);
+        return '\u0000P' + idx + '\u0000';
+      });
+
+      // 2. Chữ tách rời : "v ă n  b ả n" -> "văn bản"
+      // BẮT BUỘC có ranh giới từ ở 2 đầu : chữ đầu không dính chữ trước, chữ cuối không dính chữ sau.
+      // Nếu không, "quyết định" sẽ bị nối oan thành "quyếtđịnh" (chữ cuối từ trước + chữ đầu từ sau).
+      text = text.replace(/(?<![A-Za-zÀ-ỹđĐ])[A-Za-zÀ-ỹđĐ](?:[ \t]+[A-Za-zÀ-ỹđĐ])+(?![A-Za-zÀ-ỹđĐ])/g, function (m) {
+        // Khoảng trắng đôi trở lên thường là ranh giới từ : "v ă n  b ả n" -> "văn bản", không phải "vănbản"
+        var words = m.split(/[ \t]{2,}/).map(function (w) { return w.replace(/[ \t]+/g, ''); }).filter(Boolean);
+        var letters = words.join(' ');
+        var total = words.join('').length;
+        var hasDiacritic = /[^\x00-\x7F]/.test(m);
+        if (total >= 3 || (total === 2 && hasDiacritic)) {
+          audit.add('Nối chữ tách rời do OCR', m, letters, '95%');
+          return letters;
+        }
+        return m;
+      });
+
+      // 3. Lỗi hình thái kinh điển trong bản master
+      text = text.replace(/cll/gi, function (m) {
+        var rep = (m === 'CLL') ? 'CH' : (m[0] === 'C' ? 'Ch' : 'ch');
+        audit.add('Sửa lỗi OCR cll → ch', m, rep, '100% (theo ma trận lỗi)');
+        return rep;
+      });
+      text = text.replace(/nhiern/gi, function () {
+        audit.add('Sửa lỗi OCR', 'nhiern', 'nhiệm', '100% (theo ma trận lỗi)');
+        return 'nhiệm';
+      });
+
+      // 4. Đặt dấu thanh theo chuẩn mới : hoà -> hòa, thuỷ -> thủy, tuỳ -> tùy, huỷ -> hủy, hoá -> hóa, luỹ -> lũy
+      var toneMap = { 'hoà': 'hòa', 'thuỷ': 'thủy', 'tuỳ': 'tùy', 'huỷ': 'hủy', 'hoá': 'hóa', 'luỹ': 'lũy' };
+      Object.keys(toneMap).forEach(function (wrong) {
+        var re = new RegExp('(?<![A-Za-zÀ-ỹ])' + wrong + '(?![A-Za-zÀ-ỹ])', 'gi');
+        text = text.replace(re, function (m) {
+          var rep = toneMap[wrong];
+          if (m[0] === m[0].toUpperCase()) rep = rep[0].toUpperCase() + rep.slice(1);
+          audit.add('Chuẩn hóa dấu thanh', m, rep, '100%');
+          return rep;
+        });
+      });
+
+      // 5. Từ dính nhau do OCR : tách trước / sau các từ hành chính quen thuộc
+      var gluedSecond = ['quyết', 'định', 'thông', 'báo', 'chính', 'sách', 'tài', 'nhiệm', 'vụ', 'hoàn', 'thành', 'văn', 'bản', 'hợp', 'đồng', 'công', 'ty', 'doanh', 'nghiệp', 'trách', 'điều', 'khoản'];
+      var reSecond = new RegExp('(\\S{2,}?)(' + gluedSecond.join('|') + ')(?=$|\\s|[.,;:!?%])', 'g');
+      text = text.replace(reSecond, function (m, prefix, word) {
+        if (prefix === word) return m;
+        var fixed = prefix + ' ' + word;
+        audit.add('Tách từ dính do OCR', m, fixed, '95%');
+        return fixed;
+      });
+      var gluedFirst = ['thông', 'chính', 'công', 'doanh', 'hoàn', 'trách', 'hợp', 'văn', 'tài', 'căn'];
+      var reFirst = new RegExp('\\b(' + gluedFirst.join('|') + ')([a-zà-ỹ]{2,})', 'g');
+      text = text.replace(reFirst, function (m, first, rest) {
+        if (gluedSecond.indexOf(rest) !== -1 || rest.length < 2) return m;
+        var fixed = first + ' ' + rest;
+        audit.add('Tách từ dính do OCR', m, fixed, '90%');
+        return fixed;
+      });
+
+      // 6. Số / ngày bị OCR nhầm chữ thành số : 2O26 -> 2026, 1.5O0.000.000 -> 1.500.000.000, l2 -> 12
+      text = text.replace(/\b[0-9][0-9OIl.,\/-]*\b/g, function (m) {
+        if (!/[OIl]/.test(m)) return m;
+        var fixed = m.replace(/O/g, '0').replace(/[Il]/g, '1');
+        audit.add('Sửa số bị nhầm chữ', m, fixed, '95% (chờ đối chiếu gốc)');
+        return fixed;
+      });
+      text = text.replace(/\b[lI]([0-9][0-9.,\/-]*)\b/g, function (m, rest) {
+        var fixed = '1' + rest;
+        audit.add('Sửa số bị nhầm chữ', m, fixed, '95% (chờ đối chiếu gốc)');
+        return fixed;
+      });
+      text = text.replace(/(?<![A-Za-zÀ-ỹđĐ])(Trang|trang|Số|số|Đoàn|đoàn) [lI](?![A-Za-zÀ-ỹđĐ])/g, function (m, w) {
+        var fixed = w + ' 1';
+        audit.add('Sửa số bị nhầm chữ', m, fixed, '90% (chờ đối chiếu gốc)');
+        return fixed;
+      });
+
+      // 7. Dấu câu & khoảng trắng
+      var punctBefore = (text.match(/\s+[,.;:?!%]/g) || []).length;
+      text = text.replace(/\s+([,.;:?!%])/g, '$1');
+      var punctAfter = 0;
+      text = text.replace(/([,;:])(?=[^\s\d])/g, function (m, p) { punctAfter += 1; return p + ' '; });
+      text = text.replace(/([.!?])(?=[A-Za-zÀ-ỹ0-9])/g, function (m, p, offset, full) {
+        var prev = full[offset - 1];
+        var next = full[offset + 1];
+        if (prev && /[0-9]/.test(prev) && next && /[0-9]/.test(next)) return m;
+        punctAfter += 1;
+        return p + ' ';
+      });
+      if (punctBefore + punctAfter > 0) {
+        audit.add('Chuẩn hóa dấu câu & khoảng trắng', 'Thừa / thiếu khoảng trắng quanh dấu câu', 'Đã chuẩn hóa', '100%');
+      }
+      text = text.replace(/[ \t]{2,}/g, ' ');
+      text = text.replace(/\n{3,}/g, '\n\n');
+      text = text.split('\n').map(function (line) { return line.replace(/[ \t]+$/g, ''); }).join('\n').trim();
+
+      // Khôi phục các đoạn [? ...]
+      text = text.replace(/\u0000P(\d+)\u0000/g, function (m, idx) { return protectedSegs[Number(idx)]; });
+      protectedSegs.forEach(function (seg) {
+        audit.add('Giữ nguyên điểm nghi vấn', seg, seg + ' (không tự đoán số)', 'Cần đối chiếu gốc');
+      });
+
+      // Điểm nghi vấn còn lại
+      var doubts = [];
+      var uncertainRe = /\[\s*\?\s*([^\]]+)\]/g, mm;
+      while ((mm = uncertainRe.exec(text)) !== null) {
+        doubts.push('Giữ nguyên ' + mm[0] + ' — cần đối chiếu bản gốc, không tự đoán số.');
+      }
+      // Quét token nghi vấn trên bản đã bỏ các đoạn [? ...] đi, để không báo trùng 2 lần cho cùng 1 đoạn
+      var lines = text.replace(/\[\s*\?\s*[^\]]+\]/g, ' ').split('\n');
+      lines.forEach(function (line, li) {
+        var tokens = line.split(/\s+/);
+        tokens.forEach(function (tok) {
+          if (!tok) return;
+          if (/�/.test(tok) || /\?\?/.test(tok) || /cll|vv/.test(tok)) {
+            doubts.push('Dòng ' + (li + 1) + ': “' + tok + '” vẫn còn ký tự lạ / lỗi OCR chưa sửa được.');
+          } else if (/[0-9][A-Za-zÀ-ỹ]/.test(tok) || /[A-Za-zÀ-ỹ][0-9]/.test(tok)) {
+            if (!/^(NĐ|QĐ|TT|ISO|KPI|EBITDA)/i.test(tok) && !/^\d+nd/i.test(tok)) {
+              doubts.push('Dòng ' + (li + 1) + ': “' + tok + '” lẫn chữ và số — kiểm tra lại trước khi dùng.');
+            }
+          }
+        });
+      });
+      // Lọc trùng, giới hạn 50
+      doubts = doubts.filter(function (d, i) { return doubts.indexOf(d) === i; }).slice(0, 50);
+
+      // Tiêu đề : dòng đầu ngắn, không kết thúc bằng dấu câu thì lấy làm tiêu đề
+      var bodyLines = text.split('\n');
+      var first = '';
+      while (bodyLines.length && !first) { first = bodyLines.shift().trim(); }
+      var title = 'Văn bản đã chuẩn hóa';
+      if (first && first.length <= 80 && !/[.!?:;]$/.test(first)) {
+        title = first.replace(/^#+\s*/, '');
+      } else if (first) {
+        bodyLines.unshift(first);
+      }
+      var body = bodyLines.join('\n').trim();
+
+      var auditRows = audit.list.map(function (a, i) {
+        var ex = a.count > 1 ? a.orig + ' (x' + a.count + ')' : a.orig;
+        return '| ' + (i + 1) + ' | Toàn văn | ' + ex + ' | ' + a.fixed + ' | ' + a.confidence + ' |';
+      });
+      var markdown = '# ' + title + '\n\n' + body + '\n\n---\n\n### BẢNG ĐỐI SOÁT HẬU KIỂM (AUDIT LOG)\n';
+      if (auditRows.length) {
+        markdown += '| STT | Vị trí (Trang/Đoạn/Bảng) | Nội dung gốc nghi vấn / Lỗi OCR | Xử lý chuẩn hóa | Mức độ tin cậy |\n| :--- | :--- | :--- | :--- | :--- |\n' + auditRows.join('\n');
+      } else {
+        markdown += 'Không phát hiện lỗi OCR theo các quy tắc trên — vẫn cần đọc lại 1 lượt trước khi dùng, đặc biệt số liệu.';
+      }
+
+      var words = body ? body.split(/\s+/).filter(Boolean).length : 0;
+      var corrections = audit.list.reduce(function (s, a) { return s + a.count; }, 0);
+      return {
+        text: text, body: body, title: title, markdown: markdown,
+        audit: audit.list, doubts: doubts,
+        stats: { inputChars: original.length, outputChars: text.length, words: words, corrections: corrections, doubts: doubts.length }
+      };
+    }
+  </script>
+
+  <!-- DÂY NỐI GIAO DIỆN -->
+  <script>
+    var scanFile = null;
+    var scanFileName = '';
+    var lastResult = null;
+
+    function el(id) { return document.getElementById(id); }
+    function esc(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function setStatus(id, msg) { el(id).textContent = msg; }
+
+    function loadSample() {
+      el('inputText').value =
+        'THÔNG BÁO\n\n' +
+        'Căn cứquyết định số l2/2026, v ă n  b ả n về cllính sách tài cllính năm 2O26.\n' +
+        'Hoàn thành nhiern vụ, doanh thu: 1.5O0.000.000 đồng, ngày 1O/10/2026.\n' +
+        'Đoàn l kiểm tra đã hoà nhập, thuỷ lợi được tuỳ chỉnh.\n' +
+        'Lưu ý: nội dung mờ [? 5OO.000] cần đối chiếu gốc, không tự đoán số.';
+      scanFile = null; scanFileName = '';
+      setStatus('fileStatus', 'Đã nạp mẫu lỗi OCR — bấm “Chuẩn hóa ngay” để xem kết quả và Bảng Đối soát.');
+    }
+
+    function clearAll() {
+      el('inputText').value = ''; el('outputText').value = '';
+      el('pdfFile').value = ''; el('txtFile').value = ''; el('scanFile').value = '';
+      scanFile = null; scanFileName = ''; lastResult = null;
+      setStatus('fileStatus', 'Đã xóa. Dán văn bản mới hoặc tải file khác.');
+      setStatus('statsLine', 'Chưa có kết quả.');
+      el('auditBox').innerHTML = '<p class="text-xs text-gray-400">Chưa có bảng đối soát.</p>';
+      el('doubtBox').innerHTML = '<p class="text-xs text-gray-400">Chưa có điểm nghi vấn.</p>';
+    }
+
+    function renderResult(result, sourceLabel) {
+      lastResult = result;
+      el('outputText').value = result.markdown;
+      setStatus('statsLine', sourceLabel + ' • ' + result.stats.words + ' từ • ' + result.stats.corrections + ' chỗ đã sửa • ' + result.stats.doubts + ' điểm nghi vấn');
+      if (result.audit.length) {
+        var rows = result.audit.map(function (a, i) {
+          var ex = a.count > 1 ? esc(a.orig) + ' (x' + a.count + ')' : esc(a.orig);
+          return '<tr><td>' + (i + 1) + '</td><td>Toàn văn</td><td>' + ex + '</td><td>' + esc(a.fixed) + '</td><td>' + esc(a.confidence) + '</td></tr>';
+        }).join('');
+        el('auditBox').innerHTML = '<table class="audit-table w-full"><thead><tr><th>STT</th><th>Vị trí</th><th>Gốc nghi vấn / Lỗi OCR</th><th>Xử lý</th><th>Tin cậy</th></tr></thead><tbody>' + rows + '</tbody></table>';
+      } else {
+        el('auditBox').innerHTML = '<p class="text-xs text-gray-400">Không phát hiện lỗi OCR theo các quy tắc trên — vẫn cần đọc lại 1 lượt, đặc biệt số liệu.</p>';
+      }
+      if (result.doubts.length) {
+        el('doubtBox').innerHTML = '<ul class="list-disc pl-5 space-y-1 text-xs text-amber-200/90">' + result.doubts.map(function (d) { return '<li>' + esc(d) + '</li>'; }).join('') + '</ul>';
+      } else {
+        el('doubtBox').innerHTML = '<p class="text-xs text-gray-400">Không có điểm nghi vấn theo các quy tắc trên.</p>';
+      }
+    }
+
+    function runLocalNormalize() {
+      var raw = el('inputText').value;
+      if (!raw.trim()) {
+        if (scanFile) {
+          setStatus('localStatus', 'File anh vừa tải là ảnh / scan, không có text để chuẩn hóa. Hãy dùng Gemini Vision bên dưới, hoặc tải PDF có text.');
+        } else {
+          setStatus('localStatus', 'Chưa có văn bản. Hãy dán văn bản, tải PDF có text, hoặc bấm “Thử mẫu lỗi OCR”.');
+        }
+        return;
+      }
+      var result = normalizeVietnameseText(raw);
+      renderResult(result, 'Chuẩn hóa trên trình duyệt');
+      setStatus('localStatus', 'Đã chuẩn hóa xong. Đọc lại Bảng Đối soát và Điểm nghi vấn trước khi dùng, nhất là số liệu.');
+    }
+
+    async function copyOutput() {
+      var v = el('outputText').value;
+      if (!v.trim()) { setStatus('statsLine', 'Chưa có kết quả để sao chép.'); return; }
+      try { await navigator.clipboard.writeText(v); setStatus('statsLine', 'Đã sao chép kết quả vào clipboard.'); }
+      catch (e) { el('outputText').select(); document.execCommand('copy'); setStatus('statsLine', 'Đã sao chép (dự phòng).'); }
+    }
+
+    function downloadOutput(ext) {
+      var v = el('outputText').value;
+      if (!v.trim()) { setStatus('statsLine', 'Chưa có kết quả để tải.'); return; }
+      var blob = new Blob([v], { type: 'text/plain;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'van-ban-da-chuan-hoa.' + ext;
+      a.click(); URL.revokeObjectURL(a.href);
+    }
+
+    el('txtFile').addEventListener('change', function (e) {
+      var f = e.target.files[0]; if (!f) return;
+      var r = new FileReader();
+      r.onload = function () { el('inputText').value = String(r.result); setStatus('fileStatus', 'Đã tải ' + f.name + ' (' + f.size.toLocaleString('vi-VN') + ' byte) vào ô nhập. Bấm “Chuẩn hóa ngay”.'); };
+      r.readAsText(f, 'UTF-8');
+    });
+
+    el('pdfFile').addEventListener('change', async function (e) {
+      var f = e.target.files[0]; if (!f) return;
+      scanFile = null; scanFileName = '';
+      if (typeof pdfjsLib === 'undefined') {
+        setStatus('fileStatus', 'Không tải được thư viện đọc PDF (cần mạng để tải pdf.js). Anh dán text thay thế, hoặc tải lại trang.');
+        return;
+      }
+      try {
+        setStatus('fileStatus', 'Đang trích text từ ' + f.name + '…');
+        var buf = await f.arrayBuffer();
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        var pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+        var pages = [];
+        for (var i = 1; i <= pdf.numPages; i++) {
+          var page = await pdf.getPage(i);
+          var tc = await page.getTextContent();
+          pages.push(tc.items.map(function (it) { return it.str; }).join(' '));
+        }
+        var extracted = pages.join('\n\n');
+        if (!extracted.trim()) {
+          setStatus('fileStatus', 'PDF này không có lớp text (scan thuần ảnh) nên không trích được. Hãy tải file đó ở mục ảnh / scan và dùng Gemini Vision bên dưới.');
+          return;
+        }
+        el('inputText').value = extracted;
+        setStatus('fileStatus', 'Đã trích ' + pdf.numPages + ' trang từ ' + f.name + ' vào ô nhập. Bấm “Chuẩn hóa ngay”.');
+      } catch (err) {
+        setStatus('fileStatus', 'Không đọc được PDF này: ' + err.message + '. Thử tải lại file, hoặc dán text thay thế.');
+      }
+    });
+
+    el('scanFile').addEventListener('change', function (e) {
+      var f = e.target.files[0]; if (!f) return;
+      scanFile = f; scanFileName = f.name;
+      if (f.size > 20 * 1024 * 1024) {
+        setStatus('fileStatus', 'File ' + f.name + ' quá lớn (' + Math.round(f.size / 1048576) + 'MB). Gemini Vision nên dùng file dưới 10MB — anh nén / tách trang rồi tải lại.');
+        scanFile = null; return;
+      }
+      setStatus('fileStatus', 'Đã chọn file scan/ảnh: ' + f.name + '. Nhập key ở mục Gemini Vision rồi bấm “Đọc scan / ảnh bằng Gemini”. Chế độ “Chuẩn hóa ngay” không đọc được ảnh.');
+      setStatus('geminiStatus', 'Đã sẵn sàng đọc ' + f.name + ' bằng Gemini Vision — chỉ cần nhập key.');
+    });
+
+    // Nhớ key : chỉ khi anh tick, lưu localStorage trên máy này
+    (function restoreKey() {
+      try {
+        var saved = localStorage.getItem('tnsi_gemini_key');
+        if (saved) { el('geminiKey').value = saved; el('rememberKey').checked = true; }
+      } catch (e) {}
+    })();
+    el('rememberKey').addEventListener('change', function () {
+      try {
+        if (el('rememberKey').checked) localStorage.setItem('tnsi_gemini_key', el('geminiKey').value);
+        else localStorage.removeItem('tnsi_gemini_key');
+      } catch (e) {}
+    });
+    el('geminiKey').addEventListener('input', function () {
+      try { if (el('rememberKey').checked) localStorage.setItem('tnsi_gemini_key', el('geminiKey').value); } catch (e) {}
+    });
+
+    function fileToBase64(file) {
+      return new Promise(function (resolve, reject) {
+        var r = new FileReader();
+        r.onload = function () { resolve(String(r.result).split(',')[1]); };
+        r.onerror = reject;
+        r.readAsDataURL(file);
+      });
+    }
+
+    async function runGeminiVision() {
+      var key = el('geminiKey').value.trim();
+      if (!scanFile) { setStatus('geminiStatus', 'Chưa có file scan/ảnh. Hãy tải ảnh hoặc PDF scan ở mục “Tải ảnh / scan PDF” trước.'); return; }
+      if (!key) { setStatus('geminiStatus', 'Chưa nhập Gemini API key. Key này là key của anh, không phải key của Thịnh Nguyễn SI.'); return; }
+      var baseModels = el('geminiModel').value === 'gemini-3.8-flash'
+        ? ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.5-flash']
+        : (el('geminiModel').value === 'gemini-3.7-flash' ? ['gemini-3.7-flash', 'gemini-3.5-flash'] : ['gemini-3.5-flash']);
+      var btn = el('btnGemini'); btn.disabled = true; btn.textContent = 'Đang đọc bằng Gemini…';
+      setStatus('geminiStatus', 'Đang gửi ' + scanFileName + ' tới Gemini Vision… (file đi thẳng từ trình duyệt của anh tới Google)');
+      try {
+        var b64 = await fileToBase64(scanFile);
+        var mime = scanFile.type || (scanFileName.toLowerCase().endsWith('.pdf') ? 'application/pdf' : 'image/png');
+        var systemPrompt = 'Bạn là chuyên gia bóc tách thị giác tài liệu và biên tập tiếng Việt. Nhiệm vụ: bóc tách TOÀN VĂN từ file đính kèm, không tóm tắt, không cắt đoạn, giữ thứ tự đọc logic (2 cột: hết cột trái rồi sang cột phải), giữ bảng dạng Markdown Table, ghi con dấu/chữ ký dạng [Dấu mộc đỏ: ...] / [Chữ ký: ...]. Chuẩn hóa Unicode NFC, dấu thanh chuẩn (hòa, thủy), sửa lỗi OCR rõ ràng. Số tiền, ngày tháng, mã hợp đồng, tỷ lệ % nếu mờ hoặc không chắc chắn: TUYỆT ĐỐI KHÔNG TỰ ĐOÁN SỐ, giữ dạng [? <ký tự gốc>]. Giữ nguyên thuật ngữ chuyên ngành và tên riêng. Trả lời hoàn toàn bằng tiếng Việt, định dạng Markdown, cuối văn bản luôn có bảng BẢNG ĐỐI SOÁT HẬU KIỂM (AUDIT LOG) với các cột STT | Vị trí | Nội dung gốc nghi vấn / Lỗi OCR | Xử lý chuẩn hóa | Mức độ tin cậy.';
+        var lastError = '';
+        var usedModel = '';
+        var outText = '';
+        for (var mi = 0; mi < baseModels.length; mi++) {
+          var model = baseModels[mi];
+          var resp = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + encodeURIComponent(key), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: systemPrompt }] },
+              contents: [{ role: 'user', parts: [{ text: 'Bóc tách và chuẩn hóa toàn văn tài liệu đính kèm theo đúng yêu cầu trên.' }, { inlineData: { mimeType: mime, data: b64 } }] }],
+              generationConfig: { temperature: 0.2, maxOutputTokens: 8000 }
+            })
+          });
+          if (resp.status === 404) { lastError = 'Model ' + model + ' không còn tồn tại (404), thử model tiếp theo…'; continue; }
+          if (!resp.ok) {
+            var errText = '';
+            try { errText = JSON.stringify(await resp.json()); } catch (e) {}
+            lastError = 'Gemini báo lỗi ' + resp.status + '. ' + (resp.status === 400 ? 'Kiểm tra lại key.' : resp.status === 429 ? 'Hết quota free tier, thử lại sau.' : errText);
+            break;
+          }
+          var data = await resp.json();
+          outText = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts ? data.candidates[0].content.parts.map(function (p) { return p.text || ''; }).join('') : '').trim();
+          usedModel = model;
+          break;
+        }
+        if (!outText) {
+          setStatus('geminiStatus', lastError || 'Gemini không trả về văn bản. Thử lại, hoặc tách file nhỏ hơn.');
+        } else {
+          el('outputText').value = outText;
+          lastResult = { markdown: outText, stats: { words: outText.split(/\s+/).filter(Boolean).length, corrections: 0, doubts: 0 }, audit: [], doubts: [] };
+          setStatus('statsLine', 'Đã đọc bằng Gemini Vision qua ' + usedModel + ' • ' + lastResult.stats.words + ' từ • Hãy đọc lại và đối chiếu số liệu, nhất là các mục [?]');
+          setStatus('geminiStatus', 'Đã đọc xong bằng ' + usedModel + '. Kết quả đã nằm ở ô Markdown bên dưới — anh bấm Sao chép hoặc Tải .md để dùng. Nhớ đối chiếu lại số liệu trước khi ký / gửi.');
+          el('auditBox').innerHTML = '<p class="text-xs text-gray-400">Bảng Đối soát nằm cuối kết quả Gemini (trong ô Markdown). Gemini đã tự ghi lại các chỗ nó sửa — anh đọc bảng đó, đừng chỉ đọc phần văn bản.</p>';
+          el('doubtBox').innerHTML = '<p class="text-xs text-gray-400">Các mục [? …] trong kết quả Gemini là điểm nghi vấn — đối chiếu bản gốc trước khi dùng.</p>';
+        }
+      } catch (err) {
+        setStatus('geminiStatus', 'Lỗi khi gọi Gemini: ' + err.message + '. Kiểm tra mạng và key, rồi thử lại.');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Đọc scan / ảnh bằng Gemini';
+      }
+    }
+  </script>
+</body>
+</html>
