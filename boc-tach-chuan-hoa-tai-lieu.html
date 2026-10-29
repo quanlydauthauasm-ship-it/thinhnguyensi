@@ -450,19 +450,29 @@
       }
       return { title: title, body: body };
     }
+    // Tên loại văn bản theo NĐ30 phải nằm giữa, in hoa, đậm — ví dụ THÔNG BÁO, QUYẾT ĐỊNH, CÔNG VĂN.
+    // Nhận diện cả khi nó là heading (# THÔNG BÁO) lẫn khi nó là đoạn in đậm (**THÔNG BÁO**).
+    function isDocTypeTitle(text) {
+      var t = String(text || '').replace(/\*\*/g, '').replace(/\*/g, '').trim().toUpperCase().replace(/[:.,;]+$/, '').trim();
+      var list = ['THÔNG BÁO', 'QUYẾT ĐỊNH', 'CÔNG VĂN', 'BÁO CÁO', 'TỜ TRÌNH', 'BIÊN BẢN', 'KẾ HOẠCH', 'HƯỚNG DẪN', 'GIẤY MỜI', 'GIẤY ĐI ĐƯỜNG', 'GIẤY GIỚI THIỆU', 'THƯ CÔNG', 'CHỈ THỊ', 'NGHỊ QUYẾT', 'KẾT LUẬN', 'THÔNG BÁO KẾT LUẬN'];
+      return list.indexOf(t) !== -1;
+    }
     function nd30HeaderHtml(opts) {
       var unit = String(opts.unit || 'Thịnh Nguyễn SI').trim() || 'Thịnh Nguyễn SI';
       var number = String(opts.number || '').trim();
       var numberLine = number ? 'Số: ' + number : 'Số: ……………';
+      // Cột phải nới từ 94mm lên 105mm, cột trái thu còn 55mm (tổng vẫn 160mm) để Quốc hiệu vừa 1 hàng.
       return '<table class="nd30-header" style="width:100%;border-collapse:collapse"><tr>'
-        + '<td style="width:41%;vertical-align:top;text-align:center;border:none"><div class="nd30-unit">' + escHtml(unit.toUpperCase()) + '</div><div class="nd30-rule"></div><div>' + escHtml(numberLine) + '</div></td>'
-        + '<td style="width:59%;vertical-align:top;text-align:center;border:none"><div class="nd30-quoc-hieu">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT&nbsp;NAM</div><div class="nd30-tieu-ngu">Độc lập - Tự do - Hạnh phúc</div><div class="nd30-rule-full"></div><div class="nd30-date">' + escHtml(nd30DateLine(opts)) + '</div></td>'
+        + '<td style="width:34%;vertical-align:top;text-align:center;border:none"><div class="nd30-unit">' + escHtml(unit.toUpperCase()) + '</div><div class="nd30-rule"></div><div>' + escHtml(numberLine) + '</div></td>'
+        + '<td style="width:66%;vertical-align:top;text-align:center;border:none"><div class="nd30-quoc-hieu">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT&nbsp;NAM</div><div class="nd30-tieu-ngu">Độc lập - Tự do - Hạnh phúc</div><div class="nd30-rule-full"></div><div class="nd30-date">' + escHtml(nd30DateLine(opts)) + '</div></td>'
         + '</tr></table>';
     }
     function nd30BodyHtml(bodyBlocks) {
       var out = [];
       bodyBlocks.forEach(function (b) {
-        if (b.type === 'heading') out.push('<h' + b.level + ' class="nd30-heading">' + inlineHtmlNd30(b.text) + '</h' + b.level + '>');
+        if (b.type === 'heading' && isDocTypeTitle(b.text)) out.push('<div class="nd30-doctype">' + inlineHtmlNd30(b.text.toUpperCase()) + '</div>');
+        else if (b.type === 'paragraph' && isDocTypeTitle(b.text)) out.push('<div class="nd30-doctype">' + inlineHtmlNd30(b.text.toUpperCase()) + '</div>');
+        else if (b.type === 'heading') out.push('<h' + b.level + ' class="nd30-heading">' + inlineHtmlNd30(b.text) + '</h' + b.level + '>');
         else if (b.type === 'paragraph') out.push('<p class="nd30-para">' + inlineHtmlNd30(b.text) + '</p>');
         else if (b.type === 'code') out.push('<pre class="nd30-code">' + escHtml(b.text) + '</pre>');
         else if (b.type === 'separator') out.push('<hr class="nd30-hr">');
@@ -671,7 +681,11 @@
     }
     function nd30ParaOpts(DX, alignName, spacing, firstLine) {
       var o = {};
-      if (DX.AlignmentType && alignName && DX.AlignmentType[alignName]) o.alignment = DX.AlignmentType[alignName];
+      // LỖI ĐÃ SỬA 29/10: thư viện docx không có AlignmentType.JUSTIFY, tên đúng là JUSTIFIED (giá trị 'both').
+      // Dùng JUSTIFY trước đây khiến alignment thành undefined, Word tự về căn trái — đó là nguyên nhân 'chưa canh đều'.
+      var map = { JUSTIFY: 'JUSTIFIED', CENTER: 'CENTER', RIGHT: 'RIGHT', LEFT: 'LEFT' };
+      var key = map[alignName] || alignName;
+      if (DX.AlignmentType && key && DX.AlignmentType[key]) o.alignment = DX.AlignmentType[key];
       if (spacing) o.spacing = spacing;
       if (firstLine) o.indent = { firstLine: firstLine };
       return o;
@@ -688,17 +702,17 @@
       var dateLine = nd30DateLine(opts);
       var single = (DX.BorderStyle && DX.BorderStyle.SINGLE) ? DX.BorderStyle.SINGLE : 'single';
       var noneStyle = (DX.BorderStyle && DX.BorderStyle.NONE) ? DX.BorderStyle.NONE : 'none';
-      // Đầu trang 2 cột không viền : trái 66mm, phải 94mm, tổng vùng in 160mm (theo skill NĐ30)
+      // Đầu trang 2 cột không viền : trái 55mm, phải 105mm, tổng vùng in 160mm — nới cột phải để Quốc hiệu vừa 1 hàng
       try {
         var leftCell = new DX.TableCell({
-          width: { size: 3742, type: DX.WidthType ? DX.WidthType.DXA : undefined },
+          width: { size: 3118, type: DX.WidthType ? DX.WidthType.DXA : undefined },
           children: [
             new DX.Paragraph(Object.assign({ children: [new DX.TextRun({ text: unit, bold: true, font: 'Times New Roman', size: 26 })] }, nd30ParaOpts(DX, 'CENTER'))),
             new DX.Paragraph(Object.assign({ children: [new DX.TextRun({ text: numberLine, font: 'Times New Roman', size: 26 })] }, nd30ParaOpts(DX, 'CENTER')))
           ]
         });
         var rightCell = new DX.TableCell({
-          width: { size: 5330, type: DX.WidthType ? DX.WidthType.DXA : undefined },
+          width: { size: 5953, type: DX.WidthType ? DX.WidthType.DXA : undefined },
           children: [
             new DX.Paragraph(Object.assign({ children: [new DX.TextRun({ text: 'CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT  NAM'.replace('VIỆT  NAM', 'VIỆT\u00A0NAM'), bold: true, font: 'Times New Roman', size: 26 })] }, nd30ParaOpts(DX, 'CENTER'))),
             new DX.Paragraph(Object.assign({ children: [new DX.TextRun({ text: 'Độc lập - Tự do - Hạnh phúc', bold: true, font: 'Times New Roman', size: 28 })] }, nd30ParaOpts(DX, 'CENTER'))),
@@ -713,7 +727,7 @@
         children.push(headerTable);
       } catch (e) {
         children.push(new DX.Paragraph(Object.assign({ children: [new DX.TextRun({ text: unit, bold: true, font: 'Times New Roman', size: 26 })] }, nd30ParaOpts(DX, 'CENTER'))));
-        children.push(new DX.Paragraph(Object.assign({ children: [new DX.TextRun({ text: 'CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT\u00A0NAM', bold: true, font: 'Times New Roman', size: 26 })] }, nd30ParaOpts(DX, 'CENTER'))));
+        children.push(new DX.Paragraph(Object.assign({ children: [new DX.TextRun({ text: 'CỘNG\u00A0HÒA\u00A0XÃ\u00A0HỘI\u00A0CHỦ\u00A0NGHĨA\u00A0VIỆT\u00A0NAM', bold: true, font: 'Times New Roman', size: 24 })] }, nd30ParaOpts(DX, 'CENTER'))));
         children.push(new DX.Paragraph(Object.assign({ children: [new DX.TextRun({ text: 'Độc lập - Tự do - Hạnh phúc', bold: true, font: 'Times New Roman', size: 28 })] }, nd30ParaOpts(DX, 'CENTER'))));
         children.push(new DX.Paragraph(Object.assign({ children: [new DX.TextRun({ text: numberLine, font: 'Times New Roman', size: 26 })] }, nd30ParaOpts(DX, 'CENTER'))));
         children.push(new DX.Paragraph(Object.assign({ children: [new DX.TextRun({ text: dateLine, italics: true, font: 'Times New Roman', size: 28 })] }, nd30ParaOpts(DX, 'RIGHT'))));
@@ -721,7 +735,9 @@
       children.push(new DX.Paragraph({ children: [new DX.TextRun({ text: '', font: 'Times New Roman', size: 28 })], spacing: { after: 120 } }));
       children.push(new DX.Paragraph(Object.assign({ children: [new DX.TextRun({ text: split.title, bold: true, font: 'Times New Roman', size: 28 })] }, nd30ParaOpts(DX, 'CENTER', { before: 240, after: 240 }))));
       split.body.forEach(function (b) {
-        if (b.type === 'heading') {
+        if ((b.type === 'heading' || b.type === 'paragraph') && isDocTypeTitle(b.text)) {
+          children.push(new DX.Paragraph(Object.assign({ children: inlineRunsNd30(b.text.toUpperCase(), DX, true, 28) }, nd30ParaOpts(DX, 'CENTER', { before: 240, after: 120 }))));
+        } else if (b.type === 'heading') {
           children.push(new DX.Paragraph(Object.assign({ children: inlineRunsNd30(b.text, DX, true, 28) }, nd30ParaOpts(DX, 'LEFT', { before: 200, after: 120 }))));
         } else if (b.type === 'paragraph') {
           children.push(new DX.Paragraph(Object.assign({ children: inlineRunsNd30(b.text, DX, false, 28) }, nd30ParaOpts(DX, 'JUSTIFY', { after: 120, line: 288 }, 567))));
@@ -816,7 +832,7 @@
           var isNd30 = el('nd30Check') && el('nd30Check').checked;
           var htmlDoc;
           if (isNd30) {
-            htmlDoc = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Văn bản đã chuẩn hóa - Thịnh Nguyễn SI</title><style>@page{size:A4;margin:20mm 20mm 20mm 30mm} body{font-family:"Times New Roman",Times,serif;font-size:14pt;line-height:1.2;color:#000} .nd30-header{width:100%} .nd30-unit,.nd30-quoc-hieu{font-weight:bold;text-transform:uppercase;font-size:13pt;text-align:center} .nd30-tieu-ngu{font-weight:bold;font-size:14pt;text-align:center} .nd30-date{font-style:italic;font-size:14pt;text-align:right} .nd30-title{font-weight:bold;font-size:14pt;text-transform:uppercase;text-align:center;margin:18pt 0} .nd30-para{text-align:justify;text-indent:1cm;margin:0 0 6pt 0} .nd30-heading{font-weight:bold;font-size:14pt;margin:12pt 0 6pt 0} .nd30-table{width:100%;border-collapse:collapse;font-size:12pt} .nd30-table th,.nd30-table td{border:1px solid #000;padding:6px;text-align:left;vertical-align:top} .nd30-table th{font-weight:bold} .nd30-note{font-style:italic;font-size:12pt}</style></head><body>' + nd30DocumentHtml(markdownToBlocks(md), getNd30Opts()) + '</body></html>';
+            htmlDoc = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Văn bản đã chuẩn hóa - Thịnh Nguyễn SI</title><style>@page{size:A4;margin:20mm 20mm 20mm 30mm} body{font-family:"Times New Roman",Times,serif;font-size:14pt;line-height:1.2;color:#000} .nd30-header{width:100%} .nd30-unit{font-weight:bold;text-transform:uppercase;font-size:13pt;text-align:center} .nd30-quoc-hieu{font-weight:bold;text-transform:uppercase;font-size:12pt;text-align:center;white-space:nowrap} .nd30-doctype{font-weight:bold;font-size:14pt;text-transform:uppercase;text-align:center;margin:18pt 0 6pt 0} .nd30-tieu-ngu{font-weight:bold;font-size:14pt;text-align:center} .nd30-date{font-style:italic;font-size:14pt;text-align:right} .nd30-title{font-weight:bold;font-size:14pt;text-transform:uppercase;text-align:center;margin:18pt 0} .nd30-para{text-align:justify;text-indent:1cm;margin:0 0 6pt 0} .nd30-heading{font-weight:bold;font-size:14pt;margin:12pt 0 6pt 0} .nd30-table{width:100%;border-collapse:collapse;font-size:12pt} .nd30-table th,.nd30-table td{border:1px solid #000;padding:6px;text-align:left;vertical-align:top} .nd30-table th{font-weight:bold} .nd30-note{font-style:italic;font-size:12pt}</style></head><body>' + nd30DocumentHtml(markdownToBlocks(md), getNd30Opts()) + '</body></html>';
           } else {
             htmlDoc = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Văn bản đã chuẩn hóa - Thịnh Nguyễn SI</title><style>body{font-family:Calibri,Arial,sans-serif;font-size:13pt;line-height:1.5} table{border-collapse:collapse} th,td{border:1px solid #999;padding:6px} th{background:#e2e8f0}</style></head><body>' + blocksToHtml(markdownToBlocks(md)) + '<p><i>— Thịnh Nguyễn SI • Hotline/Zalo 0918 717 952 • thinhnguyensi.com — Đối chiếu số liệu trước khi dùng.</i></p></body></html>';
           }
@@ -837,7 +853,7 @@
       if (!win) { setStatus('statsLine', 'Trình duyệt đã chặn cửa sổ in. Hãy cho phép popup cho trang này rồi bấm “In / Lưu PDF” lại.'); return; }
       var isNd30 = el('nd30Check') && el('nd30Check').checked;
       if (isNd30) {
-        var nd30Css = '@page{size:A4;margin:20mm 20mm 20mm 30mm} body{font-family:"Times New Roman",Times,serif;font-size:14pt;line-height:1.2;color:#000} .nd30-header{width:100%;border-collapse:collapse} .nd30-header td{border:none} .nd30-unit,.nd30-quoc-hieu{font-weight:bold;text-transform:uppercase;font-size:13pt;text-align:center} .nd30-tieu-ngu{font-weight:bold;font-size:14pt;text-align:center} .nd30-rule{border-bottom:1px solid #000;width:40%;margin:4px auto} .nd30-rule-full{border-bottom:1px solid #000;width:80%;margin:4px auto} .nd30-date{font-style:italic;font-size:14pt;text-align:right} .nd30-title{font-weight:bold;font-size:14pt;text-transform:uppercase;text-align:center;margin:18pt 0} .nd30-para{text-align:justify;text-indent:1cm;margin:0 0 6pt 0} .nd30-heading{font-weight:bold;font-size:14pt;margin:12pt 0 6pt 0} .nd30-list{margin:0 0 6pt 0} .nd30-table{width:100%;border-collapse:collapse;font-size:12pt} .nd30-table th,.nd30-table td{border:1px solid #000;padding:6px;text-align:left;vertical-align:top} .nd30-table th{font-weight:bold} .nd30-code{font-family:Consolas,monospace;font-size:10pt;white-space:pre-wrap} .nd30-note{font-style:italic;font-size:12pt} .footer{margin-top:24px;border-top:1px solid #ccc;padding-top:12px;font-size:10pt;color:#555}';
+        var nd30Css = '@page{size:A4;margin:20mm 20mm 20mm 30mm} body{font-family:"Times New Roman",Times,serif;font-size:14pt;line-height:1.2;color:#000} .nd30-header{width:100%;border-collapse:collapse} .nd30-header td{border:none} .nd30-unit{font-weight:bold;text-transform:uppercase;font-size:13pt;text-align:center} .nd30-quoc-hieu{font-weight:bold;text-transform:uppercase;font-size:12pt;text-align:center;white-space:nowrap} .nd30-doctype{font-weight:bold;font-size:14pt;text-transform:uppercase;text-align:center;margin:18pt 0 6pt 0} .nd30-tieu-ngu{font-weight:bold;font-size:14pt;text-align:center} .nd30-rule{border-bottom:1px solid #000;width:40%;margin:4px auto} .nd30-rule-full{border-bottom:1px solid #000;width:80%;margin:4px auto} .nd30-date{font-style:italic;font-size:14pt;text-align:right} .nd30-title{font-weight:bold;font-size:14pt;text-transform:uppercase;text-align:center;margin:18pt 0} .nd30-para{text-align:justify;text-indent:1cm;margin:0 0 6pt 0} .nd30-heading{font-weight:bold;font-size:14pt;margin:12pt 0 6pt 0} .nd30-list{margin:0 0 6pt 0} .nd30-table{width:100%;border-collapse:collapse;font-size:12pt} .nd30-table th,.nd30-table td{border:1px solid #000;padding:6px;text-align:left;vertical-align:top} .nd30-table th{font-weight:bold} .nd30-code{font-family:Consolas,monospace;font-size:10pt;white-space:pre-wrap} .nd30-note{font-style:italic;font-size:12pt} .footer{margin-top:24px;border-top:1px solid #ccc;padding-top:12px;font-size:10pt;color:#555}';
         win.document.write('<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><title>Văn bản đã chuẩn hóa - Thịnh Nguyễn SI</title><style>' + nd30Css + '</style></head><body>' + nd30DocumentHtml(markdownToBlocks(md), getNd30Opts()) + '<div class="footer">Thịnh Nguyễn SI • Hotline/Zalo 0918 717 952 • thinhnguyensi.com — Đối chiếu số liệu trước khi dùng.</div></body></html>');
         win.document.close();
         win.focus();
