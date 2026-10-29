@@ -56,7 +56,7 @@
       </h1>
       <p class="text-sm sm:text-base text-gray-400">
         Dán văn bản OCR thô hoặc tải PDF có sẵn text — công cụ chuẩn hóa Unicode NFC, sửa lỗi OCR tiếng Việt,
-        giữ nguyên số liệu, và xuất Markdown kèm Bảng Đối soát Hậu kiểm để anh đối chiếu lại.
+        giữ nguyên số liệu, và xuất Markdown, Word (.docx) và PDF kèm Bảng Đối soát Hậu kiểm để anh đối chiếu lại.
       </p>
     </div>
 
@@ -127,6 +127,8 @@
           <button type="button" onclick="copyOutput()" id="btnCopy" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 text-white font-bold px-3 py-2 rounded-lg text-xs shadow-md shadow-cyan-500/20 active:scale-95 transition cursor-pointer">📋 Sao chép</button>
           <button type="button" onclick="downloadOutput('md')" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 border border-cyan-900 px-3 py-2 rounded-lg text-xs transition">⬇ Tải .md</button>
           <button type="button" onclick="downloadOutput('txt')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3 py-2 rounded-lg text-xs transition">⬇ Tải .txt</button>
+          <button type="button" onclick="exportDocx()" id="btnDocx" class="bg-gray-800 hover:bg-gray-700 text-blue-300 border border-blue-900 px-3 py-2 rounded-lg text-xs transition">⬇ Xuất Word (.docx)</button>
+          <button type="button" onclick="exportPdf()" class="bg-gray-800 hover:bg-gray-700 text-red-300 border border-red-900 px-3 py-2 rounded-lg text-xs transition">🖨️ In / Lưu PDF</button>
         </div>
       </div>
       <textarea id="outputText" readonly placeholder="Kết quả sẽ hiện ở đây sau khi anh bấm Chuẩn hóa ngay, hoặc sau khi đọc xong bằng Gemini Vision." class="c-input c-scroll w-full min-h-[320px] font-mono text-xs sm:text-sm leading-relaxed"></textarea>
@@ -151,6 +153,7 @@
         <li><b class="text-gray-200">Số tiền, ngày tháng, mã hợp đồng, tỷ lệ %</b> luôn phải đọc lại 1 lượt trước khi ký / gửi. Chỗ nào công cụ đã sửa số (ví dụ O → 0) đều ghi trong Bảng Đối soát.</li>
         <li><b class="text-gray-200">Thuật ngữ chuyên ngành, tên riêng, từ viết tắt</b> (EBITDA, KPI, ISO, NĐ-CP…) được giữ nguyên, không tự dịch hay sửa.</li>
         <li>Công cụ chạy trên trình duyệt, không lưu văn bản của anh lên server Thịnh Nguyễn SI. Riêng chế độ Gemini Vision thì file được gửi tới Google theo key của anh, theo điều khoản của Google.</li>
+        <li><b class="text-gray-200">Xuất Word và PDF cũng chạy trên trình duyệt, không tốn token.</b> Word .docx tạo bằng thư viện docx trên CDN (nếu mạng chặn CDN thì tự đổi sang file .doc mở được bằng Word); PDF dùng hộp thoại In của trình duyệt — chọn “Save as PDF” là ra file PDF giữ nguyên dấu tiếng Việt.</li>
       </ul>
     </div>
 
@@ -349,6 +352,59 @@
         stats: { inputChars: original.length, outputChars: text.length, words: words, corrections: corrections, doubts: doubts.length }
       };
     }
+
+    // Chuyển Markdown thành các khối trung gian, dùng chung cho xuất Word và PDF.
+    // Mỗi dòng trống tách đoạn ; mỗi dòng không trống là 1 đoạn, trừ tiêu đề / bảng / danh sách.
+    function markdownToBlocks(md) {
+      var lines = String(md == null ? '' : md).split('\n');
+      var blocks = [];
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (!line) continue;
+        if (/^---+$/.test(line)) { blocks.push({ type: 'separator' }); continue; }
+        var hm = line.match(/^(#{1,6})\s+(.*)$/);
+        if (hm) { blocks.push({ type: 'heading', level: Math.min(hm[1].length, 3), text: hm[2].trim() }); continue; }
+        if (line.indexOf('|') === 0) {
+          var header = line.split('|').map(function (c) { return c.trim(); }).filter(function (c) { return c !== ''; });
+          var rows = [];
+          var j = i + 1;
+          if (j < lines.length && /^[\s|:\-]+$/.test(lines[j].trim())) j++;
+          while (j < lines.length && lines[j].trim().indexOf('|') === 0) {
+            rows.push(lines[j].trim().split('|').map(function (c) { return c.trim(); }).filter(function (c, idx, arr) { return !(idx === 0 && c === '') && !(idx === arr.length - 1 && c === ''); }));
+            j++;
+          }
+          // Bỏ cột rỗng ở 2 đầu do dấu | mở / đóng
+          var cleanRows = rows.map(function (r) {
+            while (r.length && r[0] === '') r.shift();
+            while (r.length && r[r.length - 1] === '') r.pop();
+            return r;
+          });
+          blocks.push({ type: 'table', header: header, rows: cleanRows });
+          i = j - 1;
+          continue;
+        }
+        var lm = line.match(/^[-*]\s+(.*)$/) || line.match(/^\d+\.\s+(.*)$/);
+        if (lm) {
+          var items = [lm[1]];
+          while (i + 1 < lines.length) {
+            var nm = lines[i + 1].trim().match(/^[-*]\s+(.*)$/) || lines[i + 1].trim().match(/^\d+\.\s+(.*)$/);
+            if (!nm) break;
+            items.push(nm[1]); i++;
+          }
+          blocks.push({ type: 'list', items: items });
+          continue;
+        }
+        if (/^```/.test(line)) {
+          var code = [];
+          i++;
+          while (i < lines.length && !/^```/.test(lines[i].trim())) { code.push(lines[i]); i++; }
+          blocks.push({ type: 'code', text: code.join('\n') });
+          continue;
+        }
+        blocks.push({ type: 'paragraph', text: line });
+      }
+      return blocks;
+    }
   </script>
 
   <!-- DÂY NỐI GIAO DIỆN -->
@@ -434,6 +490,153 @@
       a.href = URL.createObjectURL(blob);
       a.download = 'van-ban-da-chuan-hoa.' + ext;
       a.click(); URL.revokeObjectURL(a.href);
+    }
+
+    function downloadBlob(blob, filename) {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    }
+
+    function inlineHtml(text) {
+      var s = esc(text);
+      s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+      return s;
+    }
+
+    function blocksToHtml(blocks) {
+      var out = [];
+      blocks.forEach(function (b) {
+        if (b.type === 'heading') out.push('<h' + b.level + '>' + inlineHtml(b.text) + '</h' + b.level + '>');
+        else if (b.type === 'paragraph') out.push('<p>' + inlineHtml(b.text) + '</p>');
+        else if (b.type === 'code') out.push('<pre><code>' + esc(b.text) + '</code></pre>');
+        else if (b.type === 'separator') out.push('<hr>');
+        else if (b.type === 'list') out.push('<ul>' + b.items.map(function (it) { return '<li>' + inlineHtml(it) + '</li>'; }).join('') + '</ul>');
+        else if (b.type === 'table') {
+          var h = '<table><thead><tr>' + b.header.map(function (c) { return '<th>' + inlineHtml(c) + '</th>'; }).join('') + '</tr></thead><tbody>';
+          h += b.rows.map(function (r) { return '<tr>' + r.map(function (c) { return '<td>' + inlineHtml(c) + '</td>'; }).join('') + '</tr>'; }).join('');
+          h += '</tbody></table>';
+          out.push(h);
+        }
+      });
+      return out.join('\n');
+    }
+
+    // Nạp thư viện docx từ CDN, thử lần lượt các bản build phổ biến.
+    // Nếu mạng chặn CDN thì trả về null để dùng dự phòng file .doc.
+    var docxPromise = null;
+    function loadDocxLibrary() {
+      if (docxPromise) return docxPromise;
+      if (typeof window !== 'undefined' && window.docx && window.docx.Document && window.docx.Packer) {
+        docxPromise = Promise.resolve(window.docx);
+        return docxPromise;
+      }
+      var urls = [
+        'https://cdn.jsdelivr.net/npm/docx@9.5.1/build/index.js',
+        'https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.js',
+        'https://unpkg.com/docx@7.8.2/build/index.js'
+      ];
+      docxPromise = urls.reduce(function (prev, url) {
+        return prev.then(function (found) {
+          if (found) return found;
+          return new Promise(function (resolve) {
+            var s = document.createElement('script');
+            s.src = url;
+            s.onload = function () { resolve((window.docx && window.docx.Document && window.docx.Packer) ? window.docx : null); };
+            s.onerror = function () { resolve(null); };
+            document.head.appendChild(s);
+          });
+        });
+      }, Promise.resolve(null));
+      return docxPromise;
+    }
+
+    function inlineRuns(text, DX, boldAll) {
+      var runs = [];
+      var parts = String(text).split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g);
+      parts.forEach(function (p) {
+        if (!p) return;
+        if (/^\*\*[^*]+\*\*$/.test(p)) runs.push(new DX.TextRun({ text: p.slice(2, -2), bold: true }));
+        else if (/^\*[^*]+\*$/.test(p)) runs.push(new DX.TextRun({ text: p.slice(1, -1), italics: true }));
+        else if (/^`[^`]+`$/.test(p)) runs.push(new DX.TextRun({ text: p.slice(1, -1), font: 'Consolas' }));
+        else runs.push(new DX.TextRun({ text: p, bold: !!boldAll }));
+      });
+      return runs.length ? runs : [new DX.TextRun({ text: '' })];
+    }
+
+    async function exportDocx() {
+      var md = el('outputText').value;
+      if (!md.trim()) { setStatus('statsLine', 'Chưa có kết quả để xuất Word. Hãy bấm Chuẩn hóa ngay hoặc đọc bằng Gemini trước.'); return; }
+      var btn = el('btnDocx'); btn.disabled = true; btn.textContent = 'Đang tạo Word…';
+      try {
+        var blocks = markdownToBlocks(md);
+        var DX = await loadDocxLibrary();
+        if (!DX) throw new Error('docx-cdn-missing');
+        var children = [];
+        blocks.forEach(function (b) {
+          if (b.type === 'heading') {
+            var hl = DX.HeadingLevel ? (DX.HeadingLevel['HEADING_' + b.level] || DX.HeadingLevel.HEADING_1) : undefined;
+            children.push(new DX.Paragraph({ children: inlineRuns(b.text, DX), heading: hl, spacing: { before: 200, after: 120 } }));
+          } else if (b.type === 'paragraph') {
+            children.push(new DX.Paragraph({ children: inlineRuns(b.text, DX), spacing: { after: 120 } }));
+          } else if (b.type === 'code') {
+            children.push(new DX.Paragraph({ children: [new DX.TextRun({ text: b.text, font: 'Consolas', size: 20 })], spacing: { after: 120 } }));
+          } else if (b.type === 'separator') {
+            children.push(new DX.Paragraph({ children: [new DX.TextRun({ text: '—' })], spacing: { before: 120, after: 120 } }));
+          } else if (b.type === 'list') {
+            b.items.forEach(function (it) {
+              children.push(new DX.Paragraph({ children: inlineRuns('•  ' + it, DX), spacing: { after: 60 } }));
+            });
+          } else if (b.type === 'table') {
+            var rows = [];
+            rows.push(new DX.TableRow({ children: b.header.map(function (c) {
+              return new DX.TableCell({ children: [new DX.Paragraph({ children: inlineRuns(c, DX, true) })] });
+            }) }));
+            b.rows.forEach(function (r) {
+              rows.push(new DX.TableRow({ children: r.map(function (c) {
+                return new DX.TableCell({ children: [new DX.Paragraph({ children: inlineRuns(c, DX) })] });
+              }) }));
+            });
+            var tableOpts = { rows: rows };
+            if (DX.WidthType) tableOpts.width = { size: 100, type: DX.WidthType.PERCENTAGE };
+            children.push(new DX.Table(tableOpts));
+            children.push(new DX.Paragraph({ children: [new DX.TextRun({ text: '' })], spacing: { after: 120 } }));
+          }
+        });
+        children.push(new DX.Paragraph({ children: [new DX.TextRun({ text: '— Thịnh Nguyễn SI • Hotline/Zalo 0918 717 952 • thinhnguyensi.com — Đối chiếu số liệu trước khi dùng.', italics: true })], spacing: { before: 240 } }));
+        var doc = new DX.Document({ sections: [{ children: children }] });
+        var blob = await DX.Packer.toBlob(doc);
+        downloadBlob(blob, 'van-ban-da-chuan-hoa.docx');
+        setStatus('statsLine', 'Đã xuất file Word (.docx) — mở bằng Word, Google Docs hoặc LibreOffice. Nhớ đối chiếu số liệu trước khi dùng.');
+      } catch (err) {
+        // Dự phòng : file Word .doc dạng HTML, Word / Google Docs / LibreOffice đều mở được, giữ nguyên tiếng Việt và bảng.
+        try {
+          var htmlDoc = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Văn bản đã chuẩn hóa - Thịnh Nguyễn SI</title><style>body{font-family:Calibri,Arial,sans-serif;font-size:13pt;line-height:1.5} table{border-collapse:collapse} th,td{border:1px solid #999;padding:6px} th{background:#e2e8f0}</style></head><body>' + blocksToHtml(markdownToBlocks(md)) + '<p><i>— Thịnh Nguyễn SI • Hotline/Zalo 0918 717 952 • thinhnguyensi.com — Đối chiếu số liệu trước khi dùng.</i></p></body></html>';
+          downloadBlob(new Blob(['\ufeff', htmlDoc], { type: 'application/msword;charset=utf-8' }), 'van-ban-da-chuan-hoa.doc');
+          setStatus('statsLine', 'Không tải được thư viện tạo .docx (cần mạng tới CDN), đã xuất file Word .doc thay thế — mở được bằng Word / Google Docs. Thử lại khi có mạng để lấy .docx.');
+        } catch (e2) {
+          setStatus('statsLine', 'Không xuất được Word: ' + err.message + '. Anh thử tải .md trước, rồi mở bằng Word để lưu lại.');
+        }
+      } finally {
+        btn.disabled = false; btn.textContent = '⬇ Xuất Word (.docx)';
+      }
+    }
+
+    function exportPdf() {
+      var md = el('outputText').value;
+      if (!md.trim()) { setStatus('statsLine', 'Chưa có kết quả để xuất PDF. Hãy bấm Chuẩn hóa ngay hoặc đọc bằng Gemini trước.'); return; }
+      var htmlBody = blocksToHtml(markdownToBlocks(md));
+      var win = window.open('', '_blank');
+      if (!win) { setStatus('statsLine', 'Trình duyệt đã chặn cửa sổ in. Hãy cho phép popup cho trang này rồi bấm “In / Lưu PDF” lại.'); return; }
+      win.document.write('<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><title>Văn bản đã chuẩn hóa - Thịnh Nguyễn SI</title><style>body{font-family:system-ui,Arial,sans-serif;font-size:13pt;line-height:1.6;color:#111;max-width:760px;margin:32px auto;padding:0 24px} h1{font-size:22pt} h2{font-size:17pt} h3{font-size:14pt} table{border-collapse:collapse;width:100%;font-size:11pt} th,td{border:1px solid #999;padding:6px;text-align:left;vertical-align:top} th{background:#e2e8f0} pre{background:#f1f5f9;padding:12px;white-space:pre-wrap} hr{margin:20px 0} .footer{margin-top:32px;border-top:1px solid #ccc;padding-top:12px;font-size:10pt;color:#555}</style></head><body>' + htmlBody + '<div class="footer">Thịnh Nguyễn SI • Hotline/Zalo 0918 717 952 • thinhnguyensi.com — Đối chiếu số liệu trước khi dùng.</div></body></html>');
+      win.document.close();
+      win.focus();
+      setTimeout(function () { try { win.print(); } catch (e) {} }, 350);
+      setStatus('statsLine', 'Đã mở bản in. Trong hộp thoại in, chọn Đích đến là “Save as PDF / Lưu dưới dạng PDF” rồi bấm Save — cách này giữ nguyên dấu tiếng Việt, không cần thư viện PDF và không tốn token.');
     }
 
     el('txtFile').addEventListener('change', function (e) {
