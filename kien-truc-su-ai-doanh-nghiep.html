@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Kiến Trúc Sư AI Doanh Nghiệp | Thịnh Nguyễn SI</title>
+
+
+
+
+
+
+<style>
+  :root {
+    --primary: #2563eb;
+    --accent: #67e8f9;
+    --accent2: #06b6d4;
+    --bg: #0a0f1d;
+    --card: #0f172a;
+    --border: rgba(255,255,255,0.10);
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(10,15,29,0.95);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav-logo {
+    font-size: 1.1rem; font-weight: 700; color: var(--accent);
+    text-decoration: none;
+  }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    margin-left: 24px; font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(37,99,235,0.28) 0%, var(--bg) 70%);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(37,99,235,0.10) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(6,182,212,0.10) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(6,182,212,0.10);
+    border: 1px solid rgba(6,182,212,0.30);
+    color: var(--accent);
+    padding: 6px 18px; border-radius: 20px;
+    font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    background: linear-gradient(to right, #fff 20%, #93c5fd 60%, #67e8f9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: var(--accent2);
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .hero-desc {
+    max-width: 680px;
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin-bottom: 40px;
+  }
+  .hero-cta {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    color: #fff; font-weight: 700;
+    box-shadow: 0 8px 20px rgba(37,99,235,0.35);
+    padding: 14px 32px; border-radius: 8px;
+    text-decoration: none; font-size: 1rem;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-outline {
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 14px 32px; border-radius: 8px;
+    text-decoration: none; font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* SECTION */
+  section {
+    padding: 80px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800; margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .section-desc {
+    color: var(--muted); font-size: 1.05rem;
+    max-width: 620px; margin-bottom: 48px;
+  }
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* ĐỊNH NGHĨA */
+  .define-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px; margin-top: 40px;
+  }
+  .define-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    position: relative; overflow: hidden;
+  }
+  .define-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #2563eb, #06b6d4);
+  }
+  .define-icon { font-size: 2rem; margin-bottom: 16px; }
+  .define-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+  .define-text { color: var(--muted); line-height: 1.8; }
+
+  /* VẤN ĐỀ */
+  .problem-section {
+    background: rgba(6,182,212,0.06);
+    border: 1px solid rgba(6,182,212,0.15);
+    border-radius: 16px;
+    padding: 56px 40px;
+    margin: 0 auto;
+    max-width: 1100px;
+  }
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px; margin-top: 36px;
+  }
+  .problem-item {
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .problem-icon {
+    font-size: 1.4rem; flex-shrink: 0; margin-top: 2px;
+  }
+  .problem-text strong { display: block; margin-bottom: 4px; font-size: 0.95rem; }
+  .problem-text span { color: var(--muted); font-size: 0.9rem; }
+
+  /* GIẢI PHÁP */
+  .solution-steps {
+    display: flex; flex-direction: column; gap: 0;
+    margin-top: 40px; position: relative;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 24px; padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 48px; height: 48px;
+    background: rgba(6,182,212,0.10);
+    border: 1px solid rgba(6,182,212,0.30);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; font-weight: 800; color: var(--accent);
+    flex-shrink: 0;
+  }
+  .step-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+  .step-desc { color: var(--muted); line-height: 1.8; }
+  .step-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .tag {
+    background: rgba(6,182,212,0.08);
+    border: 1px solid rgba(6,182,212,0.25);
+    color: var(--accent);
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 0.8rem;
+  }
+
+  /* SO SÁNH */
+  .compare-table {
+    width: 100%; border-collapse: collapse;
+    margin-top: 40px;
+  }
+  .compare-table th {
+    padding: 16px 20px;
+    text-align: left; font-size: 0.9rem;
+    font-weight: 700;
+    border-bottom: 2px solid var(--border);
+  }
+  .compare-table th:nth-child(2) { color: var(--muted); }
+  .compare-table th:nth-child(3) { color: var(--accent); }
+  .compare-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.92rem;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { color: var(--muted); }
+  .compare-table td:nth-child(2) { color: #64748b; }
+  .compare-table td:nth-child(3) { color: var(--text); font-weight: 500; }
+  .yes { color: #34d399 !important; }
+  .no { color: #64748b !important; }
+
+  /* KẾT QUẢ */
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px; margin-top: 40px;
+  }
+  .result-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-align: center;
+  }
+  .result-num {
+    font-size: 2.4rem; font-weight: 800;
+    color: var(--accent); display: block;
+    margin-bottom: 8px;
+  }
+  .result-label { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+
+  /* CASE STUDY */
+  .case-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px;
+    margin-top: 32px;
+    position: relative; overflow: hidden;
+  }
+  .case-card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(180deg, #2563eb, #06b6d4);
+  }
+  .case-label {
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px;
+  }
+  .case-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; }
+  .case-body { color: var(--muted); line-height: 1.8; margin-bottom: 20px; }
+  .case-results {
+    display: flex; flex-wrap: wrap; gap: 12px;
+  }
+  .case-result-item {
+    background: rgba(37,99,235,0.12);
+    border: 1px solid rgba(37,99,235,0.25);
+    border-radius: 8px;
+    padding: 10px 16px;
+  }
+  .case-result-item strong { color: var(--accent); display: block; font-size: 1.1rem; }
+  .case-result-item span { color: var(--muted); font-size: 0.8rem; }
+
+  /* RCESF */
+  .rcesf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px; margin-top: 40px;
+  }
+  .rcesf-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .rcesf-letter {
+    font-size: 2.5rem; font-weight: 900;
+    color: var(--accent); line-height: 1;
+    margin-bottom: 8px;
+  }
+  .rcesf-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; }
+  .rcesf-desc { color: var(--muted); font-size: 0.82rem; line-height: 1.6; }
+
+  /* CTA FINAL */
+  .cta-section {
+    text-align: center;
+    padding: 100px 24px;
+    background: radial-gradient(ellipse at 50% 100%, rgba(37,99,235,0.25) 0%, var(--bg) 60%);
+  }
+  .cta-section h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800; margin-bottom: 16px;
+  }
+  .cta-section p {
+    color: var(--muted); font-size: 1.1rem;
+    max-width: 540px; margin: 0 auto 40px;
+  }
+  .cta-contacts {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    margin-top: 20px;
+  }
+  .contact-item {
+    display: flex; align-items: center; gap: 8px;
+    color: var(--muted); font-size: 0.9rem;
+  }
+
+  /* FAQ */
+  .faq-list { margin-top: 40px; }
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 24px 0;
+  }
+  .faq-q { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; }
+  .faq-a { color: var(--muted); line-height: 1.8; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 0.85rem;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .problem-section { padding: 36px 20px; }
+    .step { grid-template-columns: 48px 1fr; gap: 16px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="https://thinhnguyensi.com/">⚡ Thịnh Nguyễn SI</a>
+  <div class="nav-links">
+    <a href="https://thinhnguyensi.com/chuyen-gia-ai.html">Chuyên Gia AI</a>
+    <a href="https://thinhnguyensi.com/may-tao-cau-lenh-ai.html">Máy Tạo Prompt</a>
+    <a href="https://thinhnguyensi.com/kho-template.html">Kho Template</a>
+    <a href="https://thinhnguyensi.com/bao-gia-hop-dong-tu-dong.html">Báo Giá</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="badge">AI Enterprise Architect · 2026</span>
+  <h1>Kiến Trúc Sư<br>AI Doanh Nghiệp</h1>
+  <p class="hero-sub">Thịnh Nguyễn SI · Nguyễn Phước Thịnh</p>
+  <p class="hero-desc">
+    Thiết kế hệ thống Super Intelligence tích hợp trực tiếp vào quy trình vận hành — đo bằng số liệu thực tế, không dừng ở lý thuyết hay demo.
+  </p>
+  <div class="hero-cta">
+    <a class="btn-primary" href="https://zalo.me/0918717952">Tư vấn ngay qua Zalo</a>
+    <a class="btn-outline" href="https://thinhnguyensi.com/may-tao-cau-lenh-ai.html">Thử Máy Tạo Prompt RCESF</a>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ĐỊNH NGHĨA -->
+<section>
+  <p class="section-label">Kiến Trúc Sư AI Doanh Nghiệp Là Gì?</p>
+  <h2 class="section-title">Không phải dạy AI.<br>Là thiết kế hệ thống AI chạy được.</h2>
+  <p class="section-desc">
+    Kiến Trúc Sư AI Doanh Nghiệp (AI Enterprise Architect) là người thiết kế toàn bộ hệ thống Super Intelligence — từ luồng dữ liệu, điểm tích hợp, đến bộ câu lệnh và quy trình tự động hóa — gắn trực tiếp vào hạ tầng đang chạy của doanh nghiệp.
+  </p>
+  <div class="define-grid">
+    <div class="define-card">
+      <div class="define-icon">🏗️</div>
+      <div class="define-title">Thiết kế hệ thống, không chỉ dạy công cụ</div>
+      <div class="define-text">Không dừng ở việc hướng dẫn dùng ChatGPT hay Claude. Thiết kế cả kiến trúc: dữ liệu vào từ đâu, xử lý qua công cụ nào, kết quả ra ở đâu, ai duyệt và theo dõi thế nào.</div>
+    </div>
+    <div class="define-card">
+      <div class="define-icon">⚙️</div>
+      <div class="define-title">Tích hợp vào quy trình thực tế</div>
+      <div class="define-text">Hệ thống SI phải chạy được trên dữ liệu thật của doanh nghiệp — không phải demo với dữ liệu giả. Gắn vào Google Workspace, Zalo OA, n8n, Webhook và hạ tầng 0 đồng đang có sẵn.</div>
+    </div>
+    <div class="define-card">
+      <div class="define-icon">📊</div>
+      <div class="define-title">Đo bằng số liệu, không đo bằng cảm giác</div>
+      <div class="define-text">Mỗi hệ thống được thiết kế phải có chỉ số đo: tiết kiệm bao nhiêu giờ/tháng, giảm bao nhiêu sai sót, tăng bao nhiêu tốc độ xử lý — ghi lại được, báo cáo được.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- VẤN ĐỀ -->
+<div style="padding: 0 24px;">
+  <div class="problem-section">
+    <p class="section-label">Doanh Nghiệp Đang Gặp Phải</p>
+    <h2 class="section-title">7 Điểm Nghẽn Phổ Biến Nhất Khi Ứng Dụng AI</h2>
+    <div class="problem-grid">
+      <div class="problem-item">
+        <div class="problem-icon">⛔</div>
+        <div class="problem-text">
+          <strong>Học AI xong không biết làm gì</strong>
+          <span>Demo đẹp nhưng không tích hợp được vào công việc thực tế</span>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">⛔</div>
+        <div class="problem-text">
+          <strong>Mỗi người dùng AI một kiểu</strong>
+          <span>Không có chuẩn chung, kết quả thiếu nhất quán giữa các phòng ban</span>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">⛔</div>
+        <div class="problem-text">
+          <strong>Chi phí phần mềm AI tăng nhanh</strong>
+          <span>Subscribe nhiều tool nhưng không tối ưu, dùng chồng chéo hoặc không dùng hết</span>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">⛔</div>
+        <div class="problem-text">
+          <strong>Dữ liệu nội bộ không kết nối được với AI</strong>
+          <span>AI ngoài không hiểu ngữ cảnh, quy trình và dữ liệu riêng của doanh nghiệp</span>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">⛔</div>
+        <div class="problem-text">
+          <strong>Không đo được hiệu quả AI</strong>
+          <span>Không biết đầu tư vào AI có thật sự sinh ra lợi ích hay không</span>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">⛔</div>
+        <div class="problem-text">
+          <strong>Phụ thuộc vào 1 người biết AI</strong>
+          <span>Người đó nghỉ hoặc chuyển công tác là hệ thống đứng lại</span>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">⛔</div>
+        <div class="problem-text">
+          <strong>Lo ngại bảo mật dữ liệu</strong>
+          <span>Không rõ dữ liệu nội bộ có bị rò rỉ khi đưa lên AI bên ngoài không</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" style="margin-top: 80px;">
+
+<!-- QUY TRÌNH THIẾT KẾ -->
+<section>
+  <p class="section-label">Quy Trình Thực Chiến</p>
+  <h2 class="section-title">5 Bước Thiết Kế Hệ Thống AI Doanh Nghiệp</h2>
+  <p class="section-desc">Không phải tư vấn chung chung. Mỗi bước có đầu ra cụ thể, đo được, bàn giao được.</p>
+  <div class="solution-steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div>
+        <div class="step-title">Chẩn đoán điểm nghẽn quy trình</div>
+        <div class="step-desc">Phỏng vấn trực tiếp các phòng ban, lập bản đồ quy trình hiện tại, xác định đúng 3–5 điểm nghẽn có thể giải quyết bằng AI ngay — không đề xuất dàn trải.</div>
+        <div class="step-tags">
+          <span class="tag">Bản đồ quy trình</span>
+          <span class="tag">Danh sách điểm nghẽn ưu tiên</span>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div>
+        <div class="step-title">Thiết kế kiến trúc hệ thống SI</div>
+        <div class="step-desc">Xác định công cụ AI phù hợp cho từng điểm nghẽn (Muse AI, Claude, ChatGPT, Gemini), thiết kế luồng dữ liệu, điểm tích hợp và bộ Master Prompt chuẩn RCESF 5 tầng cho từng phòng ban.</div>
+        <div class="step-tags">
+          <span class="tag">Sơ đồ kiến trúc</span>
+          <span class="tag">Bộ Master Prompt RCESF</span>
+          <span class="tag">Lựa chọn công cụ AI</span>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div>
+        <div class="step-title">Triển khai và tích hợp thực tế</div>
+        <div class="step-desc">Kết nối hệ thống AI vào dữ liệu và quy trình đang chạy: Google Workspace, Zalo OA, n8n Webhook, hạ tầng Vercel và Cloudflare R2 — tối ưu chi phí về mức 0 đồng nơi có thể.</div>
+        <div class="step-tags">
+          <span class="tag">n8n Webhook</span>
+          <span class="tag">Google Workspace</span>
+          <span class="tag">Zalo OA</span>
+          <span class="tag">Vercel</span>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div>
+        <div class="step-title">Đào tạo đội ngũ chạy hệ thống</div>
+        <div class="step-desc">Chuyển giao toàn bộ hệ thống cho đội ngũ nội bộ: đào tạo thực chiến theo triết lý "Nói được – Làm được – Chạy thực tế được", không phụ thuộc vào một người duy nhất.</div>
+        <div class="step-tags">
+          <span class="tag">Đào tạo thực chiến</span>
+          <span class="tag">Tài liệu vận hành</span>
+          <span class="tag">Kho Template</span>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">05</div>
+      <div>
+        <div class="step-title">Đo lường và tối ưu liên tục</div>
+        <div class="step-desc">Thiết lập dashboard báo cáo thời gian thực trên Vercel và Google Sheet, theo dõi chỉ số hiệu quả hàng tuần, điều chỉnh bộ prompt và quy trình dựa trên số liệu thực.</div>
+        <div class="step-tags">
+          <span class="tag">Dashboard Vercel</span>
+          <span class="tag">Google Sheet realtime</span>
+          <span class="tag">KPI theo dõi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- RCESF -->
+<section>
+  <p class="section-label">Phương Pháp Độc Quyền</p>
+  <h2 class="section-title">Khung RCESF – Siêu Prompt 5 Tầng</h2>
+  <p class="section-desc">
+    Bộ khung thiết kế câu lệnh AI chuẩn do Thịnh Nguyễn SI phát triển — đang được dùng tại Sao Mai Group và nhiều doanh nghiệp. Thử trực tiếp tại <a href="https://thinhnguyensi.com/may-tao-cau-lenh-ai.html" style="color: var(--accent);">Máy Tạo Câu Lệnh AI</a>.
+  </p>
+  <div class="rcesf-grid">
+    <div class="rcesf-card">
+      <div class="rcesf-letter">R</div>
+      <div class="rcesf-name">Role</div>
+      <div class="rcesf-desc">Giao đúng vai trò cho AI — chuyên gia gì, cấp độ nào, ngữ cảnh doanh nghiệp nào</div>
+    </div>
+    <div class="rcesf-card">
+      <div class="rcesf-letter">C</div>
+      <div class="rcesf-name">Context</div>
+      <div class="rcesf-desc">Bối cảnh và mục đích cụ thể — AI hiểu đúng bài toán thực tế của doanh nghiệp</div>
+    </div>
+    <div class="rcesf-card">
+      <div class="rcesf-letter">E</div>
+      <div class="rcesf-name">Example / Task</div>
+      <div class="rcesf-desc">Đặc tả chi tiết yêu cầu — ví dụ mẫu, ràng buộc, điều không muốn</div>
+    </div>
+    <div class="rcesf-card">
+      <div class="rcesf-letter">S</div>
+      <div class="rcesf-name">Style</div>
+      <div class="rcesf-desc">Văn phong và thẩm mỹ đầu ra — phù hợp văn hóa và thương hiệu doanh nghiệp</div>
+    </div>
+    <div class="rcesf-card">
+      <div class="rcesf-letter">F</div>
+      <div class="rcesf-name">Format</div>
+      <div class="rcesf-desc">Định dạng đầu ra — bảng, gạch đầu dòng, JSON, Word, PDF hay Google Sheet</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SO SÁNH -->
+<section>
+  <p class="section-label">Tại Sao Chọn Kiến Trúc Sư AI?</p>
+  <h2 class="section-title">Khác biệt so với đào tạo AI thông thường</h2>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Tiêu chí</th>
+        <th>Đào tạo AI thông thường</th>
+        <th>Kiến Trúc Sư AI · Thịnh Nguyễn SI</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Đầu ra sau khóa học</td>
+        <td class="no">Kiến thức lý thuyết, certificate</td>
+        <td class="yes">Hệ thống AI chạy thật trên dữ liệu thật</td>
+      </tr>
+      <tr>
+        <td>Tích hợp quy trình</td>
+        <td class="no">Không — học demo riêng lẻ</td>
+        <td class="yes">Có — gắn vào quy trình đang chạy</td>
+      </tr>
+      <tr>
+        <td>Chi phí hạ tầng</td>
+        <td class="no">Không đề cập</td>
+        <td class="yes">Tối ưu về 0 đồng nơi có thể</td>
+      </tr>
+      <tr>
+        <td>Đo lường hiệu quả</td>
+        <td class="no">Không có chỉ số cụ thể</td>
+        <td class="yes">Dashboard thời gian thực, KPI rõ ràng</td>
+      </tr>
+      <tr>
+        <td>Bảo mật dữ liệu</td>
+        <td class="no">Không đề cập</td>
+        <td class="yes">Trợ lý AI nội bộ bảo mật, dữ liệu không rời khỏi hệ thống</td>
+      </tr>
+      <tr>
+        <td>Sau khi bàn giao</td>
+        <td class="no">Tự vận hành, không có hỗ trợ</td>
+        <td class="yes">Đào tạo đội ngũ, tài liệu vận hành đầy đủ</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="divider">
+
+<!-- CASE STUDY -->
+<section>
+  <p class="section-label">Thực Chiến Thực Tế</p>
+  <h2 class="section-title">Case Study: Sao Mai Group</h2>
+  <div class="case-card">
+    <div class="case-label">Buổi Phổ Cập AI · Sáng 24/10/2026</div>
+    <div class="case-title">Đào tạo AI thực chiến tại Cụm Công nghiệp Vàm Cống, Hội trường Lầu 3 – Tòa nhà 12 tầng</div>
+    <div class="case-body">
+      Thiết kế và triển khai hệ thống Super Intelligence tích hợp vào quy trình vận hành của Sao Mai Group — tập đoàn đa ngành lớn tại Đồng bằng Sông Cửu Long. Lãnh đạo và cán bộ quản lý được đào tạo thực chiến trực tiếp trên bài toán của chính đơn vị mình, không dùng dữ liệu mẫu.
+    </div>
+    <div class="case-results">
+      <div class="case-result-item">
+        <strong>AI Vision</strong>
+        <span>Tự động trích xuất chứng từ, hóa đơn, phiếu xuất nhập kho</span>
+      </div>
+      <div class="case-result-item">
+        <strong>Webhook n8n</strong>
+        <span>Tự động cảnh báo phê duyệt vào nhóm Zalo tức thì</span>
+      </div>
+      <div class="case-result-item">
+        <strong>Dashboard Vercel</strong>
+        <span>Báo cáo số liệu thời gian thực trên đám mây</span>
+      </div>
+      <div class="case-result-item">
+        <strong>0 đồng hạ tầng</strong>
+        <span>Tối ưu toàn bộ chi phí vận hành hệ thống AI</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FAQ -->
+<section>
+  <p class="section-label">Câu Hỏi Thường Gặp</p>
+  <h2 class="section-title">Kiến Trúc Sư AI Doanh Nghiệp giải đáp</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">Kiến Trúc Sư AI Doanh Nghiệp khác gì với chuyên gia AI thông thường?</div>
+      <div class="faq-a">Chuyên gia AI thông thường dạy cách dùng công cụ. Kiến Trúc Sư AI Doanh Nghiệp thiết kế toàn bộ hệ thống — từ luồng dữ liệu, điểm tích hợp, bộ câu lệnh chuẩn đến quy trình tự động hóa — gắn trực tiếp vào hạ tầng đang chạy của doanh nghiệp và đo được bằng số liệu thực.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Doanh nghiệp cỡ nào phù hợp để làm việc với Thịnh Nguyễn SI?</div>
+      <div class="faq-a">Phù hợp với doanh nghiệp từ 20 nhân sự trở lên, đang có quy trình vận hành rõ ràng và muốn tăng tốc độ xử lý, giảm sai sót thủ công và tiết kiệm chi phí vận hành bằng hệ thống AI tích hợp thực tế.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Hệ thống AI có bảo mật dữ liệu nội bộ không?</div>
+      <div class="faq-a">Có. Thịnh Nguyễn SI ưu tiên xây trợ lý AI nội bộ bảo mật — dữ liệu của doanh nghiệp không rời khỏi hệ thống, không đưa lên cloud AI bên ngoài khi không cần thiết. Mỗi giải pháp đều có phương án bảo mật rõ ràng trước khi triển khai.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Chi phí triển khai hệ thống AI có cao không?</div>
+      <div class="faq-a">Thịnh Nguyễn SI theo triết lý tối ưu hạ tầng về 0 đồng nơi có thể — tận dụng Google Workspace, Vercel, n8n và các công cụ miễn phí trước khi đề xuất trả phí. Chi phí thực tế phụ thuộc vào quy mô và độ phức tạp, được báo giá rõ ràng trước khi triển khai.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Liên hệ Kiến Trúc Sư AI Doanh Nghiệp Thịnh Nguyễn SI như thế nào?</div>
+      <div class="faq-a">Liên hệ qua Zalo/Hotline 0918.717.952, website thinhnguyensi.com hoặc Telegram Bot @thinhnguyensi_bot (gõ lệnh /dangky). Thịnh Nguyễn SI trực tiếp tiếp nhận và tư vấn bài toán cụ thể của từng doanh nghiệp.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<div class="cta-section">
+  <h2>Sẵn sàng thiết kế<br>hệ thống AI cho doanh nghiệp bạn?</h2>
+  <p>Thịnh Nguyễn SI trực tiếp tư vấn và thiết kế — không qua trung gian, không bán khóa học lý thuyết.</p>
+  <div class="hero-cta">
+    <a class="btn-primary" href="https://zalo.me/0918717952">Nhắn Zalo · 0918.717.952</a>
+    <a class="btn-outline" href="https://thinhnguyensi.com/bao-gia-hop-dong-tu-dong.html">Xem Báo Giá</a>
+  </div>
+  <div class="cta-contacts" style="margin-top: 32px;">
+    <div class="contact-item">📱 Zalo/Hotline: 0918.717.952</div>
+    <div class="contact-item">🤖 Telegram: @thinhnguyensi_bot</div>
+    <div class="contact-item">🌐 thinhnguyensi.com</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    <a href="https://thinhnguyensi.com/">thinhnguyensi.com</a> · 
+    <a href="https://thinhnguyensi.com/chuyen-gia-ai.html">Chuyên Gia AI</a> · 
+    <a href="https://thinhnguyensi.com/may-tao-cau-lenh-ai.html">Máy Tạo Prompt RCESF</a> · 
+    <a href="https://thinhnguyensi.com/kho-template.html">Kho Template</a>
+  </p>
+  <p style="margin-top: 12px;">© 2026 Thịnh Nguyễn SI · Kiến Trúc Sư AI Doanh Nghiệp · Nguyễn Phước Thịnh · 0918.717.952</p>
+</footer>
+
+</body>
+</html>
