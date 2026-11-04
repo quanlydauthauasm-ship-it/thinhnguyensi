@@ -61,22 +61,16 @@
     <section class="card p-5 sm:p-6 mb-6">
       <h2 class="text-lg font-bold text-white mb-2">Dùng ngay miễn phí — 3 bước</h2>
       <ol class="list-decimal ml-5 space-y-2 text-sm sm:text-base">
-        <li><strong class="text-white">Lấy skill:</strong> tải file SKILL.md bên dưới, hoặc bấm copy toàn bộ skill.</li>
+        <li><strong class="text-white">Lấy skill:</strong> tải file SKILL.md bên dưới, hoặc bấm Copy câu lệnh mẫu để copy toàn bộ nội dung skill.</li>
         <li><strong class="text-white">Đưa skill cho AI của bạn:</strong> trên Claude thì tải lên đúng file SKILL.md này; trên Muse AI, ChatGPT hoặc Gemini thì dán toàn bộ skill vào đoạn chat hoặc vào phần hướng dẫn của trợ lý.</li>
-        <li><strong class="text-white">Gửi kèm 2 file trong cùng đoạn chat:</strong> 1 file PDF nguồn và 1 file Word mẫu (.docx), kèm câu lệnh mẫu bên dưới.</li>
+        <li><strong class="text-white">Gửi kèm 2 file trong cùng đoạn chat:</strong> 1 file PDF nguồn và 1 file Word mẫu (.docx). Nội dung skill bạn vừa copy chính là câu lệnh đầy đủ, không cần thêm câu nào khác.</li>
       </ol>
       <div class="flex flex-wrap gap-3 mt-5">
         <button type="button" onclick="downloadSkill()" class="btn-main">Tải file SKILL.md</button>
-        <button type="button" onclick="copySkill()" class="btn-ghost">Copy toàn bộ skill</button>
         <button type="button" onclick="copyPrompt()" class="btn-ghost">Copy câu lệnh mẫu</button>
       </div>
       <p id="actionMsg" class="text-sm text-cyan-300 mt-3 min-h-5"></p>
       <p class="text-sm muted mt-1">Trang này là 1 file tĩnh, không có máy chủ xử lý, không thu thập file hay tài khoản của bạn. Bạn gửi PDF và Word mẫu trực tiếp trong đoạn chat với AI của bạn, không gửi lên web thinhnguyensi.com.</p>
-      <div class="bg-gray-950 border border-gray-700 rounded-xl p-4 mt-4">
-        <p class="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1">Câu lệnh mẫu — copy rồi gửi kèm 2 file</p>
-        <textarea id="promptText" readonly rows="2" onclick="this.select()" class="w-full bg-transparent border-0 p-0 text-sm sm:text-base text-white resize-none outline-none">Trích xuất file PDF này vào file Word mẫu giúp tôi.</textarea>
-        <p class="text-xs muted mt-1">Mẹo: bấm vào câu để bôi đen rồi bấm Sao chép nếu nút Copy không hoạt động.</p>
-      </div>
     </section>
 
     <section class="mb-6">
@@ -317,20 +311,13 @@ Dòng thương hiệu này chỉ là thông tin của skill, không điền vào
       else if (onFail) { onFail(); }
       else { showMsg('Trình duyệt không cho copy tự động, bạn bôi đen đoạn cần copy rồi bấm Sao chép.'); }
     }
-    function selectPromptText() {
-      var pt = document.getElementById('promptText');
-      pt.focus(); pt.select();
-      try { pt.setSelectionRange(0, pt.value.length); } catch (e) {}
-      showMsg('Trình duyệt không cho copy tự động. Câu lệnh đã được bôi đen, bạn bấm Sao chép là xong.');
-    }
     function selectSkillPreview() {
       var el = document.getElementById('skillPreview');
       var range = document.createRange(); range.selectNodeContents(el);
       var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
       showMsg('Trình duyệt không cho copy tự động. Toàn bộ skill đã được bôi đen, bạn bấm Sao chép là xong.');
     }
-    function copySkill() { copyText(getSkillText(), 'Đã copy toàn bộ skill. Dán vào đoạn chat AI hoặc phần hướng dẫn của trợ lý rồi gửi kèm PDF và Word mẫu.', selectSkillPreview); }
-    function copyPrompt() { copyText(document.getElementById('promptText').value.trim(), 'Đã copy câu lệnh mẫu. Gửi câu này kèm 1 file PDF và 1 file Word mẫu trong cùng đoạn chat.', selectPromptText); }
+    function copyPrompt() { copyText(getSkillText(), 'Đã copy toàn bộ câu lệnh. Dán vào đoạn chat AI rồi gửi kèm PDF và Word mẫu.', selectSkillPreview); }
   </script>
 </body>
 </html>
