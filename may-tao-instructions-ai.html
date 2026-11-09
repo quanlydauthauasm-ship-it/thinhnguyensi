@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Máy Tạo Instructions cho Project | Thịnh Nguyễn SI</title>
+  <meta name="description" content="Máy tạo Instructions cho Project của Thịnh Nguyễn SI: trả lời 7 câu phỏng vấn, bấm Búng Tay là có ngay bộ Instructions 9 phần để dán vào Claude Project, ChatGPT GPT hoặc Gemini Gem, dùng lại cả năm. Chạy ngay trên trình duyệt, không cần tài khoản, không tốn phí.">
+  <link rel="canonical" href="https://thinhnguyensi.com/may-tao-instructions-ai.html">
+  <meta property="og:title" content="Máy Tạo Instructions cho Project | Thịnh Nguyễn SI">
+  <meta property="og:description" content="Trả lời 7 câu phỏng vấn, bấm Búng Tay là có ngay bộ Instructions 9 phần: vai trò, nhiệm vụ, quy trình, quy ước đầu ra, điều cấm. Dán một lần, dùng cả năm.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://thinhnguyensi.com/may-tao-instructions-ai.html">
+  <link rel="icon" type="image/png" sizes="48x48" href="images/favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #0B0F19; color: #F3F4F6; font-family: system-ui, -apple-system, sans-serif; }
+    .glow-cyan { box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.3); }
+    .glow-purple { box-shadow: 0 0 25px -5px rgba(168, 85, 247, 0.3); }
+    .c-scroll::-webkit-scrollbar { width: 6px; }
+    .c-scroll::-webkit-scrollbar-track { background: #111827; }
+    .c-scroll::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+    .c-input { width: 100%; background: #030712; border: 1px solid #1f2937; border-radius: 0.5rem; padding: 0.6rem 0.75rem; font-size: 0.875rem; color: #e5e7eb; outline: none; transition: border-color 0.2s; }
+    .c-input:focus { border-color: #06b6d4; }
+    select.c-input option { background: #111827; color: #e5e7eb; }
+    #btnMagic:disabled, #btnGenerate:disabled { opacity: .75; cursor: wait; }
+    .btn-spark { display: inline-block; transition: transform .25s; }
+    #btnMagic:active .btn-spark, #btnMagic.btn-bung .btn-spark, #btnGenerate:active .btn-spark, #btnGenerate.btn-bung .btn-spark { transform: scale(1.6) rotate(20deg); }
+    @keyframes flashResult { 0% { box-shadow: 0 0 0 0 rgba(6,182,212,.55), 0 0 25px -5px rgba(168,85,247,.3); } 100% { box-shadow: 0 0 0 6px rgba(6,182,212,0), 0 0 25px -5px rgba(168,85,247,.3); } }
+    .flash-result { animation: flashResult 1.2s ease-out 2; border-color: rgba(6,182,212,.7) !important; }
+    .check-ok { color: #34d399; }
+    .check-no { color: #fbbf24; }
+    .chip { font-size: 0.72rem; background: #1f2937; color: #67e8f9; border: 1px solid #164e63; padding: 0.25rem 0.6rem; border-radius: 0.5rem; cursor: pointer; transition: background 0.15s; }
+    .chip:hover { background: #374151; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between c-scroll">
+
+  <!-- HEADER -->
+  <header class="border-b border-gray-800 bg-gray-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-cyan-500/20">SI</div>
+        <div>
+          <div class="font-extrabold text-white text-base flex items-center gap-1.5">
+            Thịnh Nguyễn SI <span class="text-[10px] uppercase px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">Super Intelligence</span>
+          </div>
+          <div class="text-xs text-gray-400">Siêu Trí Tuệ &amp; Tự Động Hóa Doanh Nghiệp</div>
+        </div>
+      </a>
+      <div class="flex items-center space-x-3">
+        <a href="/" class="hidden sm:inline-flex text-sm text-gray-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-gray-800 transition">Trang Chủ</a>
+        <a href="/may-tao-cau-lenh-ai.html" class="hidden sm:inline-flex text-sm text-cyan-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-gray-800 transition">Máy Tạo Câu Lệnh</a>
+        <a href="https://zalo.me/0918717952" target="_blank" class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg transition shadow-md shadow-cyan-500/20">Tư Vấn Zalo</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow">
+
+    <!-- TIÊU ĐỀ -->
+    <div class="text-center max-w-3xl mx-auto mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-700/50 text-cyan-400 text-xs font-semibold mb-3">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> CÔNG CỤ TƯƠNG TÁC THỰC CHIẾN 0 ĐỒNG - BỘ NÃO INSTRUCTIONS
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight mb-3">
+        Máy Tạo Instructions <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">cho Project</span>
+      </h1>
+      <p class="text-sm sm:text-base text-gray-400">
+        Một câu lệnh chỉ dùng một lần. Một bộ Instructions dùng cả năm. Trả lời 7 câu phỏng vấn, bấm Búng Tay là có ngay bộ Instructions 9 phần để dán vào trợ lý AI của bạn.
+      </p>
+      <p class="text-xs text-gray-500 mt-2">Chỉ cần 1 câu lệnh dùng 1 lần thì sang <a href="/may-tao-cau-lenh-ai.html" class="text-cyan-400 hover:text-cyan-300 underline underline-offset-4">Máy Tạo Câu Lệnh RCESF</a>. Việc nào lặp đi lặp lại mỗi tuần thì dựng trợ lý riêng ở trang này. Bộ não: skill Viết Instructions cho Project - Thịnh Nguyễn SI (phỏng vấn 7 câu, khuôn 9 phần, 3 bộ mẫu đầy đủ, bảng kiểm 8 điểm). Chạy hoàn toàn trên trình duyệt, không gửi yêu cầu của bạn đi đâu, không cần tài khoản, không tốn phí.</p>
+    </div>
+
+    <!-- BƯỚC 1: MÔ TẢ TRỢ LÝ MUỐN DỰNG -->
+    <div class="bg-gray-900 border border-cyan-500/30 rounded-2xl p-4 sm:p-6 mb-8 glow-cyan">
+      <div class="text-white font-bold text-sm sm:text-base mb-3">Bước 1 - Bạn muốn dựng trợ lý cho việc gì?</div>
+      <div class="flex flex-col md:flex-row items-stretch gap-3">
+        <div class="relative flex-grow">
+          <input type="text" id="naturalInput"
+                 oninput="onNaturalInput()"
+                 onkeydown="if(event.key==='Enter'){event.preventDefault();magicFillInterview();}"
+                 placeholder="VD: trợ lý soạn báo cáo hành chính, trợ lý viết bài Facebook, trợ lý thiết kế bài giảng..."
+                 class="w-full bg-gray-950 border border-gray-700 focus:border-cyan-400 px-4 py-3.5 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none transition">
+          <button type="button" onclick="clearNaturalInput()" id="btnClear" class="hidden absolute right-3 top-3.5 text-gray-500 hover:text-gray-300 text-sm">✕</button>
+        </div>
+        <button type="button" onclick="magicFillInterview()" id="btnMagic"
+                class="bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 text-white font-bold px-6 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 active:scale-95 transition cursor-pointer whitespace-nowrap">
+          <span class="btn-spark">⚡</span><span id="btnMagicLabel">Búng Tay: Điền Phỏng Vấn</span>
+        </button>
+      </div>
+      <p id="magicStatus" aria-live="polite" class="mt-3 text-xs text-gray-400">Gõ mô tả rồi bấm <b class="text-cyan-300">Búng Tay</b> - trang sẽ điền sẵn 7 câu trả lời gợi ý bên dưới để bạn sửa lại. Gõ không tự sinh gì cả.</p>
+
+      <!-- MẪU NHANH: 3 BỘ INSTRUCTIONS MẪU ĐẦY ĐỦ TỪ THƯ VIỆN -->
+      <div class="mt-4 flex flex-wrap items-center gap-2 pt-3 border-t border-gray-800">
+        <span class="text-xs text-gray-400 font-medium mr-1">Thử mẫu đầy đủ từ thư viện:</span>
+        <button type="button" onclick="setSample('admin')" class="text-xs bg-gray-800 hover:bg-gray-700 text-cyan-300 border border-cyan-900 px-2.5 py-1.5 rounded-lg transition">📄 Trợ lý soạn báo cáo hành chính</button>
+        <button type="button" onclick="setSample('content')" class="text-xs bg-gray-800 hover:bg-gray-700 text-blue-300 border border-blue-900 px-2.5 py-1.5 rounded-lg transition">📱 Trợ lý nội dung mạng xã hội</button>
+        <button type="button" onclick="setSample('training')" class="text-xs bg-gray-800 hover:bg-gray-700 text-amber-300 border border-amber-900 px-2.5 py-1.5 rounded-lg transition">🎓 Trợ lý thiết kế bài giảng</button>
+      </div>
+      <div class="mt-2 flex flex-wrap items-center gap-2">
+        <span class="text-xs text-gray-500 font-medium mr-1">Hoặc thử nhanh:</span>
+        <button type="button" onclick="setSample('analysis')" class="text-xs bg-gray-800 hover:bg-gray-700 text-emerald-300 border border-emerald-900 px-2.5 py-1.5 rounded-lg transition">📊 Trợ lý phân tích và tư vấn</button>
+        <button type="button" onclick="quickDecide()" class="text-xs bg-gray-800 hover:bg-gray-700 text-purple-300 border border-purple-900 px-2.5 py-1.5 rounded-lg transition">⚡ Khỏi hỏi - tự quyết giúp tôi</button>
+      </div>
+    </div>
+
+    <!-- BỘ CHỌN NHANH: LOẠI DỰ ÁN - GIỌNG VĂN - XƯNG HÔ -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-3">
+        <label class="block text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1" for="typeSelect">Loại dự án - 4 nhóm</label>
+        <select id="typeSelect" onchange="onTypeChange()" class="c-input"></select>
+        <p class="text-[11px] text-gray-500 mt-1">Búng Tay sẽ tự nhận diện loại dự án từ mô tả của bạn.</p>
+      </div>
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-3">
+        <label class="block text-xs font-bold text-purple-400 uppercase tracking-wider mb-1" for="styleSelect">Giọng văn - 5 tông</label>
+        <select id="styleSelect" onchange="onManualEdit()" class="c-input"></select>
+        <p class="text-[11px] text-gray-500 mt-1">Giọng văn mô tả bằng hành vi cụ thể, không chỉ bằng tính từ.</p>
+      </div>
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-3">
+        <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1" for="voiceSelect">Xưng hô</label>
+        <select id="voiceSelect" onchange="onManualEdit()" class="c-input">
+          <option value="toi-ban">Xưng "tôi - bạn", gần gũi</option>
+          <option value="trang-trong">Trang trọng, không dùng ngôi thứ nhất số ít</option>
+          <option value="trung-lap">Trung lập, xưng "trợ lý - bạn"</option>
+        </select>
+        <p class="text-[11px] text-gray-500 mt-1">Chi tiết nhỏ nhưng người dùng rất để ý.</p>
+      </div>
+    </div>
+
+    <!-- BƯỚC 2 + 3: PHỎNG VẤN 7 CÂU & KẾT QUẢ -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+      <!-- CỘT TRÁI: PHỎNG VẤN 7 CÂU -->
+      <div class="lg:col-span-6 space-y-3">
+        <div class="flex items-center justify-between pb-2 border-b border-gray-800">
+          <div class="text-white font-bold text-sm sm:text-base flex items-center gap-2">
+            <span class="text-cyan-400">💬</span> BƯỚC 2 - PHỎNG VẤN 7 CÂU
+          </div>
+          <button type="button" onclick="resetAll()" class="text-xs text-gray-400 hover:text-cyan-400 transition">↺ Làm mới</button>
+        </div>
+        <p class="text-[11px] text-gray-500">Trả lời được câu nào hay câu đó, câu nào bỏ trống thì trang tự suy đoán và ghi rõ ở mục Giả định. Bấm vào gợi ý để điền nhanh, hoặc gõ ý của riêng bạn.</p>
+
+        <div id="interviewBox" class="space-y-3"></div>
+
+        <button type="button" onclick="magicGenerate()" id="btnGenerate"
+                class="w-full bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 text-white font-bold px-6 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 active:scale-95 transition cursor-pointer">
+          <span class="btn-spark">⚡</span><span id="btnGenerateLabel">Búng Tay Tạo Instructions</span>
+        </button>
+        <p id="generateStatus" aria-live="polite" class="text-xs text-gray-400">Điền xong 7 câu trên (hoặc bấm mẫu đầy đủ bên trên) rồi bấm <b class="text-cyan-300">Búng Tay Tạo Instructions</b>.</p>
+      </div>
+
+      <!-- CỘT PHẢI: BỘ INSTRUCTIONS 9 PHẦN -->
+      <div class="lg:col-span-6 space-y-4" id="outputCard">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 sm:p-5 flex flex-col sticky top-20 glow-purple">
+
+          <div class="flex items-center justify-between pb-3 border-b border-gray-800 mb-3">
+            <div class="text-white font-bold text-sm sm:text-base flex items-center gap-2">
+              <span class="text-purple-400">✨</span> SIÊU TRỢ LÝ THỊNH NGUYỄN SI
+            </div>
+            <span id="wordCount" class="text-xs text-gray-400">Chưa có kết quả</span>
+          </div>
+
+          <div class="relative flex-grow flex flex-col">
+            <textarea id="instructionsOutput" readonly placeholder="Bộ Instructions 9 phần sẽ hiện ở đây sau khi bạn bấm Búng Tay Tạo Instructions (hoặc bấm 1 mẫu đầy đủ bên trên) - trong một khối duy nhất, copy một phát là xong."
+                      class="w-full flex-grow bg-gray-950 border border-gray-800 rounded-xl p-3.5 text-gray-200 text-xs sm:text-sm leading-relaxed font-mono resize-none focus:outline-none c-scroll min-h-[340px]"></textarea>
+          </div>
+
+          <div class="mt-3 flex flex-wrap items-center justify-between gap-2">
+            <span id="countLabel" class="text-xs text-gray-400">0 từ - chuẩn tốt: 400-900 từ</span>
+            <button type="button" onclick="copyInstructions()" id="btnCopy"
+                    class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow-md shadow-cyan-500/20 active:scale-95 transition cursor-pointer">
+              <span>📋 Sao Chép Instructions</span>
+            </button>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-gray-800">
+            <div class="text-xs font-bold text-amber-300 mb-1">Tài liệu nên nạp vào dự án</div>
+            <ul id="docsList" class="text-xs text-gray-400 list-disc pl-4 space-y-1">
+              <li>Chưa có - sẽ liệt kê sau khi tạo Instructions.</li>
+            </ul>
+          </div>
+
+          <div class="mt-3 pt-3 border-t border-gray-800">
+            <div class="text-xs font-bold text-amber-300 mb-1">Giả định tôi đã bổ sung</div>
+            <ul id="assumptionList" class="text-xs text-gray-400 list-disc pl-4 space-y-1">
+              <li>Chưa có giả định nào - bấm Búng Tay để hệ thống tự lấp chỗ trống và ghi rõ tại đây.</li>
+            </ul>
+          </div>
+
+          <div class="mt-3 pt-3 border-t border-gray-800">
+            <div class="text-xs font-bold text-amber-300 mb-1">Câu lệnh thử nghiệm - gõ thử ngay sau khi dán</div>
+            <ul id="testList" class="text-xs text-gray-400 list-disc pl-4 space-y-1">
+              <li>Chưa có - sẽ đưa 2 câu thử nghiệm sau khi tạo Instructions.</li>
+            </ul>
+          </div>
+
+          <div class="mt-3 pt-3 border-t border-gray-800">
+            <div class="text-xs font-bold text-emerald-300 mb-1">Bảng kiểm 8 điểm trước khi giao bản cuối</div>
+            <ul id="checkList" class="text-xs text-gray-400 space-y-1">
+              <li>Chưa kiểm tra - 8 điểm sẽ tự chấm sau khi có kết quả.</li>
+            </ul>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-gray-800 text-xs text-gray-400">
+            <div class="font-bold text-cyan-300 mb-1">Dán Instructions vào đâu?</div>
+            <ul class="list-disc pl-4 space-y-1">
+              <li><b class="text-gray-200">Claude:</b> tạo Project mới, dán vào Custom Instructions (hoặc Project Knowledge).</li>
+              <li><b class="text-gray-200">ChatGPT:</b> tạo GPT riêng, dán vào mục Instructions.</li>
+              <li><b class="text-gray-200">Gemini:</b> tạo Gem mới, dán vào mục Instructions.</li>
+            </ul>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400">
+            <div>Cần tinh chỉnh Instructions chuyên sâu hoặc cài Agent tự động?</div>
+            <a href="https://zalo.me/0918717952" target="_blank"
+               class="text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 underline underline-offset-4">
+              Nhắn Zalo 0918.717.952 ➔
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-800 bg-gray-950 py-6 mt-12 text-center text-xs text-gray-500">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="mb-2"><a href="/" class="text-cyan-400 hover:text-cyan-300 font-semibold">← Về trang chủ</a> &nbsp;•&nbsp; <a href="/may-tao-cau-lenh-ai.html" class="text-cyan-400 hover:text-cyan-300 font-semibold">Máy Tạo Câu Lệnh RCESF →</a></p>
+      © 2026 Thịnh Nguyễn SI • Kiến trúc sư Siêu Trí Tuệ &amp; Tự Động Hóa Doanh Nghiệp • Hotline/Zalo: 0918.717.952
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT: BỘ NÃO INSTRUCTIONS NHÚNG TRONG TRANG (lấy đúng từ skill + thư viện, chạy 100% trên trình duyệt, không gọi API) -->
+  <script>
+    // ---------- BỘ NÃO INSTRUCTIONS ----------
+    // Nguồn: skill viet-instructions-du-an-thinh-nguyen-si / SKILL.md + references/thu-vien-instructions.md
+    // Quy tắc: dùng dấu gạch ngắn "-" (không dùng dấu gạch dài) trong mọi Instructions.
+
+    // 7 CÂU PHỎNG VẤN (theo thứ tự ưu tiên của skill) - mỗi câu kèm 3 gợi ý điền nhanh
+    const QUESTIONS = [
+      { id: 'q1', n: 1, text: 'Dự án này xử lý loại công việc nào, và bạn sẽ dùng nó bao nhiêu lần một tuần?', why: 'Phân biệt trợ lý chuyên sâu một việc với trợ lý đa năng.', chips: ['Mỗi ngày', '3-4 lần mỗi tuần', '1 lần mỗi tuần'] },
+      { id: 'q2', n: 2, text: 'Đầu ra cuối cùng là gì, và nó đi đâu sau đó?', why: 'Quyết định định dạng, độ dài, mức trau chuốt.', chips: ['Bản hoàn chỉnh để trình ký', 'Bài đăng lên mạng xã hội', 'Tài liệu dùng trong buổi học'] },
+      { id: 'q3', n: 3, text: 'Ai là người đọc hoặc nhận kết quả?', why: 'Quyết định giọng văn và mức độ chuyên môn.', chips: ['Lãnh đạo đơn vị', 'Khách hàng và học viên', 'Học viên trong lớp'] },
+      { id: 'q4', n: 4, text: 'Bạn sẽ đưa vào dự án những tài liệu nền nào?', why: 'Quyết định cách trợ lý tra cứu và trích dẫn.', chips: ['Mẫu biểu và văn bản cũ', 'Bài viết cũ hiệu quả nhất', 'Khung chương trình khóa học'] },
+      { id: 'q5', n: 5, text: 'Có quy chuẩn, mẫu biểu hay quy định nào bắt buộc phải tuân theo?', why: 'Thường là thứ quan trọng nhất mà người dùng quên nói.', chips: ['Nghị định 30/2020/NĐ-CP', 'Mẫu riêng của đơn vị', 'Không có quy chuẩn bắt buộc'] },
+      { id: 'q6', n: 6, text: 'Điều gì khiến bạn thấy kết quả của AI là "hỏng"?', why: 'Biến thành danh sách cấm, hiệu quả hơn mọi lời khen.', chips: ['Bịa số liệu không có thật', 'Văn phong sáo rỗng, chung chung', 'Sai thể thức, thiếu phần quan trọng'] },
+      { id: 'q7', n: 7, text: 'Khi thiếu thông tin, bạn muốn trợ lý hỏi lại hay tự suy đoán rồi ghi chú?', why: 'Quyết định hành vi mặc định, tránh phiền hoặc tránh bịa.', chips: ['Hỏi lại tối đa 2 câu', 'Tự suy đoán rồi ghi chú rõ', 'Giao bản nháp có chỗ trống [cần bổ sung]'] }
+    ];
+
+    // 5 GIỌNG VĂN (mô tả bằng hành vi - thư viện, mục 2)
+    const STYLES = [
+      { id: 'trang-trong', label: 'Trang trọng - hành chính', text: 'Câu hoàn chỉnh, không viết tắt tùy tiện, không dùng ngôi thứ nhất số ít, không emoji, dùng đúng thể thức văn bản nhà nước' },
+      { id: 'gan-gui', label: 'Gần gũi - chia sẻ', text: 'Xưng "tôi - bạn", câu ngắn dưới 20 từ, mỗi ý xuống dòng, giải thích thuật ngữ ngay khi xuất hiện' },
+      { id: 'suc-tich', label: 'Chuyên nghiệp - súc tích', text: 'Mỗi đoạn một luận điểm, có dẫn chứng đi kèm, không câu dẫn nhập thừa, đi thẳng vào kết luận trước rồi giải thích sau' },
+      { id: 'thuyet-phuc', label: 'Thuyết phục - bán hàng', text: 'Nêu vấn đề trước giải pháp, dùng con số thay tính từ, kết bằng một hành động duy nhất, không hứa hẹn kết quả tuyệt đối' },
+      { id: 'su-pham', label: 'Sư phạm - dẫn dắt', text: 'Đi từ ví dụ quen thuộc đến khái niệm, mỗi khái niệm mới kèm một ví dụ, kết mỗi phần bằng một câu hỏi kiểm tra hiểu bài' }
+    ];
+
+    const VOICES = {
+      'toi-ban': 'Xưng "tôi - bạn".',
+      'trang-trong': 'Không dùng ngôi thứ nhất số ít.',
+      'trung-lap': 'Xưng "trợ lý - bạn", không dùng ngôi thứ nhất số ít.'
+    };
+
+    // 4 NHÓM DỰ ÁN - nội dung 9 phần lấy từ 3 bộ mẫu đầy đủ của thư viện (mục 3) + 1 nhóm viết theo cùng khuôn
+    const TYPES = [
+      {
+        id: 'admin', label: 'Văn bản hành chính, báo cáo', keys: ['báo cáo', 'công văn', 'biên bản', 'quyết định', 'nghị định 30', 'hành chính', 'tờ trình', 'thông báo', 'văn bản', 'soạn báo cáo'],
+        name: 'TRỢ LÝ SOẠN BÁO CÁO HÀNH CHÍNH', styleId: 'trang-trong',
+        role: 'Bạn là chuyên viên tổng hợp văn phòng 12 năm kinh nghiệm, thông thạo thể thức văn bản hành chính theo Nghị định 30/2020/NĐ-CP. Bạn hiểu rằng một báo cáo bị trả lại thường không phải vì nội dung yếu, mà vì sai thể thức hoặc số liệu không khớp giữa các phần.',
+        tasks: ['Soạn báo cáo tuần, tháng, quý, năm, sơ kết, tổng kết, chuyên đề từ ghi chú thô hoặc số liệu rời.', 'Rà soát thể thức văn bản đã có và chỉ ra chỗ sai.'],
+        outOfScope: 'Không thuộc phạm vi: soạn văn bản quy phạm pháp luật, hợp đồng, báo cáo tài chính theo biểu mẫu kế toán.',
+        context: 'Người dùng là chuyên viên của một phòng chuyên môn thuộc đơn vị hành chính sự nghiệp. Báo cáo do trưởng phòng ký, trình lãnh đạo đơn vị.',
+        audience: 'Lãnh đạo đơn vị, đọc nhanh, quan tâm số liệu và phần hạn chế hơn là phần thành tích. Sau khi đọc, họ cần ký duyệt hoặc yêu cầu bổ sung.',
+        docs: [
+          { name: 'Mẫu báo cáo của đơn vị', use: 'bám sát tuyệt đối về bố cục và cách đánh số' },
+          { name: 'Báo cáo các kỳ trước', use: 'tham khảo văn phong và để đối chiếu số liệu lũy kế' },
+          { name: 'Kế hoạch công tác năm', use: 'căn cứ đánh giá mức độ hoàn thành' }
+        ],
+        citeRule: 'Khi trích số liệu từ tài liệu nền, ghi rõ lấy từ văn bản nào.',
+        process: ['Xác định loại báo cáo và kỳ báo cáo.', 'Phân loại thông tin người dùng đưa vào ba nhóm: kết quả, hạn chế, phương hướng.', 'Đối chiếu số liệu giữa các phần, nếu lệch thì báo ngay thay vì tự điều chỉnh.', 'Soạn theo đúng mẫu của đơn vị.', 'Kiểm lại thể thức trước khi giao: Quốc hiệu, Tiêu ngữ, số ký hiệu, trích yếu, nơi nhận, chỗ ký.'],
+        output: 'Báo cáo đầy đủ thể thức, thân báo cáo chia 3 phần: Kết quả đạt được, Hạn chế và nguyên nhân, Phương hướng kỳ tới. Mỗi phần dùng gạch đầu dòng, mỗi gạch đầu dòng có số liệu kèm theo. Tổng độ dài 2-3 trang A4.',
+        prohibitions: ['Tuyệt đối không tự bịa số liệu. Thiếu chỗ nào ghi [cần bổ sung số liệu].', 'Không viết phần hạn chế theo kiểu chiếu lệ, phải nêu nguyên nhân cụ thể.', 'Không dùng văn bản pháp luật đã hết hiệu lực, luôn kiểm tra số hiệu và hiệu lực trước khi dẫn.', 'Khi thiếu thông tin cốt lõi, hỏi lại tối đa 2 câu rồi vẫn giao bản nháp có chỗ trống đánh dấu rõ.'],
+        missing: 'Khi thiếu thông tin cốt lõi, hỏi lại tối đa 2 câu rồi vẫn giao bản nháp có chỗ trống đánh dấu rõ.',
+        testPrompts: ['Soạn báo cáo tháng 10 của phòng từ các ghi chú sau: [dán ghi chú vào đây]', 'Rà thể thức bản báo cáo này và chỉ ra chỗ sai: [dán văn bản vào đây]'],
+        interview: { q1: 'Soạn báo cáo tuần, tháng, quý, năm và rà thể thức văn bản; dùng 3-4 lần mỗi tuần.', q2: 'Bản báo cáo đầy đủ thể thức, trình trưởng phòng ký rồi gửi lãnh đạo đơn vị.', q3: 'Lãnh đạo đơn vị, đọc nhanh, quan tâm số liệu và phần hạn chế.', q4: 'Mẫu báo cáo của đơn vị, báo cáo các kỳ trước, kế hoạch công tác năm.', q5: 'Thể thức Nghị định 30/2020/NĐ-CP và mẫu biểu riêng của đơn vị.', q6: 'Bịa số liệu, viết phần hạn chế chiếu lệ, dẫn văn bản hết hiệu lực.', q7: 'Hỏi lại tối đa 2 câu rồi vẫn giao bản nháp có chỗ trống đánh dấu rõ.' }
+      },
+      {
+        id: 'content', label: 'Nội dung, truyền thông', keys: ['facebook', 'nội dung', 'content', 'bài đăng', 'bài viết', 'truyền thông', 'mạng xã hội', 'tiktok', 'zalo', 'quảng cáo', 'viết bài'],
+        name: 'TRỢ LÝ NỘI DUNG MẠNG XÃ HỘI', styleId: 'gan-gui',
+        role: 'Bạn là chuyên gia content marketing 8 năm trong lĩnh vực giáo dục, chuyên viết cho người đi làm 30-50 tuổi chưa rành công nghệ. Bạn hiểu nhóm độc giả này bỏ qua mọi bài có vẻ quảng cáo trong 2 giây đầu, nhưng dừng lại rất lâu trước một tình huống công việc họ từng gặp.',
+        tasks: ['Viết bài đăng Facebook, kịch bản video ngắn, nội dung Zalo.', 'Viết lại bài cũ theo góc nhìn mới.'],
+        outOfScope: 'Không thuộc phạm vi: chạy quảng cáo, thiết kế hình ảnh, viết bài báo chí chính luận.',
+        context: 'Người dùng là nhà đào tạo kiêm sáng tạo nội dung, đăng bài đều đặn 4-5 lần mỗi tuần trên trang cá nhân và fanpage.',
+        audience: 'Nhân viên văn phòng, giáo viên, cán bộ nhà nước đang thấy công việc quá tải. Họ tò mò về AI nhưng ngại bắt đầu. Sau khi đọc, họ cần thấy một việc nhỏ có thể làm được ngay hôm nay.',
+        docs: [
+          { name: 'Bộ bài viết cũ hiệu quả nhất', use: 'bám theo văn phong, cách mở bài và nhịp xuống dòng' },
+          { name: 'Thông tin sản phẩm và khóa học', use: 'chỉ dùng khi bài có mục tiêu bán hàng, không chèn vào mọi bài' }
+        ],
+        citeRule: 'Không bịa câu chuyện học viên hay số liệu không có trong tài liệu nền.',
+        process: ['Xác định mục tiêu bài viết: chia sẻ giá trị, xây uy tín, hay bán hàng.', 'Chọn một tình huống công việc có thật làm điểm mở.', 'Viết hook 2 dòng đầu, kiểm lại xem đọc riêng 2 dòng đó có muốn đọc tiếp không.', 'Triển khai nội dung, mỗi ý một đoạn ngắn.', 'Kết bằng một hành động duy nhất.'],
+        output: 'Bài Facebook 400-600 chữ. Hai dòng đầu là hook. Xuống dòng sau mỗi 2-3 câu. Tối đa 5 emoji toàn bài. Kết bằng một lời kêu gọi hành động duy nhất. Kịch bản video: 45-60 giây, chia hai cột Hình ảnh và Lời thoại, hook trong 3 giây đầu.',
+        prohibitions: ['Không hứa hẹn thu nhập hay kết quả tuyệt đối.', 'Không dùng khẩu hiệu sáo rỗng kiểu "bứt phá giới hạn", "thay đổi cuộc đời".', 'Không bịa số liệu hay câu chuyện học viên không có thật.', 'Không nhắc tên công cụ AI đã ngừng hoạt động.', 'Mỗi bài chỉ gài bán hàng tối đa một lần, đặt ở cuối.'],
+        missing: 'Khi thiếu thông tin, tự suy đoán theo đúng chất đã định rồi ghi chú rõ chỗ đã suy đoán.',
+        testPrompts: ['Viết bài Facebook giới thiệu khóa học AI cho người đi làm từ ý này: [dán ý thô vào đây]', 'Viết lại bài này theo góc nhìn mới, giữ nguyên thông tin: [dán bài cũ vào đây]'],
+        interview: { q1: 'Viết bài đăng Facebook, kịch bản video ngắn, nội dung Zalo; đăng 4-5 lần mỗi tuần.', q2: 'Bài viết hoàn chỉnh để đăng lên trang cá nhân và fanpage.', q3: 'Nhân viên văn phòng và giáo viên 30-50 tuổi, tò mò về AI nhưng ngại bắt đầu.', q4: 'Bộ bài viết cũ hiệu quả nhất, thông tin khóa học và sản phẩm.', q5: 'Không có quy chuẩn bắt buộc, chỉ tránh từ ngữ thương hiệu cấm dùng.', q6: 'Hứa hẹn thu nhập, khẩu hiệu sáo rỗng, bịa câu chuyện học viên.', q7: 'Tự suy đoán rồi ghi chú rõ, không hỏi lại làm gián đoạn.' }
+      },
+      {
+        id: 'training', label: 'Đào tạo, giảng dạy', keys: ['giáo viên', 'bài giảng', 'đào tạo', 'giảng dạy', 'tập huấn', 'lớp học', 'học viên', 'khóa học', 'giáo án', 'buổi học'],
+        name: 'TRỢ LÝ THIẾT KẾ BÀI GIẢNG', styleId: 'su-pham',
+        role: 'Bạn là chuyên gia thiết kế chương trình đào tạo người lớn, chuyên phương pháp học qua trải nghiệm. Bạn hiểu người lớn không học vì tò mò mà vì có việc cần giải quyết, nên mọi nội dung phải gắn ngay với công việc của họ.',
+        tasks: ['Thiết kế kịch bản buổi học, giáo án, bộ bài tập thực hành.', 'Chuyển nội dung lý thuyết thành hoạt động cho học viên làm.'],
+        outOfScope: 'Không thuộc phạm vi: chấm bài, quản lý lớp, thiết kế slide hoàn chỉnh.',
+        context: 'Người dùng là giảng viên đào tạo kỹ năng số cho người đi làm, lớp 30-60 học viên, học trực tiếp hoặc trực tuyến.',
+        audience: 'Học viên trên 35 tuổi, ít kinh nghiệm công nghệ, tâm lý e ngại. Sau buổi học, mỗi người cần tự tay làm được một việc cụ thể bằng công cụ vừa học.',
+        docs: [
+          { name: 'Khung chương trình khóa học', use: 'bám sát mục tiêu đầu ra từng buổi' },
+          { name: 'Giáo án các buổi trước', use: 'giữ nhất quán về thuật ngữ và cách đánh số' }
+        ],
+        citeRule: 'Mọi ví dụ phải gắn với công việc thật của học viên, không dùng ví dụ xa lạ.',
+        process: ['Xác định một mục tiêu đầu ra duy nhất, đo được, cho buổi học.', 'Chọn tình huống công việc có thật làm điểm mở.', 'Chia thời lượng, bảo đảm không giảng lý thuyết quá 20 phút liên tục.', 'Thiết kế ít nhất một hoạt động thực hành cho mỗi 30 phút.', 'Thêm phần kiểm tra hiểu bài ở cuối.'],
+        output: 'Bảng kịch bản theo mốc thời gian, 4 cột: Thời lượng, Nội dung, Hoạt động của học viên, Lưu ý cho người dẫn. Kèm danh sách dụng cụ và tài liệu cần chuẩn bị.',
+        prohibitions: ['Không thiết kế buổi học chỉ có giảng viên nói.', 'Không dùng ví dụ xa lạ với công việc của học viên.', 'Không nhắc rủi ro công nghệ theo hướng gây lo sợ.', 'Khi chưa rõ trình độ học viên, hỏi lại trước khi thiết kế phần thực hành.'],
+        missing: 'Khi chưa rõ trình độ học viên, hỏi lại trước khi thiết kế phần thực hành.',
+        testPrompts: ['Thiết kế kịch bản buổi học 120 phút về ứng dụng AI cho giáo viên từ dàn ý này: [dán dàn ý vào đây]', 'Chuyển phần lý thuyết sau thành 1 hoạt động thực hành 15 phút: [dán nội dung vào đây]'],
+        interview: { q1: 'Thiết kế kịch bản buổi học, giáo án và bài tập thực hành; dùng 2-3 lần mỗi tuần.', q2: 'Bảng kịch bản buổi học và bộ bài tập, dùng trong buổi đào tạo trực tiếp hoặc trực tuyến.', q3: 'Học viên trên 35 tuổi, ít kinh nghiệm công nghệ, tâm lý e ngại.', q4: 'Khung chương trình khóa học, giáo án các buổi trước.', q5: 'Mục tiêu đầu ra từng buổi trong khung chương trình.', q6: 'Buổi học chỉ có giảng viên nói, ví dụ xa lạ với công việc học viên.', q7: 'Hỏi lại trước khi thiết kế phần thực hành nếu chưa rõ trình độ học viên.' }
+      },
+      {
+        id: 'analysis', label: 'Phân tích, tư vấn, kinh doanh', keys: ['phân tích', 'tư vấn', 'kinh doanh', 'doanh thu', 'số liệu', 'dữ liệu', 'excel', 'quyết định', 'chiến lược', 'báo cáo số liệu'],
+        name: 'TRỢ LÝ PHÂN TÍCH VÀ TƯ VẤN', styleId: 'suc-tich',
+        role: 'Bạn là cố vấn phân tích kinh doanh 10 năm kinh nghiệm, chuyên biến số liệu rời thành khuyến nghị ra quyết định cho doanh nghiệp vừa và nhỏ tại Việt Nam. Bạn hiểu rằng lãnh đạo không cần thêm số liệu, họ cần biết nên làm gì tiếp theo và cái giá của mỗi lựa chọn.',
+        tasks: ['Phân tích số liệu kinh doanh, doanh thu, chi phí từ bảng tính hoặc báo cáo thô.', 'So sánh các phương án và nêu khuyến nghị duy nhất kèm rủi ro.', 'Tóm tắt kết quả phân tích thành bản trình bày ngắn cho lãnh đạo.'],
+        outOfScope: 'Không thuộc phạm vi: dự báo tài chính có kiểm toán, tư vấn pháp lý, thay mặt người dùng ra quyết định.',
+        context: 'Người dùng là chủ doanh nghiệp hoặc trưởng bộ phận, cần quyết định nhanh dựa trên số liệu có sẵn, thường thiếu dữ liệu đầy đủ.',
+        audience: 'Chủ doanh nghiệp và trưởng bộ phận, đọc lướt, quan tâm kết luận và con số quyết định hơn là bảng số chi tiết. Sau khi đọc, họ cần chọn một phương án và giao việc.',
+        docs: [
+          { name: 'Bảng số liệu và báo cáo thô', use: 'nguồn duy nhất cho mọi con số trong bản phân tích' },
+          { name: 'Kế hoạch và mục tiêu kỳ', use: 'căn cứ đánh giá mức độ hoàn thành' },
+          { name: 'Báo cáo các kỳ trước', use: 'đối chiếu xu hướng, không lấy số liệu kỳ trước làm số liệu kỳ này' }
+        ],
+        citeRule: 'Mọi con số phải ghi rõ nguồn và kỳ số liệu.',
+        process: ['Xác định câu hỏi quyết định cần trả lời.', 'Kiểm tra dữ liệu: đủ, thiếu hay mâu thuẫn.', 'Tính 2-3 chỉ số quan trọng nhất, không dàn trải.', 'So sánh các phương án theo cùng một bộ tiêu chí.', 'Kết luận bằng một khuyến nghị duy nhất kèm rủi ro và bước tiếp theo.'],
+        output: 'Bản phân tích gồm 3 phần: Kết luận và khuyến nghị (đặt đầu tiên), Căn cứ số liệu (bảng ngắn, tối đa 5 dòng), Rủi ro và bước tiếp theo. Tổng độ dài 1-2 trang A4, mỗi nhận định kèm một con số.',
+        prohibitions: ['Không bịa số liệu, thiếu chỗ nào ghi [cần bổ sung số liệu].', 'Không đưa nhiều khuyến nghị mâu thuẫn nhau, chỉ một khuyến nghị chính.', 'Không dùng thuật ngữ phân tích mà không giải thích bằng ví dụ.', 'Không kết luận vượt quá dữ liệu đang có.', 'Khi dữ liệu mâu thuẫn, nêu rõ mâu thuẫn thay vì chọn một bên để trình bày.'],
+        missing: 'Hỏi lại tối đa 2 câu về dữ liệu còn thiếu, rồi phân tích trên dữ liệu đang có và ghi rõ giả định.',
+        testPrompts: ['Phân tích doanh thu quý 3 từ bảng số liệu sau và cho biết có nên tăng ngân sách quảng cáo không: [dán số liệu vào đây]', 'So sánh 2 phương án mở rộng (mở thêm chi nhánh hay bán online) dựa trên số liệu này: [dán số liệu vào đây]'],
+        interview: { q1: 'Phân tích số liệu kinh doanh và đưa khuyến nghị ra quyết định; dùng 2-3 lần mỗi tuần.', q2: 'Bản phân tích ngắn 1-2 trang để trình lãnh đạo và chọn phương án.', q3: 'Chủ doanh nghiệp và trưởng bộ phận, đọc lướt, cần kết luận rõ ràng.', q4: 'Bảng số liệu và báo cáo thô, kế hoạch và mục tiêu kỳ, báo cáo các kỳ trước.', q5: 'Mọi con số phải có nguồn và kỳ số liệu rõ ràng.', q6: 'Bịa số liệu, đưa nhiều khuyến nghị mâu thuẫn, kết luận vượt quá dữ liệu.', q7: 'Hỏi lại tối đa 2 câu về dữ liệu thiếu, rồi phân tích trên dữ liệu đang có.' }
+      },
+      {
+        id: 'general', label: 'Trợ lý đa năng (chưa rõ loại)', keys: [],
+        name: 'TRỢ LÝ ĐA NĂNG', styleId: 'suc-tich',
+        role: 'Bạn là chuyên gia cố vấn cấp cao, giỏi biến yêu cầu mơ hồ thành kết quả cụ thể, dùng được ngay. Bạn hiểu rằng người dùng cần một trợ lý làm đúng việc, đúng định dạng, đúng hẹn - và bạn hỏi lại ngay khi yêu cầu chưa đủ rõ thay vì đoán mò.',
+        tasks: ['Xử lý các yêu cầu lặp đi lặp lại theo đúng quy trình đã thống nhất.', 'Trình bày kết quả theo định dạng đã chốt, có số liệu và hành động tiếp theo.', 'Nhắc người dùng bổ sung thông tin khi yêu cầu thiếu dữ liệu cốt lõi.'],
+        outOfScope: 'Không thuộc phạm vi: những việc cần chuyên môn sâu ngoài lĩnh vực đã nêu ở phần Bối cảnh, và những việc pháp luật cấm.',
+        context: 'Người dùng cần một trợ lý dùng lại nhiều lần cho một nhóm việc quen thuộc. [Mô tả đơn vị, lĩnh vực và đặc thù công việc vào đây.]',
+        audience: 'Người nhận kết quả là người giao việc trực tiếp. [Ghi rõ họ là ai, đọc trong trạng thái nào, sau khi đọc cần làm gì.]',
+        docs: [
+          { name: 'Tài liệu mẫu của các lần làm trước', use: 'bám theo cách trình bày và mức độ chi tiết đã chốt' },
+          { name: 'Quy định hoặc mẫu biểu liên quan', use: 'bám sát khi có quy chuẩn bắt buộc' }
+        ],
+        citeRule: 'Mọi số liệu và trích dẫn phải ghi rõ nguồn, không ghi nguồn thì ghi [cần bổ sung].',
+        process: ['Xác định rõ yêu cầu và đầu ra mong muốn.', 'Kiểm tra thông tin đã đủ chưa, thiếu thì hỏi lại tối đa 2 câu.', 'Thực hiện theo đúng quy trình và định dạng đã chốt.', 'Kiểm lại kết quả theo bảng kiểm trước khi giao.', 'Ghi chú những giả định đã dùng.'],
+        output: 'Kết quả đúng định dạng đã chốt, có số liệu cụ thể ở mọi chỗ nêu được, độ dài theo đúng yêu cầu từng loại việc. Mỗi kết quả kèm một hành động tiếp theo rõ ràng.',
+        prohibitions: ['Không tự bịa số liệu hay thông tin không có trong yêu cầu và tài liệu nền.', 'Không đổi định dạng hay giọng văn đã chốt khi chưa được đồng ý.', 'Không viết lan man, mỗi phần chỉ giữ ý cần thiết.', 'Khi thiếu thông tin cốt lõi, hỏi lại tối đa 2 câu thay vì đoán mò.'],
+        missing: 'Khi thiếu thông tin cốt lõi, hỏi lại tối đa 2 câu rồi vẫn giao bản nháp có chỗ trống đánh dấu rõ.',
+        testPrompts: ['Làm thử một việc quen thuộc với yêu cầu này: [dán yêu cầu thật vào đây]', 'Kiểm tra lại kết quả này theo đúng quy ước đã chốt: [dán kết quả vào đây]'],
+        interview: { q1: '[Mô tả loại công việc và tần suất dùng mỗi tuần.]', q2: '[Đầu ra cuối cùng là gì, và nó đi đâu sau đó?]', q3: '[Ai là người đọc hoặc nhận kết quả?]', q4: '[Những tài liệu nền nào sẽ đưa vào dự án?]', q5: '[Quy chuẩn, mẫu biểu hay quy định bắt buộc nào?]', q6: '[Điều gì khiến bạn thấy kết quả của AI là "hỏng"?]', q7: 'Hỏi lại tối đa 2 câu rồi vẫn giao bản nháp có chỗ trống đánh dấu rõ.' }
+      }
+    ];
+
+    let lastFilledText = '';
+    let lastGeneratedKey = '';
+    let hasGenerated = false;
+    let currentTypeId = 'general';
+    let currentAssumptions = [];
+
+    function typeById(id) { return TYPES.find(t => t.id === id) || TYPES[4]; }
+    function styleById(id) { return STYLES.find(s => s.id === id) || STYLES[0]; }
+
+    // ---------- NHẬN DIỆN LOẠI DỰ ÁN ----------
+    function detectType(rawText) {
+      const lower = rawText.toLowerCase();
+      const pairs = [];
+      TYPES.forEach(t => t.keys.forEach(k => pairs.push({ key: k, id: t.id })));
+      pairs.sort((a, b) => b.key.length - a.key.length); // từ khóa dài khớp trước ("báo cáo số liệu" trước "báo cáo")
+      for (const p of pairs) if (lower.includes(p.key)) return p.id;
+      return 'general';
+    }
+
+    function cleanTopic(rawText) {
+      let topic = rawText.replace(/^(tôi muốn|mình muốn|anh muốn|em muốn|hãy|giúp tôi|cần|làm cho tôi|tạo cho tôi|viết cho tôi|xin|hãy giúp|tôi muốn tạo|tôi muốn làm)\s+/gi, '').trim();
+      return topic || rawText;
+    }
+
+    // ---------- DỰNG KHUNG PHỎNG VẤN ----------
+    function buildInterview() {
+      const box = document.getElementById('interviewBox');
+      box.innerHTML = QUESTIONS.map(q =>
+        '<div class="bg-gray-900 border border-gray-800 rounded-xl p-3">' +
+        '<label class="block text-xs font-bold text-cyan-400 mb-1" for="' + q.id + '">Câu ' + q.n + ' - ' + q.text + '</label>' +
+        '<p class="text-[11px] text-gray-500 mb-2">' + q.why + '</p>' +
+        '<input type="text" id="' + q.id + '" oninput="onManualEdit()" class="c-input" placeholder="Trả lời câu ' + q.n + '...">' +
+        '<div class="flex flex-wrap gap-1.5 mt-2">' + q.chips.map(c => '<button type="button" class="chip" onclick="setAnswer(\'' + q.id + '\', this.textContent)">' + c + '</button>').join('') + '</div>' +
+        '</div>'
+      ).join('');
+    }
+
+    function fillPickers() {
+      document.getElementById('typeSelect').innerHTML = '<option value="auto">Tự động theo mô tả</option>' + TYPES.map(t => '<option value="' + t.id + '">' + t.label + '</option>').join('');
+      document.getElementById('styleSelect').innerHTML = STYLES.map(s => '<option value="' + s.id + '">' + s.label + '</option>').join('');
+    }
+
+    function setAnswer(id, text) {
+      const el = document.getElementById(id);
+      if (el) { el.value = text; onManualEdit(); }
+    }
+
+    function readAnswers() {
+      const a = {};
+      QUESTIONS.forEach(q => { const el = document.getElementById(q.id); a[q.id] = el ? el.value.trim() : ''; });
+      return a;
+    }
+
+    function fillInterview(typeId) {
+      const t = typeById(typeId);
+      currentTypeId = t.id;
+      document.getElementById('typeSelect').value = t.id;
+      document.getElementById('styleSelect').value = t.styleId;
+      document.getElementById('voiceSelect').value = t.id === 'admin' ? 'trang-trong' : (t.id === 'analysis' ? 'trung-lap' : 'toi-ban');
+      QUESTIONS.forEach(q => { const el = document.getElementById(q.id); if (el) el.value = t.interview[q.id] || ''; });
+      currentAssumptions = [];
+    }
+
+    function isPlaceholder(v) { return !v || v.indexOf('[') === 0; }
+    function extractFrequency(a1) {
+      if (!a1 || isPlaceholder(a1)) return '';
+      const parts = a1.split(';');
+      const tail = parts.length > 1 ? parts[parts.length - 1].trim() : a1;
+      if (/dùng|mỗi|tuần|ngày|lần/i.test(tail)) return tail.charAt(0).toUpperCase() + tail.slice(1);
+      return '';
+    }
+
+    // ---------- XÂY BỘ INSTRUCTIONS 9 PHẦN ----------
+    function buildInstructions() {
+      const t = typeById(currentTypeId);
+      const style = styleById(document.getElementById('styleSelect').value);
+      const a = readAnswers();
+      const def = t.interview;
+      const differs = id => a[id] && a[id] !== def[id] && !isPlaceholder(a[id]);
+      const freq = extractFrequency(a.q1);
+      const L = [];
+      L.push('# ' + t.name);
+      L.push('');
+      L.push('## 1. VAI TRÒ');
+      L.push(t.role);
+      L.push('');
+      L.push('## 2. NHIỆM VỤ CHÍNH');
+      t.tasks.forEach(x => L.push('- ' + x));
+      L.push(t.outOfScope);
+      L.push('');
+      L.push('## 3. BỐI CẢNH');
+      L.push(t.context);
+      if (freq) L.push('Tần suất sử dụng: ' + freq);
+      L.push('');
+      L.push('## 4. NGƯỜI NHẬN KẾT QUẢ');
+      L.push(a.q3 && !isPlaceholder(a.q3) ? a.q3 : t.audience);
+      if (a.q3 && a.q3 === def.q3) {
+        const rest = t.audience.split('. ').slice(1).join('. ');
+        if (rest) L.push(rest);
+      }
+      L.push('');
+      L.push('## 5. TÀI LIỆU NỀN VÀ CÁCH DÙNG');
+      t.docs.forEach(d => L.push('- ' + d.name + ': ' + d.use + '.'));
+      L.push(t.citeRule);
+      if (differs('q4')) L.push('Tài liệu bổ sung người dùng sẽ nạp: ' + a.q4);
+      L.push('');
+      L.push('## 6. QUY TRÌNH XỬ LÝ');
+      t.process.forEach((s, i) => L.push((i + 1) + '. ' + s));
+      L.push('');
+      L.push('## 7. QUY ƯỚC ĐẦU RA');
+      L.push(t.output);
+      if (a.q2 && !isPlaceholder(a.q2)) L.push('Đầu ra cuối cùng: ' + a.q2);
+      if (differs('q5') && !/không có quy chuẩn/i.test(a.q5)) L.push('Quy chuẩn bắt buộc phải tuân theo: ' + a.q5);
+      L.push('');
+      L.push('## 8. GIỌNG VĂN VÀ XƯNG HÔ');
+      const voiceKey = document.getElementById('voiceSelect').value;
+      const voiceText = VOICES[voiceKey] || VOICES['toi-ban'];
+      let styleLine = style.text + '.';
+      if (voiceKey === 'toi-ban') {
+        if (!style.text.includes('Xưng "tôi - bạn"')) styleLine += ' ' + voiceText;
+      } else if (!style.text.includes('ngôi thứ nhất số ít')) {
+        styleLine += ' ' + voiceText;
+      }
+      L.push(styleLine + ' Dùng dấu gạch ngắn "-" thay cho dấu gạch dài.');
+      L.push('');
+      L.push('## 9. GIỚI HẠN VÀ ĐIỀU CẤM');
+      t.prohibitions.filter(p => p !== t.missing).forEach(p => L.push('- ' + p));
+      if (differs('q6')) L.push('- Điều người dùng coi là "hỏng": ' + a.q6);
+      L.push(/^khi thiếu thông tin/i.test(t.missing) ? t.missing : 'Khi thiếu thông tin: ' + t.missing);
+      return { text: L.join('\n'), type: t, answers: a, style: style };
+    }
+
+    function countWords(text) { return text.trim() ? text.trim().split(/\s+/).length : 0; }
+    function fmtNum(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+
+    function compileOutputs() {
+      const out = buildInstructions();
+      const el = document.getElementById('instructionsOutput');
+      el.value = out.text;
+      const words = countWords(out.text);
+      document.getElementById('wordCount').innerText = 'Bộ Instructions: ' + fmtNum(words) + ' từ (' + fmtNum(out.text.length) + ' ký tự)';
+      const label = document.getElementById('countLabel');
+      if (words >= 400 && words <= 900) {
+        label.innerText = fmtNum(words) + ' từ - trong khoảng chuẩn tốt 400-900 từ';
+        label.style.color = '#9ca3af';
+      } else if (words > 900) {
+        label.innerText = fmtNum(words) + ' từ - vượt khoảng chuẩn 400-900 từ, nên cắt bớt dòng vụn vặt';
+        label.style.color = '#fbbf24';
+      } else {
+        label.innerText = fmtNum(words) + ' từ - dưới 400 từ, nên bổ sung thêm bối cảnh hoặc điều cấm';
+        label.style.color = '#fbbf24';
+      }
+      renderDocs(out.type);
+      renderAssumptions(out);
+      renderChecklist(out);
+    }
+
+    function renderDocs(t) {
+      document.getElementById('docsList').innerHTML = t.docs.map(d => '<li><b class="text-gray-200">' + d.name + ':</b> ' + d.use + '.</li>').join('') + '<li>' + t.citeRule + '</li>';
+      document.getElementById('testList').innerHTML = t.testPrompts.map(p => '<li>' + p + '</li>').join('');
+    }
+
+    function renderAssumptions(out) {
+      const t = out.type;
+      const a = out.answers;
+      const items = [];
+      items.push('Loại dự án: ' + t.label + ' - suy đoán từ mô tả của bạn, nếu khác thì đổi ở ô chọn nhanh bên trên.');
+      QUESTIONS.forEach(q => {
+        if (!a[q.id] || isPlaceholder(a[q.id])) items.push('Câu ' + q.n + ' bỏ trống - đã dùng phương án mặc định của mẫu ' + t.label + ', sửa thẳng ở ô trả lời nếu muốn đổi.');
+      });
+      if (currentAssumptions.length) items.push.apply(items, currentAssumptions);
+      document.getElementById('assumptionList').innerHTML = items.map(x => '<li>' + x + '</li>').join('');
+    }
+
+    function renderChecklist(out) {
+      const text = out.text;
+      const t = out.type;
+      const checks = [
+        { ok: out.type.role.length > 60 && /năm/i.test(out.type.role), text: 'Vai trò đủ hẹp: ' + (out.type.role.length > 60 && /năm/i.test(out.type.role) ? 'có chức danh, số năm kinh nghiệm và lĩnh vực hẹp.' : 'còn chung chung - hãy chọn loại dự án khác hoặc mô tả rõ hơn.') },
+        { ok: text.indexOf('Không thuộc phạm vi') !== -1, text: 'Đã ghi rõ việc gì KHÔNG thuộc phạm vi.' },
+        { ok: !!out.answers.q3 && !isPlaceholder(out.answers.q3), text: 'Người nhận kết quả đã có mặt: ' + (!!out.answers.q3 && !isPlaceholder(out.answers.q3) ? 'đã có người đọc và hành động mong muốn.' : 'chưa rõ - hãy trả lời câu 3.') },
+        { ok: t.process.length >= 4, text: 'Quy trình xử lý là các bước hành động (' + t.process.length + ' bước), không phải lời khuyên chung chung.' },
+        { ok: /\d/.test(text.split('## 7.')[1] || ''), text: 'Quy ước đầu ra có con số cụ thể: ' + (/\d/.test(text.split('## 7.')[1] || '') ? 'đã có độ dài, số phần hoặc số mục.' : 'chưa có con số - hãy bổ sung ở câu 2.') },
+        { ok: /câu|xưng|mỗi|giải thích|không dùng/i.test(out.style.text), text: 'Giọng văn mô tả bằng hành vi, không chỉ bằng tính từ.' },
+        { ok: t.prohibitions.length >= 3, text: 'Phần điều cấm có ' + t.prohibitions.length + ' mục cụ thể, kiểm tra được.' },
+        { ok: text.indexOf('Khi thiếu thông tin') !== -1, text: 'Đã quy định cách xử lý khi thiếu thông tin.' }
+      ];
+      document.getElementById('checkList').innerHTML = checks.map(c => '<li><span class="' + (c.ok ? 'check-ok' : 'check-no') + '">' + (c.ok ? '✓' : '!') + '</span> ' + c.text + '</li>').join('');
+    }
+
+    // ---------- TRẠNG THÁI / HIỆU ỨNG ----------
+    function setStatus(html) { const el = document.getElementById('magicStatus'); if (el) el.innerHTML = html; }
+    function setGenerateStatus(html) { const el = document.getElementById('generateStatus'); if (el) el.innerHTML = html; }
+    function flashResult() {
+      const card = document.querySelector('#outputCard > div') || document.getElementById('outputCard');
+      if (!card) return;
+      card.classList.remove('flash-result');
+      void card.offsetWidth;
+      card.classList.add('flash-result');
+      setTimeout(() => card.classList.remove('flash-result'), 2600);
+    }
+    function scrollToEl(id) { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+
+    function clearOutputs() {
+      document.getElementById('instructionsOutput').value = '';
+      document.getElementById('wordCount').innerText = 'Chưa có kết quả';
+      document.getElementById('countLabel').innerText = '0 từ - chuẩn tốt: 400-900 từ';
+      document.getElementById('docsList').innerHTML = '<li>Chưa có - sẽ liệt kê sau khi tạo Instructions.</li>';
+      document.getElementById('assumptionList').innerHTML = '<li>Chưa có giả định nào - bấm Búng Tay để hệ thống tự lấp chỗ trống và ghi rõ tại đây.</li>';
+      document.getElementById('testList').innerHTML = '<li>Chưa có - sẽ đưa 2 câu thử nghiệm sau khi tạo Instructions.</li>';
+      document.getElementById('checkList').innerHTML = '<li>Chưa kiểm tra - 8 điểm sẽ tự chấm sau khi có kết quả.</li>';
+      lastGeneratedKey = '';
+      hasGenerated = false;
+      currentAssumptions = [];
+    }
+
+    // 1. GÕ MÔ TẢ CHỈ CHUẨN BỊ, KHÔNG TỰ SINH (giữ luật V2 của trang câu lệnh)
+    function onNaturalInput() {
+      const text = document.getElementById('naturalInput').value.trim();
+      const btnClear = document.getElementById('btnClear');
+      if (text.length > 0) btnClear.classList.remove('hidden'); else btnClear.classList.add('hidden');
+      if (text.length === 0) {
+        QUESTIONS.forEach(q => { const el = document.getElementById(q.id); if (el) el.value = ''; });
+        clearOutputs();
+        setStatus('Đã xóa. Gõ mô tả mới rồi bấm <b class="text-cyan-300">Búng Tay</b> để điền phỏng vấn.');
+        return;
+      }
+      if (text === lastFilledText && document.getElementById('q1').value.trim() !== '') {
+        setStatus('Phỏng vấn cho mô tả này đã điền rồi - sửa lại câu trả lời bên dưới rồi bấm <b class="text-cyan-300">Búng Tay Tạo Instructions</b>.');
+        return;
+      }
+      setStatus('Đã gõ xong - bấm <b class="text-cyan-300">Búng Tay</b> để điền phỏng vấn. Gõ không tự sinh gì cả.');
+    }
+
+    // 2. BÚNG TAY 1: ĐIỀN PHỎNG VẤN
+    function magicFillInterview() {
+      const text = document.getElementById('naturalInput').value.trim();
+      if (!text) {
+        setStatus('⚠️ <b class="text-amber-300">Chưa có gì để điền.</b> Anh gõ mô tả trợ lý muốn dựng vào ô trên, hoặc bấm 1 mẫu đầy đủ bên dưới.');
+        document.getElementById('naturalInput').focus();
+        return;
+      }
+      const btn = document.getElementById('btnMagic');
+      const label = document.getElementById('btnMagicLabel');
+      if (btn) { btn.disabled = true; btn.classList.add('btn-bung'); }
+      if (label) label.textContent = 'Đang búng tay…';
+      setStatus('⏳ Đang búng tay…');
+      setTimeout(() => {
+        const typeId = detectType(text);
+        const pickType = document.getElementById('typeSelect').value;
+        fillInterview(pickType !== 'auto' ? pickType : typeId);
+        lastFilledText = text;
+        setStatus('✓ Đã điền sẵn 7 câu trả lời gợi ý theo mẫu <b class="text-cyan-300">' + typeById(currentTypeId).label + '</b> - sửa lại chỗ nào chưa đúng rồi bấm <b class="text-cyan-300">Búng Tay Tạo Instructions</b> bên dưới.');
+        if (btn) { btn.disabled = false; btn.classList.remove('btn-bung'); }
+        if (label) label.textContent = '✓ Đã Điền Phỏng Vấn!';
+        setTimeout(() => { if (label) label.textContent = 'Búng Tay: Điền Phỏng Vấn'; }, 2200);
+        scrollToEl('interviewBox');
+      }, 350);
+    }
+
+    // 3. BÚNG TAY 2: TẠO INSTRUCTIONS (nếu phỏng vấn còn trống thì tự điền mặc định rồi tạo - đường "tự quyết")
+    function magicGenerate() {
+      const desc = document.getElementById('naturalInput').value.trim();
+      const anyAnswer = QUESTIONS.some(q => { const el = document.getElementById(q.id); return el && el.value.trim() !== ''; });
+      if (!desc && !anyAnswer) {
+        setGenerateStatus('⚠️ <b class="text-amber-300">Chưa có gì để tạo.</b> Anh gõ mô tả ở bước 1, hoặc bấm 1 mẫu đầy đủ bên trên.');
+        document.getElementById('naturalInput').focus();
+        return;
+      }
+      const btn = document.getElementById('btnGenerate');
+      const label = document.getElementById('btnGenerateLabel');
+      if (btn) { btn.disabled = true; btn.classList.add('btn-bung'); }
+      if (label) label.textContent = 'Đang búng tay…';
+      setGenerateStatus('⏳ Đang búng tay…');
+      setTimeout(() => {
+        if (!anyAnswer) {
+          const typeId = detectType(desc || '');
+          const pickType = document.getElementById('typeSelect').value;
+          fillInterview(pickType !== 'auto' ? pickType : typeId);
+          currentAssumptions.push('Bạn chưa trả lời phỏng vấn nên trang dùng toàn bộ phương án mặc định của mẫu - sửa lại rồi bấm tạo lại nếu cần.');
+        }
+        compileOutputs();
+        hasGenerated = true;
+        lastGeneratedKey = desc + '|' + currentTypeId;
+        const words = document.getElementById('wordCount').innerText;
+        setGenerateStatus('✓ <b class="text-emerald-300">Đã tạo bộ Instructions 9 phần!</b> Cuộn xuống để xem, bấm Sao Chép để lấy cả khối (' + words + '). Nhớ gõ thử 2 câu lệnh thử nghiệm sau khi dán vào trợ lý.');
+        if (btn) { btn.disabled = false; btn.classList.remove('btn-bung'); }
+        if (label) label.textContent = '✓ Đã Tạo Instructions!';
+        flashResult();
+        scrollToEl('outputCard');
+        setTimeout(() => { if (label) label.textContent = 'Búng Tay Tạo Instructions'; }, 2200);
+      }, 350);
+    }
+
+    // 4. MẪU ĐẦY ĐỦ + TỰ QUYẾT
+    function setSample(typeId) {
+      const descs = {
+        admin: 'trợ lý soạn báo cáo hành chính',
+        content: 'trợ lý viết bài Facebook và nội dung mạng xã hội',
+        training: 'trợ lý thiết kế bài giảng',
+        analysis: 'trợ lý phân tích số liệu và tư vấn kinh doanh'
+      };
+      document.getElementById('naturalInput').value = descs[typeId] || '';
+      document.getElementById('btnClear').classList.remove('hidden');
+      document.getElementById('typeSelect').value = typeId;
+      fillInterview(typeId);
+      lastFilledText = descs[typeId] || '';
+      compileOutputs();
+      hasGenerated = true;
+      setStatus('✓ Đã tạo bộ Instructions mẫu đầy đủ: <b class="text-cyan-300">' + typeById(typeId).name + '</b> (' + document.getElementById('wordCount').innerText + '). Sửa câu trả lời bên trái rồi bấm tạo lại nếu muốn đổi.');
+      flashResult();
+      scrollToEl('outputCard');
+    }
+
+    function quickDecide() {
+      const desc = document.getElementById('naturalInput').value.trim();
+      if (!desc) {
+        setStatus('⚠️ Gõ mô tả trợ lý muốn dựng trước đã, rồi bấm "Khỏi hỏi" để trang tự quyết toàn bộ.');
+        document.getElementById('naturalInput').focus();
+        return;
+      }
+      const typeId = detectType(desc);
+      document.getElementById('typeSelect').value = typeId;
+      fillInterview(typeId);
+      lastFilledText = desc;
+      currentAssumptions.push('Bạn chọn "khỏi hỏi" nên trang tự quyết toàn bộ theo mẫu - mọi giả định đều ghi ở đây để bạn soát lại.');
+      compileOutputs();
+      hasGenerated = true;
+      setStatus('✓ Đã tự quyết và tạo xong bộ Instructions theo mẫu <b class="text-cyan-300">' + typeById(typeId).label + '</b> - soát lại mục Giả định bên phải rồi sửa nếu cần.');
+      flashResult();
+      scrollToEl('outputCard');
+    }
+
+    function clearNaturalInput() {
+      document.getElementById('naturalInput').value = '';
+      document.getElementById('btnClear').classList.add('hidden');
+      QUESTIONS.forEach(q => { const el = document.getElementById(q.id); if (el) el.value = ''; });
+      clearOutputs();
+      setStatus('Đã xóa sạch. Gõ mô tả mới hoặc bấm 1 mẫu đầy đủ bên dưới.');
+      document.getElementById('naturalInput').focus();
+    }
+
+    // 5. ĐỔI LOẠI DỰ ÁN / SỬA TAY CÂU TRẢ LỜI
+    function onTypeChange() {
+      const v = document.getElementById('typeSelect').value;
+      if (v === 'auto') return;
+      fillInterview(v);
+      if (hasGenerated) compileOutputs();
+      setStatus('Đã đổi sang mẫu <b class="text-cyan-300">' + typeById(v).label + '</b> - 7 câu phỏng vấn đã điền lại theo mẫu mới.');
+    }
+
+    function onManualEdit() {
+      const anyAnswer = QUESTIONS.some(q => { const el = document.getElementById(q.id); return el && el.value.trim() !== ''; });
+      if (!anyAnswer && !hasGenerated) return;
+      if (hasGenerated) compileOutputs();
+    }
+
+    // 6. SAO CHÉP 1-CHẠM (CÓ DỰ PHÒNG)
+    function copyInstructions() {
+      const el = document.getElementById('instructionsOutput');
+      if (!el.value.trim()) { alert('Chưa có Instructions để sao chép!'); return; }
+      const btn = document.getElementById('btnCopy');
+      const done = () => {
+        const oldHtml = btn.innerHTML;
+        btn.innerHTML = '<span>✓ Đã Sao Chép!</span>';
+        setTimeout(() => { btn.innerHTML = oldHtml; }, 2000);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(el.value).then(done).catch(() => {
+          el.select();
+          try { document.execCommand('copy'); done(); } catch (e) { alert('Trình duyệt chặn sao chép tự động - văn bản đã được bôi đen, bạn bấm Ctrl+C để sao chép.'); }
+        });
+      } else {
+        el.select();
+        try { document.execCommand('copy'); done(); } catch (e) { alert('Trình duyệt chặn sao chép tự động - văn bản đã được bôi đen, bạn bấm Ctrl+C để sao chép.'); }
+      }
+    }
+
+    // 7. LÀM MỚI - XÓA SẠCH, KHÔNG TỰ ĐIỀN MẪU
+    function resetAll() {
+      document.getElementById('naturalInput').value = '';
+      document.getElementById('btnClear').classList.add('hidden');
+      document.getElementById('typeSelect').value = 'auto';
+      document.getElementById('styleSelect').value = 'trang-trong';
+      document.getElementById('voiceSelect').value = 'toi-ban';
+      QUESTIONS.forEach(q => { const el = document.getElementById(q.id); if (el) el.value = ''; });
+      clearOutputs();
+      currentTypeId = 'general';
+      setStatus('Gõ mô tả rồi bấm <b class="text-cyan-300">Búng Tay</b> để điền phỏng vấn - gõ không tự sinh gì cả.');
+      setGenerateStatus('Điền xong 7 câu trên (hoặc bấm mẫu đầy đủ bên trên) rồi bấm <b class="text-cyan-300">Búng Tay Tạo Instructions</b>.');
+    }
+
+    // Khởi chạy: trang mở ra trống, chờ gõ hoặc bấm mẫu.
+    window.addEventListener('DOMContentLoaded', () => {
+      buildInterview();
+      fillPickers();
+      resetAll();
+    });
+  </script>
+</body>
+</html>
