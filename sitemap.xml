@@ -4,7 +4,7 @@
   <!-- 1. TRANG CHỦ: THỊNH NGUYỄN SI - KIẾN TRÚC SƯ GIẢI PHÁP AI DOANH NGHIỆP -->
   <url>
     <loc>https://thinhnguyensi.com/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -20,7 +20,7 @@
   <!-- 3. MÁY TẠO CÂU LỆNH AI SIÊU PROMPT 5 TẦNG RCESF -->
   <url>
     <loc>https://thinhnguyensi.com/may-tao-cau-lenh-ai.html</loc>
-    <lastmod>2026-10-17</lastmod>
+    <lastmod>2026-11-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -104,5 +104,11 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
+<!-- 14. MỚI: MÁY TẠO INSTRUCTIONS CHO PROJECT (live 09/11) -->
+  <url>
+    <loc>https://thinhnguyensi.com/may-tao-instructions-ai.html</loc>
+    <lastmod>2026-11-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
 </urlset>
