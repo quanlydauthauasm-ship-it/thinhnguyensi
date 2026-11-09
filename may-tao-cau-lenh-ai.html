@@ -252,38 +252,6 @@
 
     </div>
 
-    <!-- THƯ VIỆN RCESF: XEM TRỌN BỘ NÃO NGAY TRÊN TRANG -->
-    <details class="mt-10 bg-gray-900 border border-gray-800 rounded-2xl p-4 sm:p-6">
-      <summary class="cursor-pointer text-white font-bold text-sm sm:text-base">📚 Xem trọn bộ não RCESF đã nhúng trong trang này</summary>
-      <p class="text-xs text-gray-400 mt-2">Mọi gợi ý dưới đây đều lấy đúng từ skill <b class="text-cyan-300">Tạo câu lệnh RCESF - Thịnh Nguyễn SI</b> (SKILL.md + thư viện tham chiếu RCESF). Trang chạy hoàn toàn trên trình duyệt, không gửi yêu cầu của bạn đi đâu, không cần tài khoản, không tốn phí.</p>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 text-xs">
-        <div>
-          <div class="font-bold text-cyan-300 mb-2">12 vai trò theo ngành</div>
-          <ul id="roleLibrary" class="text-gray-400 space-y-1 list-disc pl-4"></ul>
-        </div>
-        <div>
-          <div class="font-bold text-purple-300 mb-2">6 giọng văn (mô tả bằng hành vi)</div>
-          <ul id="styleLibrary" class="text-gray-400 space-y-1 list-disc pl-4"></ul>
-        </div>
-        <div>
-          <div class="font-bold text-emerald-300 mb-2">10 định dạng đầu ra</div>
-          <ul id="formatLibrary" class="text-gray-400 space-y-1 list-disc pl-4"></ul>
-        </div>
-      </div>
-      <div class="mt-4 text-xs text-gray-400">
-        <div class="font-bold text-amber-300 mb-1">6 câu tự soi trước khi gửi câu lệnh</div>
-        <ol class="list-decimal pl-4 space-y-1">
-          <li>Đọc câu lệnh này, AI có biết ai sẽ đọc kết quả không?</li>
-          <li>Có biết người đọc cần làm gì sau khi đọc xong không?</li>
-          <li>Vai trò đã đủ hẹp để tạo khác biệt chưa, hay thay bằng vai trò khác cũng ra kết quả y hệt?</li>
-          <li>Giọng văn có mô tả bằng hành vi, hay chỉ có tính từ?</li>
-          <li>Định dạng có con số cụ thể chưa?</li>
-          <li>Có ràng buộc phủ định (điều cần tránh) chưa?</li>
-        </ol>
-        <p class="mt-2">Nguyên tắc cứng: chỉ tạo câu lệnh dạng văn bản, tuyệt đối không tự tạo ảnh; không làm thay công việc; không bịa nguồn hay số liệu - chỗ nào thiếu dữ liệu thì để dấu [...] hoặc [Dán ... vào đây] để bạn điền.</p>
-      </div>
-    </details>
-
   </main>
 
   <!-- FOOTER -->
@@ -371,9 +339,6 @@
       rs.innerHTML = '<option value="auto">Tự động theo yêu cầu</option>' + ROLES.map(r => '<option value="' + r.id + '">' + r.label + '</option>').join('');
       ss.innerHTML = '<option value="auto">Tự động theo yêu cầu</option>' + STYLES.map(s => '<option value="' + s.id + '">' + s.label + '</option>').join('');
       fs.innerHTML = '<option value="auto">Tự động theo yêu cầu</option>' + FORMATS.map(f => '<option value="' + f.id + '">' + f.label + '</option>').join('');
-      document.getElementById('roleLibrary').innerHTML = ROLES.map(r => '<li><b class="text-gray-200">' + r.label + ':</b> ' + r.text + '</li>').join('');
-      document.getElementById('styleLibrary').innerHTML = STYLES.map(s => '<li><b class="text-gray-200">' + s.label + ':</b> ' + s.text + '</li>').join('');
-      document.getElementById('formatLibrary').innerHTML = FORMATS.map(f => '<li><b class="text-gray-200">' + f.label + ':</b> ' + f.text + '</li>').join('');
     }
 
     // ---------- PHÂN TÍCH YÊU CẦU (BƯỚC 1-2 CỦA SKILL) ----------
@@ -569,17 +534,24 @@
       renderSelfCheck(fd);
     }
 
+    function fmtNum(n) {
+      return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
     function updateCounts() {
       const shortText = document.getElementById('shortPrompt').value;
       const detailedText = document.getElementById('detailedPrompt').value;
       const words = detailedText.trim() ? detailedText.trim().split(/\s+/).length : 0;
-      document.getElementById('wordCount').innerText = shortText.length + ' ký tự (bản ngắn) - ' + words + ' từ (bản chi tiết)';
+      // Hiển thị cùng đơn vị ký tự cho cả 2 bản để so sánh được: trước đây bản ngắn đếm bằng
+      // ký tự, bản chi tiết đếm bằng từ nên nhìn số 383 từ nhỏ hơn 849 ký tự, dễ tưởng bản
+      // chi tiết ngắn hơn - trong khi 383 từ tiếng Việt tương đương khoảng 1.900 ký tự.
+      document.getElementById('wordCount').innerText = 'Bản ngắn: ' + fmtNum(shortText.length) + ' ký tự - Bản chi tiết: ' + fmtNum(words) + ' từ (' + fmtNum(detailedText.length) + ' ký tự)';
       const label = document.getElementById('countLabel');
       if (currentTab === 'short') {
-        label.innerText = shortText.length + ' / 1000 ký tự' + (shortText.length > 1000 ? ' - VƯỢT GIỚI HẠN' : ' - trong giới hạn');
+        label.innerText = fmtNum(shortText.length) + ' / 1000 ký tự' + (shortText.length > 1000 ? ' - VƯỢT GIỚI HẠN' : ' - trong giới hạn');
         label.style.color = shortText.length > 1000 ? '#f87171' : '#9ca3af';
       } else {
-        label.innerText = words + ' / 2000 từ' + (words > 2000 ? ' - VƯỢT GIỚI HẠN' : ' - trong giới hạn');
+        label.innerText = fmtNum(words) + ' / 2000 từ (' + fmtNum(detailedText.length) + ' ký tự)' + (words > 2000 ? ' - VƯỢT GIỚI HẠN' : ' - trong giới hạn');
         label.style.color = words > 2000 ? '#f87171' : '#9ca3af';
       }
     }
