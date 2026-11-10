@@ -111,4 +111,12 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+  <!-- 15. MỚI: MÁY TÙY CHỈNH CÁ NHÂN HÓA AI (up 10/11) -->
+<url>
+  <loc>https://thinhnguyensi.com/may-tao-tuy-chinh-ca-nhan-hoa-ai.html</loc>
+  <lastmod>2026-11-10</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.9</priority>
+</url>
+
 </urlset>
