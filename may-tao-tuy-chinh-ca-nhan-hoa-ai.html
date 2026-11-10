@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Máy tùy chỉnh cá nhân hóa AI (Claude - ChatGPT - Gemini) | Thịnh Nguyễn SI</title>
+  <meta name="description" content="Máy tùy chỉnh cá nhân hóa AI của Thịnh Nguyễn SI: trả lời 5 câu phỏng vấn, bấm Búng Tay là có ngay đủ 4 mục (Hướng dẫn, Biệt danh, Nghề nghiệp, Thêm thông tin về bạn) để cá nhân hóa ChatGPT, Claude và Gemini. Chạy ngay trên trình duyệt, không cần tài khoản, không tốn phí.">
+  <link rel="canonical" href="https://thinhnguyensi.com/may-tao-tuy-chinh-ca-nhan-hoa-ai.html">
+  <meta property="og:title" content="Máy tùy chỉnh cá nhân hóa AI (Claude - ChatGPT - Gemini) | Thịnh Nguyễn SI">
+  <meta property="og:description" content="Trả lời 5 câu phỏng vấn, bấm Búng Tay là có ngay đủ 4 mục tùy chỉnh cá nhân hóa AI cho Claude, ChatGPT và Gemini, mỗi mục có nút Sao chép riêng và số ký tự thực tế. Dán một lần, dùng cho mọi cuộc trò chuyện mới.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://thinhnguyensi.com/may-tao-tuy-chinh-ca-nhan-hoa-ai.html">
+  <link rel="icon" type="image/png" sizes="48x48" href="images/favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #0B0F19; color: #F3F4F6; font-family: system-ui, -apple-system, sans-serif; }
+    .glow-cyan { box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.3); }
+    .glow-purple { box-shadow: 0 0 25px -5px rgba(168, 85, 247, 0.3); }
+    .c-scroll::-webkit-scrollbar { width: 6px; }
+    .c-scroll::-webkit-scrollbar-track { background: #111827; }
+    .c-scroll::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+    .c-input { width: 100%; background: #030712; border: 1px solid #1f2937; border-radius: 0.5rem; padding: 0.6rem 0.75rem; font-size: 0.875rem; color: #e5e7eb; outline: none; transition: border-color 0.2s; }
+    .c-input:focus { border-color: #06b6d4; }
+    select.c-input option { background: #111827; color: #e5e7eb; }
+    #btnMagic:disabled, #btnGenerate:disabled { opacity: .75; cursor: wait; }
+    .btn-spark { display: inline-block; transition: transform .25s; }
+    #btnMagic:active .btn-spark, #btnMagic.btn-bung .btn-spark, #btnGenerate:active .btn-spark, #btnGenerate.btn-bung .btn-spark { transform: scale(1.6) rotate(20deg); }
+    @keyframes flashResult { 0% { box-shadow: 0 0 0 0 rgba(6,182,212,.55), 0 0 25px -5px rgba(168,85,247,.3); } 100% { box-shadow: 0 0 0 6px rgba(6,182,212,0), 0 0 25px -5px rgba(168,85,247,.3); } }
+    .flash-result { animation: flashResult 1.2s ease-out 2; border-color: rgba(6,182,212,.7) !important; }
+    .chip { font-size: 0.72rem; background: #1f2937; color: #67e8f9; border: 1px solid #164e63; padding: 0.25rem 0.6rem; border-radius: 0.5rem; cursor: pointer; transition: background 0.15s; }
+    .chip:hover { background: #374151; }
+    .chip-on { background: #164e63; color: #fff; border-color: #06b6d4; }
+    .count-over { color: #f87171 !important; }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Máy tùy chỉnh cá nhân hóa AI (Claude - ChatGPT - Gemini) - Thịnh Nguyễn SI","url":"https://thinhnguyensi.com/may-tao-tuy-chinh-ca-nhan-hoa-ai.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"VND"},"author":{"@type":"Organization","name":"Thịnh Nguyễn SI","url":"https://thinhnguyensi.com"}}
+  </script>
+</head>
+<body class="min-h-screen flex flex-col justify-between c-scroll">
+
+  <!-- HEADER -->
+  <header class="border-b border-gray-800 bg-gray-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-cyan-500/20">TN</div>
+        <div>
+          <div class="font-extrabold text-white text-base flex items-center gap-1.5">
+            Thịnh Nguyễn SI <span class="text-[10px] uppercase px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">Super Intelligence</span>
+          </div>
+          <div class="text-xs text-gray-400">Siêu Trí Tuệ &amp; Tự Động Hóa Doanh Nghiệp</div>
+        </div>
+      </a>
+      <div class="flex items-center space-x-3">
+        <a href="/" class="hidden sm:inline-flex text-sm text-gray-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-gray-800 transition">Trang Chủ</a>
+        <a href="/may-tao-cau-lenh-ai.html" class="hidden sm:inline-flex text-sm text-cyan-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-gray-800 transition">Máy Tạo Câu Lệnh</a>
+        <a href="https://zalo.me/0918717952" target="_blank" class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg transition shadow-md shadow-cyan-500/20">Tư Vấn Zalo</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow">
+
+    <!-- TIÊU ĐỀ -->
+    <div class="text-center max-w-3xl mx-auto mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-700/50 text-cyan-400 text-xs font-semibold mb-3">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> CÔNG CỤ TƯƠNG TÁC THỰC CHIẾN 0 ĐỒNG - BỘ NÃO TÙY CHỈNH CÁ NHÂN HÓA AI
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight mb-3">
+        Máy tùy chỉnh <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">cá nhân hóa AI</span>
+      </h1>
+      <p class="text-sm font-bold text-cyan-300 tracking-wide mb-1">(Claude - ChatGPT - Gemini)</p>
+      <p class="text-sm sm:text-base text-gray-400">
+        Dán một lần, trợ lý AI nhớ bạn trong mọi cuộc trò chuyện mới. Trả lời 5 câu phỏng vấn, bấm Búng Tay là có ngay đủ 4 mục để cá nhân hóa ChatGPT (Cài đặt → Cá nhân hóa → Tùy chỉnh ChatGPT), Claude Project hoặc Gemini Gem.
+      </p>
+      <p class="text-xs text-gray-500 mt-2">Chỉ cần 1 câu lệnh dùng 1 lần thì sang <a href="/may-tao-cau-lenh-ai.html" class="text-cyan-400 hover:text-cyan-300 underline underline-offset-4">Máy Tạo Câu Lệnh RCESF</a>. Việc nào lặp đi lặp lại mỗi tuần thì dựng trợ lý riêng ở <a href="/may-tao-instructions-ai.html" class="text-cyan-400 hover:text-cyan-300 underline underline-offset-4">Máy Tạo Instructions cho Project</a>. Bộ não: skill Tạo tùy chỉnh cá nhân hóa AI - Thịnh Nguyễn SI (phỏng vấn 5 câu, khuôn 4 mục, giới hạn 1.500 ký tự mỗi trường dài). Chạy hoàn toàn trên trình duyệt, không gửi thông tin của bạn đi đâu, không cần tài khoản, không tốn phí.</p>
+    </div>
+
+    <!-- BƯỚC 1: MÔ TẢ -->
+    <div class="bg-gray-900 border border-cyan-500/30 rounded-2xl p-4 sm:p-6 mb-8 glow-cyan">
+      <div class="text-white font-bold text-sm sm:text-base mb-3">Bước 1 - Bạn muốn AI nhớ bạn là ai?</div>
+      <div class="flex flex-col md:flex-row items-stretch gap-3">
+        <div class="relative flex-grow">
+          <input type="text" id="naturalInput"
+                 oninput="onNaturalInput()"
+                 onkeydown="if(event.key==='Enter'){event.preventDefault();magicFillInterview();}"
+                 placeholder="VD: tôi kinh doanh đa ngành, muốn AI làm trợ lý điều hành, xưng hô Anh - Em..."
+                 class="w-full bg-gray-950 border border-gray-700 focus:border-cyan-400 px-4 py-3.5 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none transition">
+          <button type="button" onclick="clearNaturalInput()" id="btnClear" class="hidden absolute right-3 top-3.5 text-gray-500 hover:text-gray-300 text-sm">✕</button>
+        </div>
+        <button type="button" onclick="magicFillInterview()" id="btnMagic"
+                class="bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 text-white font-bold px-6 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 active:scale-95 transition cursor-pointer whitespace-nowrap">
+          <span class="btn-spark">⚡</span><span id="btnMagicLabel">Búng Tay: Điền Phỏng Vấn</span>
+        </button>
+      </div>
+      <p id="magicStatus" aria-live="polite" class="mt-3 text-xs text-gray-400">Gõ mô tả rồi bấm <b class="text-cyan-300">Búng Tay</b> - trang sẽ điền sẵn 5 câu trả lời gợi ý bên dưới để bạn sửa lại. Gõ không tự sinh gì cả.</p>
+
+      <div class="mt-4 flex flex-wrap items-center gap-2 pt-3 border-t border-gray-800">
+        <span class="text-xs text-gray-400 font-medium mr-1">Thử mẫu đầy đủ từ thư viện:</span>
+        <button type="button" onclick="setSample('business')" class="text-xs bg-gray-800 hover:bg-gray-700 text-cyan-300 border border-cyan-900 px-2.5 py-1.5 rounded-lg transition">💼 Anh Thịnh - Kinh doanh đa lĩnh vực</button>
+        <button type="button" onclick="setSample('office')" class="text-xs bg-gray-800 hover:bg-gray-700 text-blue-300 border border-blue-900 px-2.5 py-1.5 rounded-lg transition">📄 Chị Lan - Nhân viên văn phòng</button>
+        <button type="button" onclick="setSample('teacher')" class="text-xs bg-gray-800 hover:bg-gray-700 text-amber-300 border border-amber-900 px-2.5 py-1.5 rounded-lg transition">🎓 Thầy Minh - Giáo viên</button>
+        <button type="button" onclick="setSample('content')" class="text-xs bg-gray-800 hover:bg-gray-700 text-emerald-300 border border-emerald-900 px-2.5 py-1.5 rounded-lg transition">📱 Bạn An - Làm nội dung</button>
+        <button type="button" onclick="quickDecide()" class="text-xs bg-gray-800 hover:bg-gray-700 text-purple-300 border border-purple-900 px-2.5 py-1.5 rounded-lg transition">⚡ Khỏi hỏi - tự quyết giúp tôi</button>
+      </div>
+    </div>
+
+    <!-- BỘ CHỌN NHANH -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-3">
+        <label class="block text-xs font-bold text-purple-400 uppercase tracking-wider mb-1" for="voiceSelect">Xưng hô</label>
+        <select id="voiceSelect" onchange="syncVoice(this.value)" class="c-input">
+          <option value="anh-em">Anh - Em</option>
+          <option value="ban-toi">Bạn - Tôi</option>
+          <option value="chi-em">Chị - Em</option>
+          <option value="thay-em">Thầy - Em</option>
+          <option value="minh-ban">Mình - Bạn</option>
+        </select>
+        <p class="text-[11px] text-gray-500 mt-1">Xưng hô nhất quán trong cả 4 mục.</p>
+      </div>
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-3">
+        <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1" for="styleSelect">Phong cách trả lời</label>
+        <select id="styleSelect" onchange="syncStyle(this.value)" class="c-input">
+          <option value="pro">Chuyên nghiệp - Đầy đủ thông tin</option>
+          <option value="short">Ngắn gọn - Cơ bản - Dễ hiểu</option>
+          <option value="deep">Chuyên sâu theo ngành nghề</option>
+        </select>
+        <p class="text-[11px] text-gray-500 mt-1">Phong cách mô tả bằng hành vi cụ thể, không chỉ bằng tính từ.</p>
+      </div>
+    </div>
+
+    <!-- BƯỚC 2 + 3 -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+      <!-- CỘT TRÁI: PHỎNG VẤN 5 CÂU -->
+      <div class="lg:col-span-6 space-y-3">
+        <div class="flex items-center justify-between pb-2 border-b border-gray-800">
+          <div class="text-white font-bold text-sm sm:text-base flex items-center gap-2">
+            <span class="text-cyan-400">💬</span> BƯỚC 2 - PHỎNG VẤN 5 CÂU
+          </div>
+          <button type="button" onclick="resetAll()" class="text-xs text-gray-400 hover:text-cyan-400 transition">↺ Làm mới</button>
+        </div>
+        <p class="text-[11px] text-gray-500">Trả lời được câu nào hay câu đó, câu nào bỏ trống thì trang tự suy đoán và ghi rõ ở mục Giả định. Bấm vào gợi ý để điền nhanh, hoặc gõ ý của riêng bạn. Mỗi ô đã giới hạn độ dài (tên 50, nghề và mục đích 150, lưu ý 200 ký tự) để bản sinh ra luôn dưới 1.500 ký tự.</p>
+
+        <div id="interviewBox" class="space-y-3"></div>
+
+        <button type="button" onclick="magicGenerate()" id="btnGenerate"
+                class="w-full bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 text-white font-bold px-6 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 active:scale-95 transition cursor-pointer">
+          <span class="btn-spark">⚡</span><span id="btnGenerateLabel">Búng Tay Tạo Tùy chỉnh AI</span>
+        </button>
+        <p id="generateStatus" aria-live="polite" class="text-xs text-gray-400">Điền xong 5 câu trên (hoặc bấm 1 mẫu đầy đủ bên trên) rồi bấm <b class="text-cyan-300">Búng Tay Tạo Tùy chỉnh AI</b>.</p>
+
+        <!-- TỐI ƯU THEO LĨNH VỰC -->
+        <div class="bg-gray-900 border border-amber-500/30 rounded-2xl p-4 mt-4">
+          <div class="text-white font-bold text-sm mb-1">Tối ưu thêm - Bạn kinh doanh / làm việc trong lĩnh vực nào?</div>
+          <p class="text-[11px] text-gray-500 mb-3">Sau khi đã có bản đầu, bấm 1 lĩnh vực để trang viết lại 4 mục cho sát lĩnh vực đó. Giữ nguyên xưng hô, phong cách và quy tắc không bịa số liệu.</p>
+          <div class="flex flex-wrap gap-2" id="fieldChips">
+            <button type="button" data-field="Thương mại, bán hàng, phân phối" onclick="optimizeField(this)" class="chip">Thương mại, bán hàng, phân phối</button>
+            <button type="button" data-field="Bất động sản, đầu tư" onclick="optimizeField(this)" class="chip">Bất động sản, đầu tư</button>
+            <button type="button" data-field="Kinh doanh online, thương mại điện tử" onclick="optimizeField(this)" class="chip">Kinh doanh online, thương mại điện tử</button>
+            <button type="button" data-field="Dịch vụ, tư vấn" onclick="optimizeField(this)" class="chip">Dịch vụ, tư vấn</button>
+            <button type="button" data-field="Kinh doanh đa lĩnh vực" onclick="optimizeField(this)" class="chip">Kinh doanh đa lĩnh vực</button>
+          </div>
+          <p id="fieldStatus" class="text-xs text-gray-400 mt-3">Chưa chọn lĩnh vực - bản hiện tại dùng nghề nghiệp chung bạn đã điền.</p>
+        </div>
+      </div>
+
+      <!-- CỘT PHẢI: 4 MỤC -->
+      <div class="lg:col-span-6 space-y-4" id="outputCard">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 sm:p-5 flex flex-col sticky top-20 glow-purple">
+
+          <div class="flex items-center justify-between pb-3 border-b border-gray-800 mb-3">
+            <div class="text-white font-bold text-sm sm:text-base flex items-center gap-2">
+              <span class="text-purple-400">✨</span> SIÊU TRỢ LÝ THỊNH NGUYỄN SI
+            </div>
+            <button type="button" onclick="copyAll()" id="btnCopyAll" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow-md shadow-cyan-500/20 active:scale-95 transition cursor-pointer"><span>📋 Sao Chép Cả 4 Mục</span></button>
+          </div>
+
+          <div id="limitWarning" class="hidden text-xs rounded-xl px-3 py-2 mb-3 border"></div>
+          <p class="text-[11px] text-gray-500 mb-3">Để bản này dùng được cho cả 3 nền tảng, mỗi mục dài giữ dưới <b class="text-gray-300">1.500 ký tự</b> (giới hạn của ChatGPT gói Free/Go), không phải 1.500 từ. 1.500 từ tiếng Việt dài khoảng 7.000-8.000 ký tự, ChatGPT sẽ không lưu được. Mỗi mục dưới đây đều hiển thị cả số ký tự và số từ để anh đối chiếu.</p>
+
+          <div id="fieldsBox" class="space-y-4"></div>
+
+          <div class="mt-4 pt-3 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400">
+            <div>Cần tinh chỉnh bản tùy chỉnh chuyên sâu hơn?</div>
+            <a href="https://zalo.me/0918717952" target="_blank" class="text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 underline underline-offset-4">Nhắn Zalo 0918.717.952 ➔</a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-800 bg-gray-950 py-6 mt-12 text-center text-xs text-gray-500">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="mb-2"><a href="/" class="text-cyan-400 hover:text-cyan-300 font-semibold">← Về trang chủ</a> &nbsp;•&nbsp; <a href="/may-tao-cau-lenh-ai.html" class="text-cyan-400 hover:text-cyan-300 font-semibold">Máy Tạo Câu Lệnh RCESF →</a> &nbsp;•&nbsp; <a href="/may-tao-instructions-ai.html" class="text-cyan-400 hover:text-cyan-300 font-semibold">Máy Tạo Instructions →</a></p>
+      © 2026 Thịnh Nguyễn SI • Kiến trúc sư Siêu Trí Tuệ &amp; Tự Động Hóa Doanh Nghiệp • Hotline/Zalo: 0918.717.952
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT: BỘ NÃO TÙY CHỈNH CHATGPT NHÚNG TRONG TRANG (lấy đúng từ skill + thư viện, chạy 100% trên trình duyệt, không gọi API) -->
+  <script>
+    // ---------- BỘ NÃO TÙY CHỈNH CHATGPT ----------
+    // Nguồn: skill tao-tuy-chinh-ca-nhan-hoa-ai-thinh-nguyen-si / SKILL.md + references/thu-vien-tuy-chinh-ca-nhan-hoa-ai.md
+    var QUESTIONS = [
+      { id: 'q1', label: '1. Bạn tên gì hoặc muốn AI gọi bạn là gì?', ph: 'VD: Anh Thịnh', chips: ['Anh Thịnh', 'Chị Lan', 'Thầy Minh'] },
+      { id: 'q2', label: '2. Bạn đang làm công việc gì?', ph: 'VD: Kinh doanh đa ngành', chips: ['Kinh doanh', 'Nhân viên văn phòng', 'Giáo viên, đào tạo', 'Làm nội dung'] },
+      { id: 'q3', label: '3. Bạn thường muốn dùng AI để làm gì?', ph: 'VD: Nhiều tác vụ', chips: ['Nhiều tác vụ', 'Viết và soạn văn bản', 'Phân tích số liệu', 'Học tập'] },
+      { id: 'q4', label: '4. Bạn muốn AI xưng hô như thế nào?', ph: '', chips: [], select: 'voiceSelect' },
+      { id: 'q5', label: '5. Bạn thích phong cách trả lời nào?', ph: '', chips: [], select: 'styleSelect' },
+      { id: 'q6', label: 'Điều gì khác bạn muốn AI lưu ý? (Không bắt buộc)', ph: 'VD: không bịa số liệu', chips: ['không bịa số liệu', 'giữ đúng thể thức văn bản', 'trả lời ngắn gọn'] }
+    ];
+    var VOICES = {
+      'anh-em': { ai: 'Em', user: 'Anh', label: 'Anh - Em' },
+      'ban-toi': { ai: 'Tôi', user: 'Bạn', label: 'Bạn - Tôi' },
+      'chi-em': { ai: 'Em', user: 'Chị', label: 'Chị - Em' },
+      'thay-em': { ai: 'Em', user: 'Thầy', label: 'Thầy - Em' },
+      'minh-ban': { ai: 'Mình', user: 'Bạn', label: 'Mình - Bạn' }
+    };
+    var STYLES = {
+      'short': { label: 'Ngắn gọn - Cơ bản - Dễ hiểu', rule: 'Ngắn gọn, cơ bản, dễ hiểu. Mỗi ý một dòng, câu dưới 20 từ, giải thích thuật ngữ ngay khi xuất hiện, không dùng từ chuyên môn nếu chưa giải thích. Đi thẳng vào việc cần làm, kết bằng một hành động duy nhất. Dùng checklist khi có nhiều bước.' },
+      'pro': { label: 'Chuyên nghiệp - Đầy đủ thông tin', rule: 'Chuyên nghiệp, logic, rõ ràng, giàu thông tin nhưng không lan man. Ưu tiên tính chính xác, thực tiễn, hiệu quả và khả năng triển khai. Với vấn đề phức tạp, phân tích bối cảnh, cơ hội, rủi ro, ưu nhược điểm và giải pháp. Đề xuất phương án tối ưu kèm các bước thực hiện cụ thể. Chủ động phản biện, chỉ ra điểm yếu, giả định và rủi ro tiềm ẩn. Dùng bảng, ví dụ, checklist hoặc quy trình khi thực sự hữu ích.' },
+      'deep': { label: 'Chuyên sâu theo ngành nghề', rule: 'Chuyên sâu theo ngành nghề. Phân tích theo khung chuyên môn của ngành, nêu giả định, điều kiện áp dụng và giới hạn của từng phương án. Trích nguồn khi có. Chỉ rõ chỗ nào cần dữ liệu thật mới kết luận được, không suy đoán thành sự thật.' }
+    };
+    var SAMPLES = {
+      business: { q1: 'Anh Thịnh', q2: 'Kinh doanh đa ngành', q3: 'Nhiều tác vụ', voice: 'anh-em', style: 'pro', q6: 'không bịa số liệu', field: 'Kinh doanh đa lĩnh vực',
+        role: 'Trợ lý điều hành AI, cố vấn chiến lược và chuyên gia phân tích đa lĩnh vực, hỗ trợ Anh trong kinh doanh, quản trị, marketing, bán hàng, tài chính, đầu tư, công nghệ và phát triển dự án',
+        occ: 'Doanh nhân hoạt động trong lĩnh vực kinh doanh đa ngành, quan tâm đến phát triển thị trường, xây dựng mô hình kinh doanh, quản trị vận hành, marketing, bán hàng, tài chính, đầu tư và phát triển dự án. Tập trung tìm kiếm cơ hội kinh doanh, tối ưu nguồn lực, nâng cao hiệu suất, kiểm soát rủi ro và ứng dụng AI, công nghệ để hỗ trợ quản lý, phân tích và ra quyết định.',
+        focus: 'tư duy chiến lược, hiệu quả đầu tư, phát triển doanh thu, tối ưu chi phí, xây dựng hệ thống và ứng dụng công nghệ',
+        tasks: 'nghiên cứu, phân tích thị trường, lập kế hoạch, đánh giá cơ hội, xây dựng phương án kinh doanh, viết nội dung, giải quyết vấn đề và hỗ trợ ra quyết định',
+        test: 'Em hãy đóng vai cố vấn chiến lược, giúp Anh đánh giá một cơ hội kinh doanh mới theo các tiêu chí vốn đầu tư, lợi nhuận kỳ vọng, rủi ro và khả năng triển khai. Không tự tạo số liệu khi chưa có dữ liệu.' },
+      office: { q1: 'Chị Lan', q2: 'Nhân viên văn phòng, phòng Hành chính - Nhân sự', q3: 'Viết và soạn văn bản', voice: 'chi-em', style: 'short', q6: 'không bịa số liệu, giữ đúng thể thức văn bản', field: '',
+        role: 'Trợ lý văn phòng AI, hỗ trợ Chị soạn văn bản, tổng hợp công việc và sắp xếp lịch làm việc',
+        occ: 'Nhân viên văn phòng, phòng Hành chính - Nhân sự. Thường soạn công văn, thông báo, kế hoạch và tổng hợp báo cáo công việc.',
+        focus: 'văn bản đúng thể thức, công việc rõ ràng và lịch làm việc gọn gàng',
+        tasks: 'soạn văn bản, tổng hợp công việc, sắp xếp lịch làm việc và kiểm tra lỗi chính tả trước khi gửi',
+        test: 'Em hãy soạn giúp Chị một thông báo nghỉ lễ ngắn gọn, đúng thể thức, để trống ngày cụ thể và ghi [CẦN BỔ SUNG] ở chỗ Chị chưa cho số liệu.' },
+      teacher: { q1: 'Thầy Minh', q2: 'Giáo viên, đào tạo người đi làm', q3: 'Học tập và soạn bài giảng', voice: 'thay-em', style: 'pro', q6: 'không bịa số liệu, giải thích dễ hiểu', field: '',
+        role: 'Trợ lý giảng dạy AI, hỗ trợ Thầy thiết kế bài giảng, giải thích khái niệm và soạn bài tập thực hành',
+        occ: 'Giáo viên, đào tạo người đi làm. Thường thiết kế bài giảng, giáo án và bài tập thực hành gắn với công việc thật của học viên.',
+        focus: 'phương pháp dạy người lớn, ví dụ gần gũi với công việc và kết quả học viên làm được ngay',
+        tasks: 'thiết kế bài giảng, giải thích khái niệm bằng ví dụ quen thuộc, soạn bài tập thực hành và câu hỏi kiểm tra hiểu bài',
+        test: 'Em hãy giải thích giúp Thầy khái niệm trí tuệ nhân tạo cho học viên mới bắt đầu, bằng 1 ví dụ công việc quen thuộc và 1 câu hỏi kiểm tra cuối bài. Không bịa số liệu.' },
+      content: { q1: 'Bạn An', q2: 'Làm nội dung, truyền thông', q3: 'Viết và soạn văn bản', voice: 'ban-toi', style: 'short', q6: 'không bịa số liệu, không hứa hẹn tuyệt đối', field: '',
+        role: 'Trợ lý nội dung AI, hỗ trợ Bạn viết bài đăng, kịch bản video ngắn và nội dung Zalo',
+        occ: 'Người làm nội dung, truyền thông. Thường viết bài đăng, kịch bản video ngắn và nội dung Zalo cho người đi làm.',
+        focus: 'câu chuyện công việc có thật, hook 2 dòng đầu và một hành động duy nhất ở cuối bài',
+        tasks: 'viết bài đăng, viết lại bài cũ theo góc nhìn mới, soạn kịch bản video ngắn và gợi ý tiêu đề',
+        test: 'Hãy viết giúp tôi một bài đăng Facebook mở bằng một tình huống công việc có thật, câu ngắn, kết bằng một hành động duy nhất. Không bịa câu chuyện học viên.' }
+    };
+    var FIELDS = [
+      { id: 'business', label: 'Phân tích, tư vấn, kinh doanh', keys: ['kinh doanh', 'doanh nghiệp', 'bán hàng', 'thị trường', 'đầu tư', 'chiến lược', 'doanh thu'] },
+      { id: 'office', label: 'Văn bản, hành chính, văn phòng', keys: ['văn phòng', 'hành chính', 'công văn', 'báo cáo', 'nhân sự', 'thông báo', 'kế hoạch'] },
+      { id: 'teacher', label: 'Đào tạo, giảng dạy', keys: ['giáo viên', 'giảng', 'dạy', 'đào tạo', 'học viên', 'bài giảng', 'giáo án'] },
+      { id: 'content', label: 'Nội dung, truyền thông', keys: ['nội dung', 'content', 'facebook', 'tiktok', 'bài đăng', 'truyền thông', 'video'] }
+    ];
+    var currentField = '';
+    var lastOutput = null;
+
+    function el(id) { return document.getElementById(id); }
+    function val(id) { return (el(id) ? el(id).value : '').trim(); }
+    function fmtNum(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+
+    // ---------- DỰNG PHỎNG VẤN ----------
+    function buildInterview() {
+      var box = el('interviewBox'); box.innerHTML = '';
+      QUESTIONS.forEach(function(q) {
+        var div = document.createElement('div');
+        div.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3';
+        var html = '<label class="block text-xs font-bold text-gray-200 mb-1.5" for="' + q.id + '">' + q.label + '</label>';
+        if (q.select) {
+          var opts = q.id === 'q4'
+            ? Object.keys(VOICES).map(function(k) { return '<option value="' + k + '">' + VOICES[k].label + '</option>'; }).join('')
+            : Object.keys(STYLES).map(function(k) { return '<option value="' + k + '">' + STYLES[k].label + '</option>'; }).join('');
+          html += '<select id="' + q.id + 'select" onchange="syncFromBox(\'' + q.id + '\')" class="c-input mt-1">' + opts + '</select>';
+          html += '<p id="' + q.id + 'picked" class="text-[11px] text-cyan-300 mt-1.5">Đã chọn: chưa chọn</p>';
+          html += '<p class="text-[11px] text-gray-500 mt-1">Chọn trong ô trên, hoặc bấm gợi ý dưới đây.</p>';
+        } else {
+          var maxLen = q.id === 'q1' ? 50 : (q.id === 'q2' ? 150 : (q.id === 'q3' ? 150 : 200));
+          html += '<input type="text" id="' + q.id + '" placeholder="' + q.ph + '" maxlength="' + maxLen + '" oninput="onManualEdit()" class="c-input">';
+        }
+        if (q.chips && q.chips.length) {
+          html += '<div class="flex flex-wrap gap-1.5 mt-2">' + q.chips.map(function(c) {
+            return '<button type="button" onclick="fillChip(\'' + q.id + '\', this)" class="chip">' + c + '</button>';
+          }).join('') + '</div>';
+        }
+        if (q.id === 'q4') {
+          html += '<div class="flex flex-wrap gap-1.5 mt-2">' + Object.keys(VOICES).map(function(k) {
+            return '<button type="button" data-k="' + k + '" onclick="setSelect(\'voiceSelect\', \'' + k + '\')" class="chip q4chip">' + VOICES[k].label + '</button>';
+          }).join('') + '</div>';
+        }
+        if (q.id === 'q5') {
+          html += '<div class="flex flex-wrap gap-1.5 mt-2">' + Object.keys(STYLES).map(function(k) {
+            return '<button type="button" data-k="' + k + '" onclick="setSelect(\'styleSelect\', \'' + k + '\')" class="chip q5chip">' + STYLES[k].label + '</button>';
+          }).join('') + '</div>';
+        }
+        div.innerHTML = html;
+        box.appendChild(div);
+      });
+    }
+    function fillChip(qid, btn) {
+      var input = el(qid);
+      if (input) { input.value = btn.textContent; onManualEdit(); }
+    }
+    function setSelect(id, v) { if (id === 'voiceSelect') syncVoice(v); else syncStyle(v); }
+    function syncVoice(v) {
+      if (!VOICES[v]) return;
+      el('voiceSelect').value = v;
+      var bs = el('q4select'); if (bs) bs.value = v;
+      var pk = el('q4picked'); if (pk) pk.textContent = 'Đã chọn: ' + VOICES[v].label;
+      document.querySelectorAll('.q4chip').forEach(function(b) { b.classList.toggle('chip-on', b.getAttribute('data-k') === v); });
+    }
+    function syncStyle(v) {
+      if (!STYLES[v]) return;
+      el('styleSelect').value = v;
+      var bs = el('q5select'); if (bs) bs.value = v;
+      var pk = el('q5picked'); if (pk) pk.textContent = 'Đã chọn: ' + STYLES[v].label;
+      document.querySelectorAll('.q5chip').forEach(function(b) { b.classList.toggle('chip-on', b.getAttribute('data-k') === v); });
+    }
+    function syncFromBox(qid) {
+      if (qid === 'q4') syncVoice(el('q4select').value);
+      else syncStyle(el('q5select').value);
+    }
+    function syncAllSelects() { syncVoice(el('voiceSelect').value); syncStyle(el('styleSelect').value); }
+
+    // ---------- 4 MỤC KẾT QUẢ ----------
+    var FIELD_DEFS = [
+      { key: 'guide', title: 'I. HƯỚNG DẪN TÙY CHỈNH', target: 'Cách AI trả lời bạn', limit: 1500 },
+      { key: 'nick', title: 'II. BIỆT DANH', target: 'Tên AI gọi bạn', limit: 50 },
+      { key: 'occ', title: 'III. NGHỀ NGHIỆP', target: 'Nghề nghiệp của bạn', limit: 500 },
+      { key: 'about', title: 'IV. THÊM THÔNG TIN VỀ BẠN', target: 'AI nên biết gì về bạn', limit: 1500 }
+    ];
+    function buildFields() {
+      var box = el('fieldsBox'); box.innerHTML = '';
+      FIELD_DEFS.forEach(function(f) {
+        var div = document.createElement('div');
+        div.innerHTML = '<div class="flex items-center justify-between mb-1"><div class="text-xs font-bold text-white">' + f.title + '</div><span id="count-' + f.key + '" class="text-xs text-gray-400">0 ký tự</span></div>'
+          + '<p class="text-[11px] text-gray-500 mb-1">Dùng cho: <b class="text-gray-300">' + f.target + '</b></p>'
+          + '<textarea id="out-' + f.key + '" readonly placeholder="Mục này sẽ hiện ở đây sau khi bạn bấm Búng Tay Tạo Tùy chỉnh AI." class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-gray-200 text-xs sm:text-sm leading-relaxed font-mono resize-none focus:outline-none c-scroll min-h-[110px]"></textarea>'
+          + '<div class="mt-1.5 flex justify-end"><button type="button" onclick="copyField(\'' + f.key + '\', this)" class="bg-gray-800 hover:bg-gray-700 text-cyan-300 border border-cyan-900 px-2.5 py-1 rounded-lg text-xs transition">📋 Sao chép mục này</button></div>';
+        box.appendChild(div);
+      });
+    }
+    function countWords(s) { return s.trim() ? s.trim().split(/\s+/).length : 0; }
+    function updateCount(key, text, limit) {
+      var c = el('count-' + key);
+      if (!c) return;
+      c.textContent = fmtNum(text.length) + ' / ' + fmtNum(limit) + ' ký tự • ' + fmtNum(countWords(text)) + ' từ';
+      c.classList.toggle('count-over', text.length > limit);
+    }
+
+    // ---------- SINH BẢN TÙY CHỈNH ----------
+    function collect() {
+      return {
+        name: val('q1'), occ: val('q2'), purpose: val('q3'),
+        voice: el('voiceSelect').value, style: el('styleSelect').value,
+        note: val('q6'), plan: 'free', field: currentField
+      };
+    }
+    function sampleFor(d) {
+      var low = (d.occ + ' ' + d.purpose).toLowerCase();
+      var found = null;
+      FIELDS.forEach(function(f) { if (!found && f.keys.some(function(k) { return low.indexOf(k) !== -1; })) found = f.id; });
+      return found ? SAMPLES[found] : null;
+    }
+    function generate(d) {
+      var v = VOICES[d.voice] || VOICES['anh-em'];
+      var s = STYLES[d.style] || STYLES['pro'];
+      var name = d.name || '[CẦN BỔ SUNG: tên/biệt danh]';
+      var displayName = d.name || 'Bạn';
+      var address = (v.user === 'Bạn' || v.user === 'Mình') ? 'Bạn' : v.user + ' ' + displayName.replace(/^(Anh|Chị|Thầy|Cô)\s+/i, '');
+      var sample = sampleFor(d);
+      var role, occText, focus, tasks;
+      if (sample && sample.q1 === d.name && sample.q2 === d.occ) {
+        role = sample.role; occText = sample.occ; focus = sample.focus; tasks = sample.tasks;
+      } else if (sample) {
+        role = 'Trợ lý AI đa năng, hỗ trợ ' + address + ' trong công việc ' + d.occ.toLowerCase();
+        occText = d.occ + '.';
+        focus = 'hiệu quả công việc, kết quả đo được và ứng dụng công nghệ vào công việc hằng ngày';
+        tasks = 'nghiên cứu, phân tích, lập kế hoạch, soạn văn bản, giải quyết vấn đề và hỗ trợ ra quyết định';
+      } else {
+        role = 'Trợ lý AI đa năng, hỗ trợ ' + address + ' trong công việc và cuộc sống';
+        occText = d.occ + '.';
+        focus = 'hiệu quả công việc, kết quả đo được và ứng dụng công nghệ vào công việc hằng ngày';
+        tasks = 'nghiên cứu, phân tích, lập kế hoạch, soạn văn bản, giải quyết vấn đề và hỗ trợ ra quyết định';
+      }
+      if (d.field) {
+        occText = occText.replace(/\.$/, '') + ', tập trung vào lĩnh vực ' + d.field + '.';
+        focus = focus + ', đặc biệt trong lĩnh vực ' + d.field;
+      }
+      var noteLine = d.note ? d.note : 'không bịa số liệu';
+      var guide = 'Xưng hô: ' + v.ai + ' - ' + displayName + '. Giao tiếp lịch sự, chuyên nghiệp, thân thiện, tôn trọng và thẳng thắn.\n'
+        + 'Vai trò: ' + role + '.\n'
+        + 'Nguyên tắc trả lời: ' + s.rule + '\n'
+        + 'Quy tắc bắt buộc: Tuyệt đối không bịa số liệu, nguồn tin, báo cáo, trích dẫn hoặc kết quả. Phân biệt rõ dữ kiện, giả định, ước tính và ý kiến phân tích. Khi thiếu dữ liệu, phải nêu rõ; không tự điền thông tin chưa xác minh. Với thông tin biến động, ưu tiên kiểm tra nguồn cập nhật khi có công cụ. Không đồng tình máy móc; đưa nhận định độc lập có căn cứ. Chỉ hỏi lại khi thông tin thiếu ảnh hưởng đáng kể đến kết quả.';
+      var about = 'Tôi là ' + displayName + ', ' + (d.occ ? d.occ.toLowerCase() : '[CẦN BỔ SUNG: nghề nghiệp]') + '. Tôi sử dụng AI như một trợ lý đa năng, hỗ trợ ' + (d.purpose ? d.purpose.toLowerCase() : 'công việc và cuộc sống') + '.\n'
+        + 'Tôi quan tâm đến ' + focus + '.\n'
+        + 'Tôi cần AI hỗ trợ ' + tasks + '.\n'
+        + 'Tôi ưu tiên câu trả lời có chiều sâu, căn cứ rõ ràng, giải pháp khả thi và hành động cụ thể.\n'
+        + 'Tôi đặc biệt coi trọng tính trung thực. ' + (noteLine.charAt(0).toUpperCase() + noteLine.slice(1)) + (noteLine.slice(-1) === '.' ? '' : '.') + ' Nếu chưa đủ thông tin, hãy nói rõ giới hạn và đề xuất cách xác minh.\n'
+        + 'Tôi mong AI chủ động tư duy, phản biện xây dựng, phát hiện rủi ro và đề xuất giải pháp tốt hơn thay vì chỉ thực hiện yêu cầu một cách máy móc.';
+      return { guide: guide, nick: d.name || '[CẦN BỔ SUNG: tên/biệt danh]', occ: occText, about: about,
+        voiceLabel: v.label, styleLabel: s.label };
+    }
+    function renderOutput(out, d) {
+      var longLimit = 1500; // Trang luôn viết gọn theo giới hạn Free/Go để dùng được cho mọi gói
+      el('out-guide').value = out.guide;
+      el('out-nick').value = out.nick;
+      el('out-occ').value = out.occ;
+      el('out-about').value = out.about;
+      updateCount('guide', out.guide, longLimit);
+      updateCount('nick', out.nick, 50);
+      updateCount('occ', out.occ, 500);
+      updateCount('about', out.about, longLimit);
+      var over = [];
+      if (out.guide.length > longLimit) over.push('Mục I vượt ' + fmtNum(out.guide.length - longLimit) + ' ký tự');
+      if (out.nick.length > 50) over.push('Mục II vượt ' + fmtNum(out.nick.length - 50) + ' ký tự');
+      if (out.occ.length > 500) over.push('Mục III vượt ' + fmtNum(out.occ.length - 500) + ' ký tự');
+      if (out.about.length > longLimit) over.push('Mục IV vượt ' + fmtNum(out.about.length - longLimit) + ' ký tự');
+      var w = el('limitWarning');
+      if (w) {
+        w.classList.remove('hidden');
+        if (over.length) { w.className = 'text-xs rounded-xl px-3 py-2 mb-3 border border-red-500/50 bg-red-950/50 text-red-300'; w.textContent = '⚠️ ' + over.join('; ') + ' - ChatGPT gói Free/Go sẽ không lưu được mục này. Hãy rút ngắn ô phỏng vấn tương ứng rồi bấm Búng Tay lại.'; }
+        else { w.className = 'text-xs rounded-xl px-3 py-2 mb-3 border border-emerald-500/50 bg-emerald-950/50 text-emerald-300'; w.textContent = '✓ Cả 4 mục đều dưới giới hạn: mục dài nhất ' + fmtNum(Math.max(out.guide.length, out.about.length)) + ' / ' + fmtNum(longLimit) + ' ký tự.'; }
+      }
+      lastOutput = out;
+    }
+
+    // ---------- BÚNG TAY ----------
+    function onNaturalInput() {
+      var text = el('naturalInput').value;
+      el('btnClear').classList.toggle('hidden', text.length === 0);
+    }
+    function clearNaturalInput() { el('naturalInput').value = ''; onNaturalInput(); el('naturalInput').focus(); }
+    function magicFillInterview() {
+      var text = el('naturalInput').value.trim();
+      var btn = el('btnMagic'); if (btn) { btn.disabled = true; btn.classList.add('btn-bung'); }
+      setTimeout(function() {
+        var low = text.toLowerCase();
+        var key = 'business';
+        if (/(văn phòng|hành chính|công văn|báo cáo|nhân sự)/.test(low)) key = 'office';
+        else if (/(giáo viên|giảng|dạy|đào tạo|học viên|bài giảng)/.test(low)) key = 'teacher';
+        else if (/(nội dung|content|facebook|tiktok|bài đăng|truyền thông|video)/.test(low)) key = 'content';
+        else if (/(sinh viên|học tập|ôn thi)/.test(low)) key = 'content';
+        var s = SAMPLES[key];
+        el('q2').value = s.q2; el('q3').value = s.q3; el('q6').value = s.q6;
+        el('voiceSelect').value = s.voice; el('styleSelect').value = s.style; syncAllSelects();
+        if (/thịnh/i.test(text)) el('q1').value = 'Anh Thịnh';
+        setStatus('Đã điền sẵn phỏng vấn theo gợi ý "' + s.q2 + '" - bạn sửa lại tên và nghề của mình rồi bấm Búng Tay Tạo Tùy chỉnh AI.');
+        if (btn) { btn.disabled = false; btn.classList.remove('btn-bung'); }
+      }, 350);
+    }
+    function setStatus(msg) { el('magicStatus').innerHTML = msg; }
+    function setSample(key) {
+      var s = SAMPLES[key]; if (!s) return;
+      el('q1').value = s.q1; el('q2').value = s.q2; el('q3').value = s.q3; el('q6').value = s.q6;
+      el('voiceSelect').value = s.voice; el('styleSelect').value = s.style; syncAllSelects();
+      currentField = s.field || '';
+      markFieldChips();
+      var d = collect(); var out = generate(d); renderOutput(out, d);
+      el('generateStatus').innerHTML = 'Đã nạp mẫu <b class="text-cyan-300">' + s.q1 + ' - ' + s.q2 + '</b> và tạo xong 4 mục. Bạn sửa lại theo ý mình rồi bấm Búng Tay lại nếu cần.';
+      flashOutput();
+    }
+    function quickDecide() {
+      el('q1').value = 'Anh Thịnh'; el('q2').value = 'Kinh doanh đa ngành'; el('q3').value = 'Nhiều tác vụ'; el('q6').value = 'không bịa số liệu';
+      el('voiceSelect').value = 'anh-em'; el('styleSelect').value = 'pro'; syncAllSelects();
+      currentField = 'Kinh doanh đa lĩnh vực'; markFieldChips();
+      magicGenerate();
+    }
+    function magicGenerate() {
+      var btn = el('btnGenerate'); if (btn) { btn.disabled = true; btn.classList.add('btn-bung'); }
+      setTimeout(function() {
+        var d = collect(); var out = generate(d); renderOutput(out, d);
+        el('generateStatus').innerHTML = 'Đã tạo xong đủ 4 mục. Sao chép từng mục vào đúng chỗ trên ChatGPT, Claude hoặc Gemini rồi lưu lại.';
+        if (btn) { btn.disabled = false; btn.classList.remove('btn-bung'); }
+        flashOutput();
+      }, 350);
+    }
+    function flashOutput() {
+      var card = el('outputCard'); if (!card) return;
+      var box = card.querySelector('.glow-purple');
+      if (box) { box.classList.remove('flash-result'); void box.offsetWidth; box.classList.add('flash-result'); }
+    }
+    function onManualEdit() { /* Gõ/sửa chỉ chuẩn bị, không tự sinh - giữ luật của trang câu lệnh */ }
+    function resetAll() {
+      ['q1', 'q2', 'q3', 'q6'].forEach(function(id) { if (el(id)) el(id).value = ''; });
+      el('naturalInput').value = ''; onNaturalInput();
+      el('voiceSelect').value = 'anh-em'; el('styleSelect').value = 'pro'; syncAllSelects();
+      currentField = ''; markFieldChips();
+      buildFields();
+      var w0 = el('limitWarning'); if (w0) w0.classList.add('hidden');
+      el('fieldStatus').textContent = 'Chưa chọn lĩnh vực - bản hiện tại dùng nghề nghiệp chung bạn đã điền.';
+      el('generateStatus').textContent = 'Điền xong 5 câu trên (hoặc bấm 1 mẫu đầy đủ bên trên) rồi bấm Búng Tay Tạo Tùy chỉnh AI.';
+    }
+
+    // ---------- TỐI ƯU THEO LĨNH VỰC ----------
+    function markFieldChips() {
+      document.querySelectorAll('#fieldChips .chip').forEach(function(b) {
+        b.classList.toggle('chip-on', b.getAttribute('data-field') === currentField);
+      });
+    }
+    function optimizeField(btn) {
+      currentField = btn.getAttribute('data-field');
+      markFieldChips();
+      el('fieldStatus').innerHTML = 'Đã tối ưu theo lĩnh vực <b class="text-cyan-300">' + currentField + '</b> - 4 mục đã viết lại cho sát lĩnh vực này.';
+      if (lastOutput) { var d = collect(); renderOutput(generate(d), d); flashOutput(); }
+      else { el('generateStatus').innerHTML = 'Đã chọn lĩnh vực <b class="text-cyan-300">' + currentField + '</b> - điền xong 5 câu rồi bấm Búng Tay để tạo bản đã tối ưu.'; }
+    }
+
+    // ---------- SAO CHÉP ----------
+    function copyText(text, btn) {
+      function done() {
+        if (!btn) return;
+        var old = btn.innerHTML; btn.innerHTML = '<span>✓ Đã Sao Chép!</span>';
+        setTimeout(function() { btn.innerHTML = old; }, 1600);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function() { fallbackCopy(text); done(); });
+      } else { fallbackCopy(text); done(); }
+    }
+    function fallbackCopy(text) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    function copyField(key, btn) {
+      var t = el('out-' + key); if (t && t.value) copyText(t.value, btn);
+    }
+    function copyAll() {
+      if (!lastOutput) return;
+      var all = 'I. HƯỚNG DẪN TÙY CHỈNH\n' + el('out-guide').value + '\n\nII. BIỆT DANH\n' + el('out-nick').value + '\n\nIII. NGHỀ NGHIỆP\n' + el('out-occ').value + '\n\nIV. THÊM THÔNG TIN VỀ BẠN\n' + el('out-about').value;
+      copyText(all, el('btnCopyAll'));
+    }
+
+    buildInterview();
+    buildFields();
+    syncAllSelects();
+  </script>
+</body>
+</html>
