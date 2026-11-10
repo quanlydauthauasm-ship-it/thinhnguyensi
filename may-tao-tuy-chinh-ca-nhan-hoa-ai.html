@@ -451,6 +451,8 @@
         if (/thịnh/i.test(text)) el('q1').value = 'Anh Thịnh';
         setStatus('Đã điền sẵn phỏng vấn theo gợi ý "' + s.q2 + '" - bạn sửa lại tên và nghề của mình rồi bấm Búng Tay Tạo Tùy chỉnh AI.');
         if (btn) { btn.disabled = false; btn.classList.remove('btn-bung'); }
+        var ib = el('interviewBox');
+        if (ib && ib.scrollIntoView) { try { ib.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }
       }, 350);
     }
     function setStatus(msg) { el('magicStatus').innerHTML = msg; }
