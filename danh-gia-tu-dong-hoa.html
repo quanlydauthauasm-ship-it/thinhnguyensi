@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" class="dark">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,22 +35,47 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+  <!-- Giao diện dùng chung: phông chữ, bảng màu sáng/tối, đầu trang và chân trang -->
+  <link rel="stylesheet" href="theme.css">
+  <script src="theme.js"></script>
 </head>
-<body class="bg-[#0a0f1d] text-slate-100 min-h-screen antialiased">
-  <header class="border-b border-slate-800 bg-[#0a0f1d]/80 backdrop-blur sticky top-0 z-50">
-    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center font-black text-white text-lg">TN</div>
-        <div>
-          <div class="text-sm font-black tracking-wider uppercase bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">THỊNH NGUYỄN SI</div>
-          <div class="text-[10px] text-slate-400">Automation Assessment</div>
-        </div>
+<body class="bg-page text-slate-100 min-h-screen antialiased">
+  <!-- ĐẦU TRANG DÙNG CHUNG (giống nhau trên mọi trang) -->
+  <header class="tn-header no-print" id="site-header">
+    <div class="tn-wrap tn-bar">
+      <a class="tn-brand" href="/" aria-label="Thịnh Nguyễn SI - Trang chủ">
+        <span class="tn-logo">TN</span>
+        <span class="tn-brand-text"><strong>Thịnh Nguyễn SI</strong><small>AI &amp; Chuyển đổi số thực chiến</small></span>
       </a>
-      <div class="flex items-center gap-3">
-        <a href="kho-template.html" class="text-xs text-slate-300 hover:text-white px-3 py-2 rounded-lg hover:bg-slate-800">Kho Template</a>
-        <a href="https://zalo.me/0918717952" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold px-3 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:opacity-90 flex items-center gap-1.5">
-          💬 0918.717.952
-        </a>
+      <nav class="tn-nav" id="tn-nav" aria-label="Điều hướng chính">
+        <a href="/">Trang chủ</a>
+        <div class="tn-dd">
+          <button type="button" class="tn-dd-btn" aria-expanded="false" aria-haspopup="true">Công cụ AI <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="tn-dd-menu">
+            <a href="may-tao-cau-lenh-ai.html">Máy tạo câu lệnh AI (RCESF)</a>
+            <a href="may-tao-instructions-ai.html">Máy tạo Instructions cho Project</a>
+            <a href="may-tao-tuy-chinh-ca-nhan-hoa-ai.html">Máy tùy chỉnh cá nhân hóa AI</a>
+            <a href="trich-xuat-pdf-sang-excel.html">Trích xuất PDF sang Excel</a>
+            <a href="trich-xuat-pdf-sang-word.html">Trích xuất PDF sang Word</a>
+            <a href="boc-tach-chuan-hoa-tai-lieu.html">Bóc tách &amp; chuẩn hóa tài liệu</a>
+            <a href="bao-gia-hop-dong-tu-dong.html">Tạo báo giá &amp; xuất PDF</a>
+            <a href="quan-ly-tien-do-du-an.html">Quản lý tiến độ dự án</a>
+            <a href="danh-gia-tu-dong-hoa.html">Đánh giá mức độ tự động hóa</a>
+          </div>
+        </div>
+        <a href="kho-template.html">Kho Template</a>
+        <a href="chuyen-gia-ai.html">Chuyên gia AI</a>
+        <a href="muse-ai.html">Muse AI</a>
+      </nav>
+      <div class="tn-actions">
+        <button type="button" class="tn-theme" data-tn-theme-toggle aria-label="Chuyển giao diện sáng / tối" title="Chuyển giao diện sáng / tối">
+          <svg class="tn-i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="tn-i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <a class="tn-cta" href="https://zalo.me/0918717952" target="_blank" rel="noopener noreferrer">💬 <span><span class="tn-cta-long">Tư vấn </span>Zalo</span></a>
+        <button type="button" class="tn-burger" aria-controls="tn-nav" aria-expanded="false" aria-label="Mở menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
       </div>
     </div>
   </header>
@@ -93,7 +118,7 @@
         <div id="resBadge" class="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase mb-2"></div>
         <h3 id="resTitle" class="text-xl font-extrabold mb-2"></h3>
         <p id="resDesc" class="text-slate-300 text-xs sm:text-sm max-w-md mx-auto mb-4"></p>
-        <div class="bg-[#0a0f1d] border border-slate-800 rounded-xl p-4 text-left text-xs text-slate-300 space-y-2 mb-6" id="resAdvice"></div>
+        <div class="bg-page border border-slate-800 rounded-xl p-4 text-left text-xs text-slate-300 space-y-2 mb-6" id="resAdvice"></div>
         <div class="flex flex-col sm:flex-row gap-2 justify-center">
           <a id="zaloLink" href="#" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg">
             🚀 Gửi Kết Quả Cho Cố Vấn Thịnh Nguyễn SI
@@ -103,10 +128,6 @@
       </div>
     </div>
   </main>
-
-  <footer class="border-t border-slate-900 py-4 text-center text-xs text-slate-500">
-    © 2026 Thịnh Nguyễn SI. Hotline/Zalo: 0918.717.952
-  </footer>
 
   <script>
     const questions = [
@@ -183,7 +204,7 @@
       q.options.forEach((opt) => {
         const isSel = answers[curStep] === opt.pts;
         html += `
-          <div onclick="selectOpt(${opt.pts})" class="p-3 rounded-xl border ${isSel ? 'border-cyan-400 bg-cyan-950/20' : 'border-slate-800 bg-[#0a0f1d]/60'} hover:border-blue-500 cursor-pointer transition flex items-start gap-3">
+          <div onclick="selectOpt(${opt.pts})" class="p-3 rounded-xl border ${isSel ? 'border-cyan-400 bg-cyan-950/20' : 'border-slate-800 bg-page/60'} hover:border-blue-500 cursor-pointer transition flex items-start gap-3">
             <input type="radio" name="opt" ${isSel ? 'checked' : ''} class="mt-1 text-blue-600 pointer-events-none">
             <div>
               <div class="text-xs font-semibold">${opt.text}</div>
@@ -259,8 +280,55 @@
     renderQuestion();
   </script>
 
-<footer style="text-align:center;padding:28px 16px 36px;border-top:1px solid rgba(255,255,255,.12);margin-top:32px">
-  <a href="index.html" style="color:#67e8f9;font-weight:700;text-decoration:none;font-size:16px">&larr; V&#7873; trang ch&#7911;</a>
-  <div style="color:#94a3b8;font-size:13px;margin-top:8px">Th&#7883;nh Nguy&#7877;n SI &bull; thinhnguyensi.com &bull; Hotline/Zalo 0918 717 952</div>
-</footer>
+<!-- CHÂN TRANG DÙNG CHUNG (giống nhau trên mọi trang) -->
+  <footer class="tn-footer no-print">
+    <div class="tn-wrap tn-footer-grid">
+      <div>
+        <a class="tn-brand" href="/" aria-label="Thịnh Nguyễn SI - Trang chủ">
+        <span class="tn-logo">TN</span>
+        <span class="tn-brand-text"><strong>Thịnh Nguyễn SI</strong><small>AI &amp; Chuyển đổi số thực chiến</small></span>
+      </a>
+        <p>Đào tạo, tư vấn và triển khai AI thực chiến cho doanh nghiệp: Nói được – Làm được – Chạy thực tế được.</p>
+        <p>Hotline / Zalo: <a href="tel:0918717952"><strong>0918.717.952</strong></a></p>
+      </div>
+      <div>
+        <h2>Công cụ AI miễn phí</h2>
+        <ul>
+          <li><a href="may-tao-cau-lenh-ai.html">Máy tạo câu lệnh AI (RCESF)</a></li>
+          <li><a href="may-tao-instructions-ai.html">Máy tạo Instructions cho Project</a></li>
+          <li><a href="may-tao-tuy-chinh-ca-nhan-hoa-ai.html">Máy tùy chỉnh cá nhân hóa AI</a></li>
+          <li><a href="trich-xuat-pdf-sang-excel.html">Trích xuất PDF sang Excel</a></li>
+          <li><a href="trich-xuat-pdf-sang-word.html">Trích xuất PDF sang Word</a></li>
+          <li><a href="boc-tach-chuan-hoa-tai-lieu.html">Bóc tách &amp; chuẩn hóa tài liệu</a></li>
+          <li><a href="bao-gia-hop-dong-tu-dong.html">Tạo báo giá &amp; xuất PDF</a></li>
+          <li><a href="quan-ly-tien-do-du-an.html">Quản lý tiến độ dự án</a></li>
+          <li><a href="danh-gia-tu-dong-hoa.html">Đánh giá mức độ tự động hóa</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Tìm hiểu</h2>
+        <ul>
+          <li><a href="chuyen-gia-ai.html">Chuyên gia AI Thịnh Nguyễn SI</a></li>
+          <li><a href="kien-truc-su-ai-doanh-nghiep.html">Kiến trúc sư AI doanh nghiệp</a></li>
+          <li><a href="muse-ai.html">Muse AI là gì?</a></li>
+          <li><a href="vtvl-thinh-nguyen-si.html">Vị trí việc làm: làm Bộ biểu trong 1 buổi</a></li>
+          <li><a href="kho-template.html">Kho Template &amp; Web App</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Kết nối</h2>
+        <ul>
+          <li><a href="https://zalo.me/0918717952" target="_blank" rel="noopener noreferrer">Zalo riêng</a></li>
+          <li><a href="https://zalo.me/g/fha5au5tsqt5qucmqnre" target="_blank" rel="noopener noreferrer">Nhóm Zalo học viên</a></li>
+          <li><a href="https://www.tiktok.com/@thinhnguyensi" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+          <li><a href="https://www.youtube.com/@thinhnguyensi" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+          <li><a href="https://www.linkedin.com/in/th%E1%BB%8Bnh-nguy%E1%BB%85n-385b9118b" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tn-wrap tn-footer-bottom">
+      <span>© 2026 Thịnh Nguyễn SI. Kiến tạo giải pháp AI &amp; tự động hóa thực chiến.</span>
+      <a href="/">thinhnguyensi.com</a>
+    </div>
+  </footer>
 </body>

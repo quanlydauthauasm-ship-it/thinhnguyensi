@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
 <title>Kiến Trúc Sư AI Doanh Nghiệp | Thịnh Nguyễn SI</title>
   <meta name="description" content="Thịnh Nguyễn SI thiết kế giải pháp AI thực chiến cho doanh nghiệp vừa và nhỏ: bóc tách dữ liệu, tự động hóa quy trình 0 đồng, đóng gói dashboard và trợ lý riêng. Nói được – Làm được – Chạy thực tế được.">
 <link rel="canonical" href="https://thinhnguyensi.com/kien-truc-su-ai-doanh-nghiep.html">
@@ -34,21 +33,16 @@
 }
 </script>
 
-
-
-
-
-
 <style>
   :root {
-    --primary: #2563eb;
-    --accent: #67e8f9;
-    --accent2: #06b6d4;
-    --bg: #0a0f1d;
-    --card: #0f172a;
-    --border: rgba(255,255,255,0.10);
-    --text: #e2e8f0;
-    --muted: #94a3b8;
+    --primary: rgb(var(--blue-600));
+    --accent: rgb(var(--cyan-300));
+    --accent2: rgb(var(--cyan-500-text));
+    --bg: rgb(var(--base));
+    --card: rgb(var(--slate-900));
+    --border: rgb(var(--white) / 0.10);
+    --text: rgb(var(--slate-200));
+    --muted: rgb(var(--slate-400));
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -56,15 +50,6 @@
     background: var(--bg);
     color: var(--text);
     line-height: 1.7;
-  }
-
-  /* NAV */
-  nav {
-    position: fixed; top: 0; width: 100%; z-index: 100;
-    background: rgba(10,15,29,0.95);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 24px;
-    display: flex; justify-content: space-between; align-items: center;
   }
   .nav-logo {
     font-size: 1.1rem; font-weight: 700; color: var(--accent);
@@ -84,21 +69,21 @@
     justify-content: center; align-items: center;
     text-align: center;
     padding: 120px 24px 80px;
-    background: radial-gradient(ellipse at 50% 0%, rgba(37,99,235,0.28) 0%, var(--bg) 70%);
+    background: radial-gradient(ellipse at 50% 0%, rgb(var(--blue-600) / calc(0.28 * var(--glow))) 0%, var(--bg) 70%);
     position: relative; overflow: hidden;
   }
   .hero::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     background: 
-      radial-gradient(circle at 20% 50%, rgba(37,99,235,0.10) 0%, transparent 50%),
-      radial-gradient(circle at 80% 50%, rgba(6,182,212,0.10) 0%, transparent 50%);
+      radial-gradient(circle at 20% 50%, rgb(var(--blue-600) / calc(0.10 * var(--glow))) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgb(var(--cyan-500) / calc(0.10 * var(--glow))) 0%, transparent 50%);
     pointer-events: none;
   }
   .badge {
     display: inline-block;
-    background: rgba(6,182,212,0.10);
-    border: 1px solid rgba(6,182,212,0.30);
+    background: rgb(var(--cyan-500) / 0.10);
+    border: 1px solid rgb(var(--cyan-500) / 0.30);
     color: var(--accent);
     padding: 6px 18px; border-radius: 20px;
     font-size: 0.8rem; font-weight: 600;
@@ -110,7 +95,7 @@
     font-weight: 800;
     line-height: 1.15;
     margin-bottom: 12px;
-    background: linear-gradient(to right, #fff 20%, #93c5fd 60%, #67e8f9 100%);
+    background: linear-gradient(to right, rgb(var(--white)) 20%, rgb(var(--blue-300)) 60%, rgb(var(--cyan-300)) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -133,11 +118,10 @@
   .btn-primary {
     background: linear-gradient(135deg, #2563eb, #06b6d4);
     color: #fff; font-weight: 700;
-    box-shadow: 0 8px 20px rgba(37,99,235,0.35);
+    box-shadow: 0 8px 20px rgb(var(--blue-600) / 0.35);
     padding: 14px 32px; border-radius: 8px;
     text-decoration: none; font-size: 1rem;
-    transition: opacity 0.2s;
-  }
+    transition: opacity 0.2s;--white:255 255 255}
   .btn-primary:hover { opacity: 0.85; }
   .btn-outline {
     border: 1px solid var(--border);
@@ -190,16 +174,15 @@
   .define-card::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, #2563eb, #06b6d4);
-  }
+    background: linear-gradient(90deg, #2563eb, #06b6d4);--white:255 255 255}
   .define-icon { font-size: 2rem; margin-bottom: 16px; }
   .define-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
   .define-text { color: var(--muted); line-height: 1.8; }
 
   /* VẤN ĐỀ */
   .problem-section {
-    background: rgba(6,182,212,0.06);
-    border: 1px solid rgba(6,182,212,0.15);
+    background: rgb(var(--cyan-500) / 0.06);
+    border: 1px solid rgb(var(--cyan-500) / 0.15);
     border-radius: 16px;
     padding: 56px 40px;
     margin: 0 auto;
@@ -233,8 +216,8 @@
   .step:last-child { border-bottom: none; }
   .step-num {
     width: 48px; height: 48px;
-    background: rgba(6,182,212,0.10);
-    border: 1px solid rgba(6,182,212,0.30);
+    background: rgb(var(--cyan-500) / 0.10);
+    border: 1px solid rgb(var(--cyan-500) / 0.30);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 1.1rem; font-weight: 800; color: var(--accent);
@@ -244,8 +227,8 @@
   .step-desc { color: var(--muted); line-height: 1.8; }
   .step-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
   .tag {
-    background: rgba(6,182,212,0.08);
-    border: 1px solid rgba(6,182,212,0.25);
+    background: rgb(var(--cyan-500) / 0.08);
+    border: 1px solid rgb(var(--cyan-500) / 0.25);
     color: var(--accent);
     padding: 4px 12px; border-radius: 20px;
     font-size: 0.8rem;
@@ -271,10 +254,10 @@
   }
   .compare-table tr:last-child td { border-bottom: none; }
   .compare-table td:first-child { color: var(--muted); }
-  .compare-table td:nth-child(2) { color: #64748b; }
+  .compare-table td:nth-child(2) { color: rgb(var(--slate-500)); }
   .compare-table td:nth-child(3) { color: var(--text); font-weight: 500; }
-  .yes { color: #34d399 !important; }
-  .no { color: #64748b !important; }
+  .yes { color: rgb(var(--emerald-400)) !important; }
+  .no { color: rgb(var(--slate-500)) !important; }
 
   /* KẾT QUẢ */
   .results-grid {
@@ -308,8 +291,7 @@
   .case-card::before {
     content: '';
     position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-    background: linear-gradient(180deg, #2563eb, #06b6d4);
-  }
+    background: linear-gradient(180deg, #2563eb, #06b6d4);--white:255 255 255}
   .case-label {
     font-size: 0.75rem; font-weight: 700;
     letter-spacing: 1px; text-transform: uppercase;
@@ -321,8 +303,8 @@
     display: flex; flex-wrap: wrap; gap: 12px;
   }
   .case-result-item {
-    background: rgba(37,99,235,0.12);
-    border: 1px solid rgba(37,99,235,0.25);
+    background: rgb(var(--blue-600) / 0.12);
+    border: 1px solid rgb(var(--blue-600) / 0.25);
     border-radius: 8px;
     padding: 10px 16px;
   }
@@ -354,7 +336,7 @@
   .cta-section {
     text-align: center;
     padding: 100px 24px;
-    background: radial-gradient(ellipse at 50% 100%, rgba(37,99,235,0.25) 0%, var(--bg) 60%);
+    background: radial-gradient(ellipse at 50% 100%, rgb(var(--blue-600) / calc(0.25 * var(--glow))) 0%, var(--bg) 60%);
   }
   .cta-section h2 {
     font-size: clamp(1.8rem, 4vw, 2.8rem);
@@ -382,33 +364,61 @@
   .faq-q { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; }
   .faq-a { color: var(--muted); line-height: 1.8; }
 
-  /* FOOTER */
-  footer {
-    text-align: center;
-    padding: 32px 24px;
-    border-top: 1px solid var(--border);
-    color: var(--muted); font-size: 0.85rem;
-  }
-  footer a { color: var(--accent); text-decoration: none; }
-
   @media (max-width: 600px) {
     .problem-section { padding: 36px 20px; }
     .step { grid-template-columns: 48px 1fr; gap: 16px; }
     .nav-links { display: none; }
   }
 </style>
+  <!-- Giao diện dùng chung: phông chữ, bảng màu sáng/tối, đầu trang và chân trang -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <script src="theme.js"></script>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
-  <a class="nav-logo" href="https://thinhnguyensi.com/">⚡ Thịnh Nguyễn SI</a>
-  <div class="nav-links">
-    <a href="https://thinhnguyensi.com/chuyen-gia-ai.html">Chuyên Gia AI</a>
-    <a href="https://thinhnguyensi.com/may-tao-cau-lenh-ai.html">Máy Tạo Prompt</a>
-    <a href="https://thinhnguyensi.com/kho-template.html">Kho Template</a>
-  </div>
-</nav>
+<!-- ĐẦU TRANG DÙNG CHUNG (giống nhau trên mọi trang) -->
+  <header class="tn-header no-print" id="site-header">
+    <div class="tn-wrap tn-bar">
+      <a class="tn-brand" href="/" aria-label="Thịnh Nguyễn SI - Trang chủ">
+        <span class="tn-logo">TN</span>
+        <span class="tn-brand-text"><strong>Thịnh Nguyễn SI</strong><small>AI &amp; Chuyển đổi số thực chiến</small></span>
+      </a>
+      <nav class="tn-nav" id="tn-nav" aria-label="Điều hướng chính">
+        <a href="/">Trang chủ</a>
+        <div class="tn-dd">
+          <button type="button" class="tn-dd-btn" aria-expanded="false" aria-haspopup="true">Công cụ AI <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="tn-dd-menu">
+            <a href="may-tao-cau-lenh-ai.html">Máy tạo câu lệnh AI (RCESF)</a>
+            <a href="may-tao-instructions-ai.html">Máy tạo Instructions cho Project</a>
+            <a href="may-tao-tuy-chinh-ca-nhan-hoa-ai.html">Máy tùy chỉnh cá nhân hóa AI</a>
+            <a href="trich-xuat-pdf-sang-excel.html">Trích xuất PDF sang Excel</a>
+            <a href="trich-xuat-pdf-sang-word.html">Trích xuất PDF sang Word</a>
+            <a href="boc-tach-chuan-hoa-tai-lieu.html">Bóc tách &amp; chuẩn hóa tài liệu</a>
+            <a href="bao-gia-hop-dong-tu-dong.html">Tạo báo giá &amp; xuất PDF</a>
+            <a href="quan-ly-tien-do-du-an.html">Quản lý tiến độ dự án</a>
+            <a href="danh-gia-tu-dong-hoa.html">Đánh giá mức độ tự động hóa</a>
+          </div>
+        </div>
+        <a href="kho-template.html">Kho Template</a>
+        <a href="chuyen-gia-ai.html">Chuyên gia AI</a>
+        <a href="muse-ai.html">Muse AI</a>
+      </nav>
+      <div class="tn-actions">
+        <button type="button" class="tn-theme" data-tn-theme-toggle aria-label="Chuyển giao diện sáng / tối" title="Chuyển giao diện sáng / tối">
+          <svg class="tn-i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="tn-i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <a class="tn-cta" href="https://zalo.me/0918717952" target="_blank" rel="noopener noreferrer">💬 <span><span class="tn-cta-long">Tư vấn </span>Zalo</span></a>
+        <button type="button" class="tn-burger" aria-controls="tn-nav" aria-expanded="false" aria-label="Mở menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
 
 <!-- HERO -->
 <div class="hero">
@@ -745,15 +755,57 @@
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <p>
-    <a href="https://thinhnguyensi.com/">thinhnguyensi.com</a> · 
-    <a href="https://thinhnguyensi.com/chuyen-gia-ai.html">Chuyên Gia AI</a> · 
-    <a href="https://thinhnguyensi.com/may-tao-cau-lenh-ai.html">Máy Tạo Prompt RCESF</a> · 
-    <a href="https://thinhnguyensi.com/kho-template.html">Kho Template</a>
-  </p>
-  <p style="margin-top: 12px;">© 2026 Thịnh Nguyễn SI · Kiến Trúc Sư AI Doanh Nghiệp · Nguyễn Phước Thịnh · 0918.717.952</p>
-</footer>
+<!-- CHÂN TRANG DÙNG CHUNG (giống nhau trên mọi trang) -->
+  <footer class="tn-footer no-print">
+    <div class="tn-wrap tn-footer-grid">
+      <div>
+        <a class="tn-brand" href="/" aria-label="Thịnh Nguyễn SI - Trang chủ">
+        <span class="tn-logo">TN</span>
+        <span class="tn-brand-text"><strong>Thịnh Nguyễn SI</strong><small>AI &amp; Chuyển đổi số thực chiến</small></span>
+      </a>
+        <p>Đào tạo, tư vấn và triển khai AI thực chiến cho doanh nghiệp: Nói được – Làm được – Chạy thực tế được.</p>
+        <p>Hotline / Zalo: <a href="tel:0918717952"><strong>0918.717.952</strong></a></p>
+      </div>
+      <div>
+        <h2>Công cụ AI miễn phí</h2>
+        <ul>
+          <li><a href="may-tao-cau-lenh-ai.html">Máy tạo câu lệnh AI (RCESF)</a></li>
+          <li><a href="may-tao-instructions-ai.html">Máy tạo Instructions cho Project</a></li>
+          <li><a href="may-tao-tuy-chinh-ca-nhan-hoa-ai.html">Máy tùy chỉnh cá nhân hóa AI</a></li>
+          <li><a href="trich-xuat-pdf-sang-excel.html">Trích xuất PDF sang Excel</a></li>
+          <li><a href="trich-xuat-pdf-sang-word.html">Trích xuất PDF sang Word</a></li>
+          <li><a href="boc-tach-chuan-hoa-tai-lieu.html">Bóc tách &amp; chuẩn hóa tài liệu</a></li>
+          <li><a href="bao-gia-hop-dong-tu-dong.html">Tạo báo giá &amp; xuất PDF</a></li>
+          <li><a href="quan-ly-tien-do-du-an.html">Quản lý tiến độ dự án</a></li>
+          <li><a href="danh-gia-tu-dong-hoa.html">Đánh giá mức độ tự động hóa</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Tìm hiểu</h2>
+        <ul>
+          <li><a href="chuyen-gia-ai.html">Chuyên gia AI Thịnh Nguyễn SI</a></li>
+          <li><a href="kien-truc-su-ai-doanh-nghiep.html">Kiến trúc sư AI doanh nghiệp</a></li>
+          <li><a href="muse-ai.html">Muse AI là gì?</a></li>
+          <li><a href="vtvl-thinh-nguyen-si.html">Vị trí việc làm: làm Bộ biểu trong 1 buổi</a></li>
+          <li><a href="kho-template.html">Kho Template &amp; Web App</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Kết nối</h2>
+        <ul>
+          <li><a href="https://zalo.me/0918717952" target="_blank" rel="noopener noreferrer">Zalo riêng</a></li>
+          <li><a href="https://zalo.me/g/fha5au5tsqt5qucmqnre" target="_blank" rel="noopener noreferrer">Nhóm Zalo học viên</a></li>
+          <li><a href="https://www.tiktok.com/@thinhnguyensi" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+          <li><a href="https://www.youtube.com/@thinhnguyensi" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+          <li><a href="https://www.linkedin.com/in/th%E1%BB%8Bnh-nguy%E1%BB%85n-385b9118b" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tn-wrap tn-footer-bottom">
+      <span>© 2026 Thịnh Nguyễn SI. Kiến tạo giải pháp AI &amp; tự động hóa thực chiến.</span>
+      <a href="/">thinhnguyensi.com</a>
+    </div>
+  </footer>
 
 </body>
 </html>
