@@ -32,10 +32,11 @@ async function callGemini(geminiKey, geminiMessages, signal) {
   let lastStatus = 0;
   for (const model of GEMINI_MODELS) {
     const r = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        // Khóa API đặt trong header thay vì URL để không lọt vào log
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': geminiKey },
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
           contents: geminiMessages,
@@ -69,6 +70,17 @@ async function callGemini(geminiKey, geminiMessages, signal) {
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Chỉ nhận yêu cầu gửi từ chính website (chặn trang khác gọi nhờ, tốn quota API)
+  const origin = req.headers.origin;
+  if (origin) {
+    let originHost = '';
+    try { originHost = new URL(origin).host; } catch (_) {}
+    const selfHost = req.headers['x-forwarded-host'] || req.headers.host;
+    if (originHost !== selfHost) {
+      return res.status(403).json({ error: 'forbidden' });
+    }
   }
 
   const { messages } = req.body || {};
