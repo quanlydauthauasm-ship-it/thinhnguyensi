@@ -10,29 +10,8 @@
 <meta name="description" content="Thịnh Nguyễn SI - Chuyên gia kiến trúc giải pháp AI thực chiến và xây dựng hệ thống tự động hóa quy trình 0 đồng cho doanh nghiệp.">
   <meta name="keywords" content="thinhnguyensi, Thịnh Nguyễn SI, thinh nguyen si, AI doanh nghiệp, chuyển đổi số SME, AppSheet, tự động hóa quy trình, đào tạo AI thực chiến">
   <meta name="author" content="Thịnh Nguyễn SI">
-  <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0a0f1d">
   <link rel="canonical" href="https://thinhnguyensi.com/">
-  <!-- Schema Entity: Thịnh Nguyễn SI (Super Intelligence) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Thịnh Nguyễn SI",
-    "alternateName": [
-      "Thinh Nguyen SI",
-      "Thịnh Nguyễn Siêu Trí Tuệ",
-      "Thinh Nguyen Super Intelligence"
-    ],
-    "jobTitle": "Chuyên gia Giải pháp Siêu Trí Tuệ (SI) & Tự động hóa Doanh nghiệp",
-    "url": "https://.thinhnguyensi.com",
-    "sameAs": [
-      "https://www.youtube.com/@thinhnguyensi",
-      "https://www.tiktok.com/@thinhnguyensi",
-      "https://www.facebook.com/thinh.nguyen.432297"
-    ]
-  }
-  </script>
 
   <!-- Google Search Console -->
   <meta name="google-site-verification" content="XYUrGnOsteL_wCrtdmgPcOCl_T8vM60jyuH3Cdenw8k" />
@@ -51,9 +30,9 @@
   <meta property="og:url" content="https://thinhnguyensi.com/">
   <meta property="og:title" content="Thịnh Nguyễn SI | Ứng Dụng AI & Chuyển Đổi Số Doanh Nghiệp">
   <meta property="og:description" content="Đồng hành cùng Lãnh đạo và Quản lý làm chủ công nghệ thực chiến. Tối ưu hạ tầng 0 đồng, loại bỏ lý thuyết hàn lâm.">
-  <meta property="og:image" content="https://thinhnguyensi.com/thumb.png">
+  <meta property="og:image" content="https://thinhnguyensi.com/thumb.jpg">
   <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <meta property="og:image:height" content="675">
   <meta property="og:locale" content="vi_VN">
   <meta property="og:site_name" content="Thịnh Nguyễn SI">
 
@@ -64,7 +43,7 @@
   <meta name="twitter:url" content="https://thinhnguyensi.com/">
   <meta name="twitter:title" content="Thịnh Nguyễn SI | AI & Chuyển Đổi Số Thực Chiến">
   <meta name="twitter:description" content="Kiến trúc sư giải pháp AI & Tự động hóa quy trình 0 đồng cho SME.">
-  <meta name="twitter:image" content="https://thinhnguyensi.com/thumb.png">
+  <meta name="twitter:image" content="https://thinhnguyensi.com/thumb.jpg">
 
   <!-- ============================================== -->
   <!-- 4. SCHEMA JSON-LD: KHAI BÁO THỰC THỂ GOOGLE    -->
@@ -77,7 +56,8 @@
         "@type": "Person",
         "@id": "https://thinhnguyensi.com/#person",
         "name": "Thịnh Nguyễn SI",
-        "alternateName": ["thinhnguyensi", "Nguyễn Phước Thịnh", "Thinh Nguyen SI"],
+        "alternateName": ["thinhnguyensi", "Nguyễn Phước Thịnh", "Thinh Nguyen SI", "Thịnh Nguyễn Siêu Trí Tuệ", "Thinh Nguyen Super Intelligence"],
+        "image": "https://thinhnguyensi.com/thumb.jpg",
         "url": "https://thinhnguyensi.com/",
         "jobTitle": "Kiến trúc sư giải pháp AI & Chuyển đổi số doanh nghiệp",
         "worksFor": {
@@ -90,6 +70,8 @@
         "sameAs": [
           "https://zalo.me/0918717952",
           "https://www.tiktok.com/@thinhnguyensi",
+          "https://www.youtube.com/@thinhnguyensi",
+          "https://www.facebook.com/thinh.nguyen.432297",
           "https://www.linkedin.com/in/thinhnguyensi"
         ],
         "knowsAbout": [
@@ -114,8 +96,6 @@
     ]
   }
   </script>
-<!-- BING WEBMASTER TOOLS & TỐI ƯU BINGBOT -->
-<meta name="msvalidate.01" content="BING_VERIFICATION_CODE_HERE" />
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <!-- Bật hiệu ứng chỉ khi có JS (nội dung vẫn hiện nếu JS bị tắt) -->
@@ -480,6 +460,9 @@
           <div id="success-alert" class="success-alert" role="status">
             ✓ Đã tiếp nhận thông tin! Chuyên gia Thịnh Nguyễn sẽ liên hệ với bạn trong giây lát.
           </div>
+          <div id="error-alert" class="success-alert" role="alert" style="background:rgba(244,63,94,0.15);border-color:rgba(244,63,94,0.4);color:#fda4af">
+            ✕ Chưa gửi được thông tin do lỗi kết nối. Bạn vui lòng thử lại hoặc nhắn Zalo 0918.717.952 nhé.
+          </div>
         </form>
       </div>
     </div>
@@ -639,6 +622,12 @@
         source: 'form'
       };
 
+      const errorBox = document.getElementById('error-alert');
+      if (errorBox) errorBox.style.display = 'none';
+      const failed = (err) => {
+        console.error('Lỗi gửi form:', err);
+        if (errorBox) errorBox.style.display = 'block'; // giữ nguyên dữ liệu đã nhập để khách gửi lại
+      };
       const done = () => {
         if (alertBox) {
           alertBox.style.display = 'block';
@@ -654,7 +643,7 @@
         body: JSON.stringify(payload)
       })
       .then(done)
-      .catch((err) => { console.error('Lỗi gửi form:', err); done(); })
+      .catch(failed)
       .finally(() => {
         if (submitBtn) {
           submitBtn.disabled = false;

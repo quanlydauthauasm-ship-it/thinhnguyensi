@@ -6,14 +6,19 @@
   <title>Quản Lý Tiến Độ Dự Án Realtime | Thịnh Nguyễn SI</title>
   <meta name="description" content="Quản lý tiến độ dự án realtime: task tracker tự động lưu trên trình duyệt. Công cụ miễn phí của Thịnh Nguyễn SI, dùng ngay không cần cài đặt.">
 <link rel="canonical" href="https://thinhnguyensi.com/quan-ly-tien-do-du-an.html">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://thinhnguyensi.com/quan-ly-tien-do-du-an.html">
 <meta property="og:title" content="Quản Lý Tiến Độ Dự Án Realtime | Thịnh Nguyễn SI">
 <meta property="og:description" content="Quản lý tiến độ dự án realtime, task tracker tự động lưu trên trình duyệt. Công cụ miễn phí, dùng ngay.">
 <meta property="og:locale" content="vi_VN">
 <meta property="og:site_name" content="Thịnh Nguyễn SI">
-<meta property="og:image" content="https://thinhnguyensi.com/hero.jpg">
+<meta property="og:image" content="https://thinhnguyensi.com/thumb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://thinhnguyensi.com/thumb.jpg">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -51,6 +56,7 @@
   </header>
 
   <main class="max-w-5xl mx-auto px-4 py-8">
+    <h1 class="text-xl sm:text-2xl font-black text-white mb-5">Quản Lý Tiến Độ Dự Án Realtime</h1>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
       <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-xl">
         <div class="text-[11px] text-slate-400">Tổng Đầu Việc</div>
@@ -134,6 +140,11 @@
       renderTasks();
     }
 
+    // Chống chèn mã HTML qua tên việc / người phụ trách
+    function esc(v) {
+      return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
     function renderTasks() {
       const tbody = document.getElementById('taskTableBody');
       tbody.innerHTML = '';
@@ -156,9 +167,9 @@
           <td class="py-2.5 px-3 text-center">
             <input type="checkbox" ${isChecked} onchange="toggleDone(${t.id})" class="rounded bg-slate-800 border-slate-700 text-cyan-500 cursor-pointer">
           </td>
-          <td class="py-2.5 px-3 ${titleStyle}">${t.title}</td>
-          <td class="py-2.5 px-3 text-slate-300">${t.assignee || 'Chung'}</td>
-          <td class="py-2.5 px-3 text-center text-slate-400">${t.deadline || '--'}</td>
+          <td class="py-2.5 px-3 ${titleStyle}">${esc(t.title)}</td>
+          <td class="py-2.5 px-3 text-slate-300">${esc(t.assignee || 'Chung')}</td>
+          <td class="py-2.5 px-3 text-center text-slate-400">${esc(t.deadline || '--')}</td>
           <td class="py-2.5 px-3 text-center">${badge}</td>
           <td class="py-2.5 px-2 text-center">
             <button onclick="deleteTask(${t.id})" class="text-slate-500 hover:text-rose-400">✕</button>
